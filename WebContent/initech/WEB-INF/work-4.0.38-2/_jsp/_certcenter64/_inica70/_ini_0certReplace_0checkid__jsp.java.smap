@@ -1,0 +1,43 @@
+SMAP
+_ini_0certReplace_0checkid__jsp.java
+JSP
+*S JSP
+*F
++ 1 inica70_init.jsp
+certcenter64/inica70/import/inica70_init.jsp
++ 2 ini_certReplace_checkid.jsp
+certcenter64/inica70/ini_certReplace_checkid.jsp
++ 3 iniplugin_init.jsp
+certcenter64/inica70/import/iniplugin_init.jsp
++ 4 inica70_db_check.jsp
+certcenter64/inica70/import/inica70_db_check.jsp
++ 5 inica70_err_check.jsp
+certcenter64/inica70/import/inica70_err_check.jsp
+*L
+113#1,13:26
+125#1:39,39
+1#2:77
+12#3,35:78
+5#2,2:113
+6#2:115
+6#1,65:116
+70#1,44:181
+7#2:225
+11#4,55:226
+8#2:281
+7#5,9:282
+9#2:291
+64#2:292,2
+80#2,2:294,2
+81#2,2:297
+82#2,2:299
+83#2,2:301
+84#2,2:303
+85#2,2:305
+86#2,2:307
+87#2,2:309
+88#2:311
+95#2:312,2
+118#2:314,2
+121#2:316
+*E

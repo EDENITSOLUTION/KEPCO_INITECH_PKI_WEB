@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="KEPCO_INITECH_PKI_WEB">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/idmake_sms/WEB-INF/work-4.0.38-1"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/idmake_sms/WEB-INF/work-4.0.38-2"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/idmake_sms/WEB-INF/work-4.0.38-idmake_sms1"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/idmake_sms/WEB-INF/work-4.0.38-idmake_sms2"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/initech/WEB-INF/work-4.0.38-1"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/initech/WEB-INF/work-4.0.38-2"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/initech/WEB-INF/work-4.0.38-initech1"/>
+        <property name="context-root" value="KEPCO_INITECH_PKI_WEB"/>
+        <property name="java-output-path" value="/KEPCO_INITECH_PKI_WEB/bin"/>
+    </wb-module>
+</project-modules>
