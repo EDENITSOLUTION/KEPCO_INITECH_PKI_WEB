@@ -1,0 +1,12 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+	<meta http-equiv="Progma" content="no-cache">
+	<title> INISAFE Web Plugin - Secure Frame sample</title>
+
+	<frameset rows='15, *' cols='1*' border='0'>
+	<frame src='/initech/plugin/INISAFEWeb.html' name='secureframe' scrolling='no' marginwidth='0'>
+	<frame src='example.html' name='contentframe' scrolling='auto'>
+	</frameset>
+</head>
+</html>

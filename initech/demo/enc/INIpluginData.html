@@ -1,0 +1,49 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+	<title> Initech INIplugin128 service </title>
+	<script language="javascript" src="/initech/plugin/INIplugin.js"></script>
+	<script language="javascript">
+	function radioCheck(form){
+		//alert(form.sel[i].checked);
+		if(form.sel[0].checked == true) form.select.value = "E";
+		if(form.sel[1].checked == true) form.select.value = "D";
+	}
+	</script>	
+</head>
+
+<body>
+
+<br><h3>INIpluginData 테스트 페이지 입니다.</h3>
+<p>
+
+<form name=readForm method=POST action="./INIpluginData.jsp">    
+	<input type=reset> INIplugin for JAVA SDK를 이용한 테스트 <left> <a href="./src/INIpluginData.jsp.txt"> 소스보기</a></left> <br> 
+	<textarea name="INIpluginData" rows=7 cols=80>vf=11&sk=NKSPRWDk7kSRch8uc8se5pG5ZrMRwa%2bexl5fYSOd6zP3WOGs96gt620%2bvB5IsZXg%0awHSLR4KrAIOKANIWIcTivultSHbimmg0yt92L0lKyzIYtbeA5erfgt5p/qQL2NPC%0al95uZZ0PjD25DTlxkzAgckEXCupXxsbcnIVUiX8UiT0%3d%0a&cc=-----BEGIN+CERTIFICATE-----%0aMIIFujCCBKKgAwIBAgIEAcNTRzANBgkqhkiG9w0BAQsFADBKMQswCQYDVQQGEwJL%0aUjENMAsGA1UECgwES0lDQTEVMBMGA1UECwwMQWNjcmVkaXRlZENBMRUwEwYDVQQD%0aDAxzaWduR0FURSBDQTQwHhcNMTIwMTExMDc0NDAwWhcNMTMwMTExMTQ1OTU5WjCB%0akTELMAkGA1UEBhMCS1IxDTALBgNVBAoMBEtJQ0ExEzARBgNVBAsMCmxpY2Vuc2Vk%0aQ0ExFTATBgNVBAsMDOuTseuhneq4sOq0gDEgMB4GA1UECwwX7Jqw7LK06rWtKO2Z%0aleuMgOyXheustCkxETAPBgNVBAsMCFJB7IS87YSwMRIwEAYDVQQDDAnrpZjsoJzq%0asr0wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCYBLvG5NA55HEO91R0%0aC6tmeKUyEaOHytbzTHMuv4bCXZJz1J4NaV1VbtzztQXo5wtYseldWTtt3xHsZ4Na%0asCixA0h0qvDXvj999i6d0fSdMx/4dy3lZDbJEU%2bqmutLh12NNzWGqQ8w4KLnDZEz%0avDFn0bV2ltBsrc/Oj3M1chd8R5Nwm5KJYynmPGxDPclh7m%2bwg%2bB99Y0R6gxpJIl4%0ascFjx/QFx26LqjED2V9ee87IR80l7jzMwik9Bs/QJk6wXUb4AisRQQb7l3/gkOcF%0aX3Avnru8ohrBh9h8MBeDNSRI2LQMr%2bJTkLRChfu5dSExeV6%2bu176rySpmpLKwq1h%0auvlJAgMBAAGjggJeMIICWjCBjwYDVR0jBIGHMIGEgBSuUv0ODgH4MIY3fvYYxkkl%0aSmAJcKFopGYwZDELMAkGA1UEBhMCS1IxDTALBgNVBAoMBEtJU0ExLjAsBgNVBAsM%0aJUtvcmVhIENlcnRpZmljYXRpb24gQXV0aG9yaXR5IENlbnRyYWwxFjAUBgNVBAMM%0aDUtJU0EgUm9vdENBIDSCAhAKMB0GA1UdDgQWBBSs9jRZu8J2NYPBB6gEjVmT1nPj%0aNjAOBgNVHQ8BAf8EBAMCBsAwdQYDVR0gBG4wbDBqBgoqgxqMmkQFAgECMFwwLAYI%0aKwYBBQUHAgEWIGh0dHA6Ly93d3cuc2lnbmdhdGUuY29tL2Nwcy5odG1sMCwGCCsG%0aAQUFBwICMCAeHsd0ACDHeMmdwRyylAAgrPXHeMd4yZ3BHMeFssiy5DB7BgNVHREE%0adDBygRFqZWt5dW5nQGdtYWlsLmNvbaBdBgkqgxqMmkQKAQGgUDBODAnrpZjsoJzq%0asr0wQTA/BgoqgxqMmkQKAQEBMDEwCwYJYIZIAWUDBAIBoCIEIP63iZBSVo%2bx5ha2%0amMoT88f3B1jyu4EcVSpSbb1kfU95MF0GA1UdHwRWMFQwUqBQoE6GTGxkYXA6Ly9s%0aZGFwLnNpZ25nYXRlLmNvbTozODkvb3U9ZHA2cDE3OSxvdT1jcmxkcCxvdT1BY2Ny%0aZWRpdGVkQ0Esbz1LSUNBLGM9S1IwRAYIKwYBBQUHAQEEODA2MDQGCCsGAQUFBzAB%0ahihodHRwOi8vb2NzcC5zaWduZ2F0ZS5jb206OTAyMC9PQ1NQU2VydmVyMA0GCSqG%0aSIb3DQEBCwUAA4IBAQAFUJy9LrfDHJrB0Ec0D9GMseBN097%2bzZvhqepXaXdihH4U%0aavvcjs9pPueDulcE%2bEGIfQxuZt3UstI34a5H3cTodkwFoFdp1sAHQjJS0GXahl5z%0a/p29hCumEGRMwSYxWrcpfdrypSkmgGaExywW6OEI54O7EEhUELvCq/V/QpJJqrdy%0aFWLf3a4tvdQDAJXuxlm62TNJSOZ/PoOPQv3Zbqb2qLp7RNS1LLaeauZ%2bc0hTpUj5%0ajcomDGO3UXlZWGcRctza10Vn8bGNH4WHMJ2SBDgmoUdy3fqM69p6eW%2b/nZzt8jqa%0asZXPljo802p4saZ/daXdFJut3e7a5NqfQrnuKd%2b9%0a-----END+CERTIFICATE-----%0a&sg=A7/AkPNC7g8UmfrOrOZuWjjzAWTC5uXj6lt07%2bd0re34VGeHIQv%2bPM7rVf8ddPpf%0aXgwmMPfTV8sW89Um9BBMKPe9DJR8vm9Z%2bjpXAsZ6pnL4XrfREdK19N%2bU683rZ2AP%0ayS6%2bwhnKhdTZ5b//Dbop8BtAX9q/JNAtKhkFyvUbjNrMcttYAxcaYfZy1Necgcs9%0aR4%2b4alxJwJQeh1Jv91OnUwLya0kytWFtlV708POtd3GmgQUT5yVlaFv/7/7KBH46%0a9ubU5AJG%2biiCCsUmXcu3IHYhRINH3kTrX0YhsMdcUGkboXCRdMxvwYNATivc4yIz%0a6Lxr3GmQfyXJlkywPm56fg%3d%3d%0a&alg=c3ltOlNFRUQtQ0JDO2t4OlJTQTE1O2t4aDpTSEExO3NnOlJTQTE1O3NnaDpTSEEy%0aNTY%3d%0a&dt=Vr7hiyBM5%2bNd9Y7YRHX4gEWH0wnCbXPs8r0NJmQSNTdjT2zbkThMflb1fG5Yvww0%0aDbYYDTOiUPVZ6Q475wdSIA%3d%3d%0a&er=k5J5zgp2grb9/Ruo/hfLz035Ef8lL%2b1Chne%2bH05rl7s%3d%0a&ts=QM60%2btb0hdE4XsuedaTIwg%3d%3d%0a&kecc=&iver=100</textarea><BR>
+	<input type=submit>	
+</form>
+
+<form name=B64Form method=POST action="./Base64Encoder.jsp" onSubmit="radioCheck(this);">
+	<input type=reset>Base64인코딩 디코딩 예제 <left> <a href="./src/Base64Encoder.jsp.txt"> 소스보기</a></left> <br> 
+	<textarea name="data" rows=7 cols=80></textarea><BR>
+		<input type=radio name=sel checked>Encode</input>
+		<input type=radio name=sel>Decode</input>
+		<input type=hidden name=select vaule=""></input>
+   	<input type=submit>
+</form>
+
+<form name=URLForm method=POST action="./URLEncoder.jsp" onSubmit="radioCheck(this);">
+	<input type=reset>URL인코딩 디코딩 예제 <left> <a href="./src/URLEncoder.jsp.txt"> 소스보기</a></left> <br> 
+	<textarea name="data" rows=7 cols=80></textarea><BR>
+		<input type=radio name=sel vaule="E" checked>Encode</input>
+		<input type=radio name=sel vaule="D">Decode</input>	
+		<input type=hidden name=select vaule=""></input>
+    <input type=submit>
+</form>
+
+<hr size="1" width="550" color="#CCCCCC"></p>
+<p align="center"><font size="2">Copyright(c) 1997-2007 by INITECH</font><br></p>
+
+</body>
+</html>
+

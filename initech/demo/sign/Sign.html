@@ -1,0 +1,129 @@
+<html>
+<head>
+<script src=/initech/plugin/INIplugin.js></script>
+<script>
+function Sign(form1, form2, style)
+{
+    var data="";
+    data = AddSignValue2(data, "아이디", form1.USERID.value);
+    data = AddSignValue2(data, "사용자명", form1.USERNAME.value);
+    data = AddSignValue2(data, "주민등록번호", form1.JUMINNO.value);
+
+	 InitCache();
+   if( PKCS7SignedData(form1, data, style)) {
+       if(EncFormVerify2(form1, form2)){
+		  		form2.submit();
+          return true;
+       }
+   }
+
+   return false;
+}
+function Sign2(form1, form2)
+{
+    var data="";
+    data = AddSignValue(data, "아이디", form1.USERID.value);
+    data = AddSignValue(data, "사용자명", form1.USERNAME.value);
+    data = AddSignValue(data, "주민등록번호", form1.JUMINNO.value);
+
+	//제목변수
+	title = "예적금 담보대출 약정서";
+
+	//내용변수
+	info = "* 이니텍 은행 예적금 담보대출 개인회원 약관\n" +
+			"제 1 조(회  원)\n" +
+			"① 회원은 본인회원과 가족회원으로 구분합니다.\n" +
+			"② 본인회원이란 이 약관을 승인하고 주식회사 이니텍 은행에 회원가입을 청구함\n"+
+			"③ 가족회원이란 본인 회원과의 가족으로서 대금의지급등 카드이용에 관한 모든 책임을 본인회원이 부담할 것을 말합니다.\n" +
+			"제 2 조(연대책임)\n"+
+			"본인회원은 본인 및 가족회원의 카드에 관한 모든 행위 및 발생된 채무전액에 대하여 책임을 지며, 가족회원은 자신이 사용한\n" +
+			"금액 및 카드관리에 따른 채무에 대해서만 책임을 집니다.\n" +
+			"제 3 조(카드의 관리)\n" +
+			"① 회원은 카드를 발급받은 즉시 카드서명란에 본인이 직접 서명하여야 하며, 카드표면에 기재된 명의인 이외의 자가 카드를\n" +
+			"이용하게 하여서는 안됩니다.\n" +
+			"② 카드의 소유권은 은행에 있으므로 회원은 이 카드를 타인에게 대여하거나 양도 또는 담보의 목적으로 이용할 수 없으며\n" +
+			"선량한 관계 주의를 다하여 카드를 이용, 관리하여야 합니다.\n" +
+			"③ 유효기간이 경과한 카드와 갱신발급으로 인한 구카드는 이용할 수 없으며 즉시 은행에 반환하거나 이용이 불가능하도록\n" +
+			"절단하여합니다.\n" +
+			"④ 전 각항을 태만히 하여 발생하는 모든 책임은 회원에게 귀속됩니다.\n";
+
+	 InitCache();
+   if( IniSign(form1, data, title, info)) {
+       if(EncFormVerify2(form1, form2)){
+		  		form2.submit();
+          return true;
+       }
+   }
+
+   return false;
+}
+
+function AddSignValue2(data, name, value)
+{
+	if(data!="") data += "&";
+	data += name;
+	data += "=";
+	data += value;
+	return data;
+}
+
+
+</script>
+</head>
+
+<body>
+
+<form name=sendForm action="./Sign.jsp" method=post>
+	<input type=hidden name=INIpluginData>
+</form>
+
+<!--form name=readForm onSubmit="return Sign(document.readForm, document.sendForm);"-->
+<form name=readForm >
+	<input type=hidden name=PKCS7SignedData>
+
+	<font size=2 color=000099><b>[ 원문 ]</b></font>
+	<table>
+	<tr>
+		<td align=center bgcolor=f0f0f0 height=21 width="16%">
+		<font color=000099><b><font color="#000000">아이디</font></b></font></td>
+		<td align=center  width="33%">
+		<div align="left">
+		<font face="돋움" size="3">
+		<input type="text" name="USERID" maxlength="15" size="15" value="initech">
+			</font></div>
+		</td>
+	</tr>
+	<tr>
+		<td align=center bgcolor=f0f0f0 height=21 width="16%">
+		<font color=000099><b><font color="#000000">사용자명</font></b></font></td>
+		<td align=center  width="33%">
+		<div align="left">
+		<font face="돋움" size="3">
+		<input type="text" name="USERNAME" maxlength="15" size="15" value="이니텍">
+			</font></div>
+		</td>
+	</tr>
+	<tr>
+		<td align=center bgcolor=f0f0f0 height=21 width="16%">
+		<font color=000099><b><font color="#000000">주민등록번호</font></b></font></td>
+		<td align=center  width="33%">
+		<div align="left">
+		<font face="돋움" size="3">
+		<input type="text" name="JUMINNO" maxlength="15" size="15" value="">
+			</font></div>
+		</td>
+	</tr>
+	</table>
+	<p>
+
+	<input value="전자서명(1)" type=button onclick="Sign(document.readForm, document.sendForm,true)">
+	<input value="전자서명(2)" type=button onclick="Sign(document.readForm, document.sendForm,false)">		
+	<input value="전자서명(3)" type=button onclick="Sign2(document.readForm, document.sendForm)">	
+
+	<!--input value="전자서명" type=submit><P-->
+</form>
+<br>
+<left><a href="./src/Sign.jsp.txt"> 소스보기</a></left>
+
+</body>
+</html>

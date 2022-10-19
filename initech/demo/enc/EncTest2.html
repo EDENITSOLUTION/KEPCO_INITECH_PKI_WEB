@@ -1,0 +1,122 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+	<title> Initech INIplugin128 service </title>
+	<script language="javascript" src="/initech/plugin/INIplugin.js"></script>
+	<script>
+		function CheckSendForm(readForm, sendForm)
+		{
+			if (EncForm2(readForm, sendForm)) {
+				sendForm.submit();
+				return;
+			} else {
+				alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+			}
+			return;
+		}
+		function CheckSendFormVerify(readForm, sendForm)
+		{
+			if (EncFormVerify2(readForm, sendForm)) {
+				sendForm.submit();
+				return;
+			} else {
+				alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+			}
+			return;
+		}
+		function dell(){
+		alert("인증서삭제=");	
+		}
+
+	</script>
+</head>
+
+<body>
+
+<br><h3>암호화+서명 Script 사용예제+++ (EncFormVerify2) <a href="./src/EncTest2.jsp.txt"> 소스보기</a> </h3>
+<p>
+<form>
+	<input type=button value="암호화" onclick="CheckSendForm(document.readForm, document.sendForm1);">
+	<input type=button value="서명+암호화" onclick="CheckSendFormVerify(document.readForm, document.sendForm1);">
+	<input type=button value="인증서캐쉬삭제" onclick="InitCache() && alert('인증서 정보가 초기화 되었습니다');">
+	
+</form>
+<form name=sendForm1 action="./EncTest2.jsp" method=POST>
+    <input type=hidden name=INIpluginData>
+</form>
+
+<form name=readForm>
+	<li><b> 암호화출력여부 : </b>&nbsp;<input type="checkbox" name="encrypt">
+	<li><b> A : </b> &nbsp;
+		<input type="text" name="A" value="이니텍 플러그인" maxlength="64" size="24"> <br>
+	<li><b> B : </b> &nbsp;
+		<input type="text" name="B" value="wakano@initech.com" maxlength="64" size="24"> <br>
+	<li><b> C : </b> &nbsp;
+		<textarea name="C" rows=7 cols=70>
+그는 테이블 밑에서 커다란 항아리를 하나 꺼내가지고 테이블 위에 
+올려 놓았습니다. 그리고 나서 주먹만한 돌을 꺼내 항아리 속에 
+하나씩 넣기 시작하였습니다. 
+
+항아리에 돌이 가득하자 그가 물었습니다. 
+"이 항아리가 가득 찼습니까?" 
+학생들이 이구동성으로 대답했습니다. 
+"예" 
+
+그러자 그는 "정말?" 하고 되묻더니, 다시 테이블 밑에서 조그만 자갈을 
+한뭉큼 꺼내 들었습니다. 그리고는 항아리에 집어넣고 깊숙히 들어갈 수 
+있도록 항아리를 흔들었습니다. 주먹만한 돌 사이에 조그만 자갈이 가득  
+차자, 그는 다시 물었습니다. 
+
+"이 항아리가 가득 찼습니까?" 
+눈이 동그래진 학생들은 "글쎄요"라고 대답했고, 그는 "좋습니다" 
+하더니, 다시 테이블 밑에서 모래주머니를 꺼냈습니다. 
+모래를 항아리에 넣어, 주먹만한 돌과 자갈사이의 빈틈을 가득 채운 후에 
+다시 물었습니다. 
+
+"이 항아리가 가득 찼습니까?" 
+학생들은 "아니요." 라고 대답했고, 그는 "그렇습니다." 
+면서 물을 한 주전자 꺼내서 항아리에 부었습니다. 
+그리고 나서는 전체 학급에 물었습니다. 
+"이 실험의 의미가 무었이겠습니까?" 
+
+한 학생이 즉각 손을 들더니 대답했습니다. 
+"당신이 매우 바빠서 스케줄이 가득 찼더라도, 정말 노력하면, 
+새로운 일을 그 사이에 추가할 수 있다는 것입니다." 
+
+"아닙니다." 시간관리 전문가는 즉시 부인했습니다. 
+그리고는 말을 이어 갔습니다. 
+
+"그것이 요점이 아닙니다. 
+이 실험이 우리에게 주는 의미는 
+'만약 당신이 큰 돌을 먼저 넣지 않는다면, 
+영원히 큰 돌을 넣지 못할 것이다' 란 것입니다.
+	</textarea>
+<br>
+
+</form>
+
+<!--
+<form>
+	<b>JSP의 <a href="./src/IniSession.jsp.txt">IniSession</a>을 이용한 암호화+서명<b><br>
+	<input type=button value="암호화" onclick="CheckSendForm(document.readForm, document.sendForm2);">
+	<input type=button value="서명+암호화" onclick="CheckSendFormVerify(document.readForm, document.sendForm2);">
+</form>
+<form name=sendForm2 action="./IniSession.jsp" method=POST>
+    <input type=hidden name=INIpluginData>
+</form>
+
+<form>
+	<b>servlet의 <a href="./src/ibprint.java.txt">ibprint</a>을 이용한 암호화+서명<b><br>
+	<input type=button value="암호화" onclick="CheckSendForm(document.readForm, document.sendForm3);">
+	<input type=button value="서명+암호화" onclick="CheckSendFormVerify(document.readForm, document.sendForm3);">
+</form>
+<form name=sendForm3 action="/initech/servlet/ibprint" method=POST>
+    <input type=hidden name=INIpluginData>
+</form>
+-->
+
+<hr size="1" width="550" color="#CCCCCC"></p>
+<p align="center"><font size="2">Copyright(c) 1997-2007 by INITECH</font><br></p>
+
+</body>
+</html>

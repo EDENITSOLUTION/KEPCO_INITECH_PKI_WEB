@@ -1,0 +1,21 @@
+*** INICrypto4Java와 jce.jar(forge.jar) 와의 충돌문제 해결법 ***
+
+기존에 잘돌아가던 INIplugin를 INICrypto4Java버전으로 교체시
+아래와 같은 에러가 발생할 경우 해결방법입니다.
+
+오류내용 : 
+  com.initech.iniplugin.DecryptDataException: :IniPluginException:CryptoServiceExc
+  eption:DecryptDataExceptionjava.security.NoSuchAlgorithmException: No Cipher cou
+  ld be found for algorithm SEED/CBC/PKCS5Padding:Alg=SEED/CBC/PKCS5Padding
+
+원인 : /javax/crypto/Cipher.class가 충돌이남
+
+해결방법
+   1. 검색된 Cipher가 들어있는 jar파일을 푼후...
+   2. 그중에서 javax/ 로 시작하는부분을 제거한후 다시 패키징을 한다.
+   3. 웹서버를 다시시작한후 ServerInfo.jsp를 실행시킨다.
+   4. 검색결과가 INICrypto4Java가 나올때까지 1을 반복한다.
+
+   이렇게 해도 안돌아갈경우.. 조춘식 or 메밍에게 문의...
+
+

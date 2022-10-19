@@ -1,0 +1,97 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<title> INIplugin-128 Check Page</title>
+<STYLE TYPE="text/css">
+<!--
+	td { font-family:굴림체;font-size:9pt;color:#404040}
+	A:link {text-decoration:none; color:B0A840}
+	A:visited {text-decoration:none; color:B0A840}
+	A:active {text-decoration:none; color:B0A840}
+	A:hover {text-decoration: underline; color:615C23}
+-->
+</STYLE>
+<!--
+복사하여 사용할 경우 편집하여 사용
+-->
+<script language=javascript src="/initech/plugin/INIplugin.js"></script>
+<script language=javascript src="/initech/plugin/install.js"></script>
+<!-- -->
+
+<script language="JavaScript">
+
+//복사하여 사용할 경우 편집하여 사용
+var startURL = "/initech/demo/demo_frame.html";
+
+function Check()
+{
+	var findframe = FindSecureFrame(parent);
+	if (findframe == null)
+	{
+		alert("암호화 프레임(secureframe)을 찾을수 없습니다.");
+	}
+	else if( ModuleInstallCheck() != null && findframe.bINIinstall)
+	{
+			location.replace(startURL);
+	}
+	else
+	{
+		setTimeout("Check()", 500);
+	}
+}
+
+function setupPlugin()
+{
+	top.location = manualInstallURL;
+}
+
+</script>
+</head>
+
+<body onload="Check();">
+
+<CENTER>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0">
+	<TR>
+	<TD HEIGHT="60" ALIGN="CENTER"></TD>
+	</TR>
+
+	<TR>
+	<TD ALIGN="CENTER">
+	<b>암호화 프로그램(INIplugin)을 확인[설치]중입니다.</b><br>
+	</TD>
+	</TR>
+
+	<TR>
+<!--
+복사하여 사용할 경우 편집하여 사용
+-->
+	<TD BACKGROUND="/initech/plugin/img/session.gif" HEIGHT="196" WIDTH="403" ALIGN="CENTER">
+<!-- -->
+	<b>잠시만 기다려 주십시요.</b>
+	<br>확인[설치]이 끝나면 자동으로 서비스 화면으로 접속이 됩니다.<br>
+
+	<br> 처음 접속하신 경우에는 암호화 프로그램 설치를 위해
+	<br> 고객의 통신환경에 따라 약 10초에서 수분이 걸릴 수도 있습니다.<br>
+
+	<br> 보안경고창이 나오면 확인을 선택하시기 바랍니다. <br>
+	취소버튼을 선택하신경우 <a href="javascript:top.secureframe.document.location.reload()">새로고침</a>
+	하여 다시 설치 하시기 바랍니다.</b><br>
+
+	<br>암호화 프로그램(INIplugin)이 자동으로 설치가 되지 않을 경우
+	<br> <A HREF="javascript:setupPlugin()"><b>"여기"</b></A>를
+		누르셔서 수동설치를 하신후 사용하시기 바랍니다.
+
+	</TD>
+	</TR>
+
+	<TR>
+	<TD HEIGHT="15"></TD>
+	</TR>
+
+</TABLE>
+<BR><BR><BR><BR>
+</CENTER>
+</BODY>
+</HTML>
+

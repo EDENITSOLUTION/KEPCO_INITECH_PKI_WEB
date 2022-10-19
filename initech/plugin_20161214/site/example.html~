@@ -1,0 +1,423 @@
+<html>
+<head>
+	<title>INISAFE Web Plugin Example</title>
+	<meta http-equiv="Content-Type" Pragma="no-cache" Cache-control="no-cache" content="text/html; charset=euc-kr">
+	<script language="javascript" src="/initech/plugin/INIplugin.js"></script>
+	<script>
+	function ViewSource(id) {
+		var add = "<html>\n<head>\n";
+		add += "   <script language=\"javascript\" src=\"/initech/plugin/INIplugin.js\"><\/script>\n";
+		add += "</head>\n<body>\n";
+		add += id.innerHTML;
+		add += "\n</body>\n<html>";
+		document.all.sourceCode.value=add;
+		innerWin.style.top="100";
+		innerWin.style.visibility="visible";
+	}
+	function ViewSource2(id) {
+		var add = "<html>\n<head>\n";
+		add += "   <script language=\"javascript\" src=\"/initech/plugin/INIplugin.js\"><\/script>\n";
+		add += "</head>\n<body>\n";
+		add += id.innerHTML;
+		add += "\n</body>\n<html>";
+		document.all.sourceCode.value=add;
+		innerWin.style.top="400";
+		innerWin.style.visibility="visible";
+	}
+	</script>
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0">
+ <tr><td width="1092" background="/initech/plugin/down/img/plugin_bg.gif">
+     <p><img src="/initech/plugin/down/img/plugin_ex.gif" width="537" height="44" border="0"></p>
+ </td></tr>
+</table>
+<br>
+
+<table id="innerWin" cellpadding=0 cellspacing=0 border=1 bordercolordark=white bgcolor="#ffffee" style="position:absolute; top:100; left:10; font-size:9pt; visibility:hidden;" width=700>
+<tr>
+	<td>
+	<table width=698 bgcolor="#ffffee" cellpadding=0 cellspacing=0 border=0 style="font-size:9pt;">
+	<tr>
+		<td align="left">소스 보기 창</td>
+		<td align="right">
+		<input type="button" value="클립보드에 복사" style="font-size:8pt; height:20px; background-color:#eeeeee" OnClick="window.clipboardData.setData('Text',document.all.sourceCode.value);">
+		<input type="button" value="ｘ" style="width:20px; height:20px; background-color:#eeeeee" OnClick="innerWin.style.visibility='hidden';"></td>
+	</td>
+	</table>
+</tr>
+<tr>
+	<td>
+		<textarea name="sourceCode" style="width:698; height:350; background-color:#ffffee; border-width:0px;" readOnly></textarea>
+	</td>
+</tr>
+</table>
+
+<!--- 암호화 Script 사용예제 -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td bgcolor="#828DA6"><font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>암호화 Example</strong>
+</font></td>
+<td style="font-size:9pt;" width="80" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:ViewSource(encform)">ex1)소스보기</strong></a>
+  </font>
+</td>
+<td style="font-size:9pt;" width="80" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:ViewSource(encform2)">ex2)소스보기</strong></a>
+  </font>
+</td>
+<td style="font-size:9pt;" width="80" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:ViewSource(enclink)">ex3)소스보기</strong></a>
+  </font>
+</td>
+<td style="font-size:9pt;" width="80" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:ViewSource(encfile)">ex4)소스보기</strong></a>
+  </font>
+</td>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td><blockquote><p><font><span style="font-size:9pt;">
+form 데이타에 대한 <b>기밀성(암호화)</b>을 위해서 제공되는 JavaScript에는 form문 처리를 위한 <b>EncForm(form), EncForm2(form1,form2)</b>와 Link처리를 위한 <b>EncLink(url), EncLocation(url)</b>이 있습니다.
+<br><br>
+
+<!-- EncForm exampe 시작 -->
+<form name="form1" action="./jsp/SDKex01.jsp" method="POST" onsubmit="return EncForm(this);">
+	<b>ex1)</b> 1개의 form 문을 이용한 암호화 - EncForm(form1)<br>
+	<input type="hidden" name="INIpluginData">
+	A:<input type="text" name="A" size="15" value="AAAAAAAAAA">
+	B:<input type=text name="B" size="15" value="이니텍">
+	<input type="checkbox" name="C" checked>체크박스 
+	<input type=submit value="암호화전송">
+</form>
+<xmp id="encform" style="position:absolute; visibility:hidden;">
+<form name="form1" action="./jsp/SDKex01.jsp" method="POST" onsubmit="return EncForm(this);">
+	<b>ex1)</b> 1개의 form 문을 이용한 암호화 - EncForm(form1)<br>
+	<input type="hidden" name="INIpluginData">
+	A:<input type="text" name="A" size="15" value="AAAAAAAAAA">
+	B:<input type=text name="B" size="15" value="이니텍">
+	<input type="checkbox" name="C" checked>체크박스 
+	<input type=submit value="암호화전송">
+</form>
+</xmp>
+<!-- EncForm exampe 끝 -->
+
+<!-- EncForm2 exampe 시작 -->
+<script language="javascript">
+function CheckSendForm(readForm, sendForm)
+{
+	if (EncForm2(readForm, sendForm))
+		sendForm.submit();
+	else
+		alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+	return false; //반드시false를 return;
+}
+</script>
+<form name="sendForm" action="./jsp/SDKex01.jsp" method="post">
+	<input type="hidden" name="INIpluginData">
+</form>
+<form name="readForm" onsubmit="return CheckSendForm(this, document.sendForm);">
+	<b>ex2)</b> 2개의 form 문을 이용한 암호화 - EncForm2(form1,form2)<br>
+	A:<input type="text" name="A" size="15" value="AAAAAAAAAA">
+	B:<input type=text name="B" size="15" value="이니텍">
+	B:<input type=text name="B" size="15" value="이니텍2">
+	<input type="checkbox" name="C" checked>체크박스 
+	<input type=submit value="암호화전송">
+</form>
+<xmp id="encform2" style="position:absolute; visibility:hidden;">
+<script language="javascript">
+function CheckSendForm(readForm, sendForm)
+{
+	if (EncForm2(readForm, sendForm))
+		sendForm.submit();
+	else
+		alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+	return false; //반드시false를 return;
+}
+</script>
+<form name="sendForm" action="./jsp/SDKex01.jsp" method="post">
+	<input type="hidden" name="INIpluginData">
+</form>
+<form name="readForm" onsubmit="return CheckSendForm(this, sendForm);">
+	<b>ex2)</b> 2개의 form 문을 이용한 암호화 - EncForm2(form1,form2)<br>
+	<input type="hidden" name="INIpluginData">
+	A:<input type="text" name="A" size="15" value="AAAAAAAAAA">
+	B:<input type=text name="B" size="15" value="이니텍">
+	<input type="checkbox" name="C" checked>체크박스 
+	<input type=submit value="암호화전송">
+</form>
+</xmp>
+<!-- EncForm2 exampe 끝 -->
+
+<!-- EncLink, EncLocation exampe 시작 -->
+<script language="javascript">
+function EncLinkTest() {
+	var url = "./jsp/SDKex01.jsp";
+	var value = "A=AAAAAA&B=BBBBBB&C=" + URLEncode("이니텍");
+	EncLink(url,value,'new_win','resizble=no,width=550,height=750');
+}
+function EncLocationTest() {
+	var url = "./jsp/SDKex01.jsp?";
+		url += "A=AAAAAA&B=BBBBBB&C=" + URLEncode("이니텍");
+	alert(EncLocation(url));
+	location = EncLocation(url);
+}
+</script>
+<b>ex3)</b> GET 방식으로 제공되는 <a href="javascript:EncLinkTest();">EncLink(url,value,type)</a>
+&nbsp;<a href='javascript:EncLocationTest()'>location=EncLocation(url)</a>
+<br>는 대용량의 데이터 전송시 올바르게 동작하지 않습니다.
+<xmp id="enclink" style="position:absolute; visibility:hidden;">
+<script language="javascript">
+function EncLinkTest() {
+	var url = "./jsp/SDKex01.jsp";
+	var value = "A=AAAAAA&B=BBBBBB&C=" + URLEncode("이니텍");
+	EncLink(url,value,'new_win','resizble=no,width=550,height=750');
+}
+function EncLocationTest() {
+	var url = "./jsp/SDKex01.jsp?";
+		url += "A=AAAAAA&B=BBBBBB&C=" + URLEncode("이니텍");
+	alert(EncLocation(url));
+	location = EncLocation(url);
+}
+</script>
+<b>ex3)</b> GET 방식으로 제공되는 <a href="javascript:EncLinkTest();">EncLink(url,value,type)</a>
+&nbsp;<a href='javascript:EncLocationTest()'>location=EncLocation(url)</a>
+<br>는 대용량의 데이터 전송시 올바르게 동작하지 않습니다.
+</xmp>
+<!-- EncLink, EncLocation exampe 끝 -->
+
+<!-- EncFile exampe 시작 -->
+<form method="POST" action="./jsp/SDKex03.jsp" onsubmit="return EncForm(this);" enctype="multipart/form-data">
+	<b>ex4)</b> multipart/form-data 사용시 암호화(첨부파일은 암호화 되지 않습니다)
+	<br>파일암호화를 위한 별도의 Fill Up/Download를 사용하여야합니다.<br>
+	<input type=hidden name=INIpluginData>
+	A:<input type="text" size="8" name="A" value="AAAAAA">
+	File:<input type="file" size="17" name="binary" value="C:\CONFIG.SYS">
+	<input type="submit" value="암호화전송">
+</form>
+<xmp id="encfile" style="position:absolute; visibility:hidden;">
+<form method="POST" action="./jsp/SDKex03.jsp" onsubmit="return EncForm(this);" enctype="multipart/form-data">
+	<b>ex4)</b> multipart/form-data 사용시 암호화(첨부파일은 암호화 되지 않습니다)
+	<br>파일암호화를 위한 별도의 Fill Up/Download를 사용하여야합니다.<br>
+	<input type=hidden name=INIpluginData>
+	A:<input type="text" size="8" name="A" value="AAAAAA">
+	File:<input type="file" size="17" name="binary" value="C:\CONFIG.SYS">
+	<input type="submit" value="암호화전송">
+</form>
+</xmp>
+<!-- EncFile exampe 끝 -->
+
+</span></font></td></tr>
+</table>
+
+
+<!--- 암호화+서명 Script 사용예제 -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td bgcolor="#828DA6"><font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>암호화+서명 Example</strong>
+</font></td>
+<td style="font-size:9pt;" width="60" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:ViewSource2(encformverify)">소스보기</strong></a>
+  </font>
+</td>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td><blockquote><p><font><span style="font-size:9pt;">
+사용자(고객)의 인증서(사설/공인)를 사용하여 <b>사용자 신원확인</b>과 <b>데이타의 무결성</b>을 처리하기 위해 사용되며 <b>부인방지</b>를 위해서는 별도의 <b>INISFAE Sign</b>을 사용하여야 하며 공인인증서의 유효성검증을 위해서는 <b>INISAFE OCSP</b> 모듈이 설치되어야 합니다.
+<br>암호화 Exampel에서 사용되는 JavaScript와 사용법은 동일하며 form문 처리를 위한 <b>EncFormVerify(form), EncFormVerify2(form1,form2)</b>이 제공되며 Link처리를 위한 JavaScript는 get방식의 데이타 처리의 한계로 인하여 사용이 불가능합니다.
+<br>
+
+<script language="javascript">
+function CheckSendForm2(readForm, sendForm) {
+	if (EncForm2(readForm, sendForm))
+		sendForm.submit();
+	else
+		alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+	return false;
+}
+function CheckSendForm3(readForm, sendForm) {
+	sendForm.action = "./jsp/SDKex04.jsp";
+	if (EncForm2(readForm, sendForm))
+		sendForm.submit();
+	else
+		alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+	return false;
+}
+
+</script>
+<form name=sendForm2 action="./jsp/SDKex02.jsp" method="POST" onsubmit="return EncFormVerify2(readForm2, this);">
+    <input type=hidden name=INIpluginData>
+	<input type=button value="암호화" onclick="CheckSendForm2(readForm2, sendForm2);">
+	<input type=button value="암호화(2)" onclick="CheckSendForm3(readForm2, sendForm2);">
+	<input type="submit" value="서명+암호화">
+	<input type=button value="인증서캐쉬삭제" onclick="InitCache() && alert('인증서 캐쉬 정보가 초기화 되었습니다');">
+</form>
+<form name=readForm2>
+	A:<input type="text" name="A" value="INISAFE Web Plugin - 이니텍플러그인" maxlength="64" size="40">
+	&nbsp;&nbsp;암호화출력여부:<input type="checkbox" name="encrypt" checked>
+	<br>B:<textarea name="B" rows=5 cols=70>
+그는 테이블 밑에서 커다란 항아리를 하나 꺼내가지고 테이블 위에 
+올려 놓았습니다. 그리고 나서 주먹만한 돌을 꺼내 항아리 속에 
+하나씩 넣기 시작하였습니다. 
+항아리에 돌이 가득하자 그가 물었습니다. 
+"이 항아리가 가득 찼습니까?" 
+</textarea>
+</form>
+<xmp id="encformverify" style="position:absolute; visibility:hidden;">
+<script language="javascript">
+function CheckSendForm2(readForm, sendForm) {
+	if (EncForm2(readForm, sendForm))
+		sendForm.submit();
+	else
+		alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+	return false;
+}
+</script>
+<form name=sendForm2 action="./jsp/SDKex02.jsp" method="POST" onsubmit="return EncFormVerify2(readForm2, this);">
+    <input type=hidden name=INIpluginData>
+	<input type="submit" value="서명+암호화전송">
+	<input type=button value="암호화전송" onclick="CheckSendForm2(readForm2, sendForm2);">
+	<input type=button value="인증서캐쉬삭제" onclick="InitCache() && alert('인증서 캐쉬 정보가 초기화 되었습니다');">
+</form>
+<form name=readForm2>
+	A:<input type="text" name="A" value="INISAFE Web Plugin - 이니텍플러그인" maxlength="64" size="40">
+	&nbsp;&nbsp;암호화출력여부:<input type="checkbox" name="encrypt">
+	<br>B:<textarea name="B" rows=5 cols=70>
+그는 테이블 밑에서 커다란 항아리를 하나 꺼내가지고 테이블 위에 
+올려 놓았습니다. 그리고 나서 주먹만한 돌을 꺼내 항아리 속에 
+하나씩 넣기 시작하였습니다. 
+항아리에 돌이 가득하자 그가 물었습니다. 
+"이 항아리가 가득 찼습니까?" 
+</textarea>
+</form>
+</xmp>
+
+</span></font></td></tr>
+</table>
+
+<!--- 한글 테스트 -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td bgcolor="#828DA6"><font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>WAS의 한글 처리 테스트</strong>
+</font></td>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td><blockquote><p><font><span style="font-size:9pt;">
+JAVA의 한글코드의 특성으로 인하여 암호화된 한글 데이타가 처리가 되지 않을경우 암호화가 적용되지 않은 아래의 샘플을 이용하여 시스템 환경에 알맞은 <b>한글 변환코드</b>를 찾을수 있는 예제입니다.
+<br>
+<form name="test"  method="POST" action="./jsp/JSPex01.jsp">
+	A:<input type="text" name="A" size="15" value="AAAAAAAAAA">
+	B:<input type=text name="B" size="15" value="입력한글">
+	<input type="checkbox" name="C" checked>체크박스 
+	<input type=submit>
+</form>
+
+</span></font></td></tr>
+</table>
+
+
+<!--- INIplugin Data 테스트 -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td bgcolor="#828DA6"><font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>INIpluginData 테스트</strong>
+</font></td>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td><blockquote><p><font><span style="font-size:9pt;">
+INIpluginData를 직접생성하여 테스트할수 있습니다. <br>Request.getParameter("INIpluignData")로 출력된 데이타를 입력하시기 바랍니다.
+
+<form name=test action="./jsp/SDKex01.jsp" method="POST">
+	<input type=submit><br>
+	<textarea name="INIpluginData" rows=4 cols=60>vf=0&vd=&sk=YjxmHT/JpQF7e%2bTR7SZl%2bgB8pYNSH86tQdsPCQAiTABvTfqYD0o3MG6SytXaJjy%2b%0a8iw1QZEzPxVrb65oN2R5IPtMNUjQYcQJFz6O9jft6j5FTrJfAwxpoKPXgEQeW9kg%0aAQsN1XTfITlebAuvuErxvn/05Qxcun5d22vSySxG/ZY%3d%0a&cc=&sg=&alg=SEED-CBC&dt=UJee14KgxcvikUOZqv17MfGymTuVcxmnn6n7ZHyKbBLYcQR6yct9qvRS72w4xy0N%0aS1EClBP0ifr3zTle/4luIw%3d%3d%0a&er=</textarea>
+</form>
+
+</span></font></td></tr>
+</table>
+
+
+
+
+
+<!--- 웹서버 테스트 -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td bgcolor="#828DA6"><font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>대용량 POST 데이타 전송 테스트</strong>
+</font></td>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr><td><blockquote><p><font><span style="font-size:9pt;">
+방화벽이나 네트웍의 특이한 환경에서 웹서버가 브라우져가 전송한 <b>대용량 POST</b> 데이타에 대해서 처리못하는 현상에 대한 테스트용 예제입니다. 만약 암호화 패킷에 대해서 짤려서 들어오는 현상이 있다면 암호화가 적용되지 않은 아래의 샘플로 테스트를 하시기 바랍니다.
+
+<script language="javascript">
+function set_data(ii) {
+	document.posttest.data.value = "";
+	for (i=0; i<ii; i++)
+		document.posttest.data.value += document.readData.data.value;
+}
+</script>
+<form name=posttest action="./jsp/JSPex02.jsp" method="POST">
+	<input type=submit>
+	<input type=reset><br>
+	<textarea name="data" rows=4 cols=60></textarea>
+    <br>전송데이타크기:
+	<input type=button value=" 1K" onclick="set_data(1);">
+	<input type=button value=" 2K" onclick="set_data(2);">
+	<input type=button value=" 3K" onclick="set_data(3);">
+	<input type=button value=" 4K" onclick="set_data(4);">
+	<input type=button value=" 5K" onclick="set_data(5);">
+	<input type=button value="10K" onclick="set_data(10);">
+	<input type=button value="20K" onclick="set_data(20);">
+	<input type=button value="50K" onclick="set_data(50);">
+</form>
+<form name=readData>
+<input type=hidden name="data" 
+value="1234567890123456789012345678901234567890123456789
+2234567890123456789012345678901234567890123456789
+3234567890123456789012345678901234567890123456789
+4234567890123456789012345678901234567890123456789
+5234567890123456789012345678901234567890123456789
+6234567890123456789012345678901234567890123456789
+7234567890123456789012345678901234567890123456789
+8234567890123456789012345678901234567890123456789
+9234567890123456789012345678901234567890123456789
+0234567890123456789012345678901234567890123456789
+1234567890123456789012345678901234567890123456789
+2234567890123456789012345678901234567890123456789
+3234567890123456789012345678901234567890123456789
+4234567890123456789012345678901234567890123456789
+5234567890123456789012345678901234567890123456789
+6234567890123456789012345678901234567890123456789
+7234567890123456789012345678901234567890123456789
+8234567890123456789012345678901234567890123456789
+9234567890123456789012345678901234567890123456789
+0234567890123456789012345678901234567890123456789
+1111">
+</form>
+
+</span></font></td></tr>
+</table>
+
+<!--- Copyright -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+   <tr><td colspan="2"><hr noshade="noshade" size="1"/></td></tr>
+   <tr><td colspan="2" align="center">
+        <font size="-1">
+         <em>Copyright &#169; 1998-2004, <a href='http://www.initech.com'>INITECH</a> Co., Ltd. All rights
+		 reeserved<br>mailto : <a href=mailto:support@initech.com>support@initech.com</a></em>
+        </font>
+       </td>
+   </tr>
+</table>
+
+</body>
+</html>

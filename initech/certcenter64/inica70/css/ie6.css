@@ -1,0 +1,23 @@
+/* IE6 Àü¿ë  */
+#header {
+	background:none;
+ filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/common/bg_menubox.png', sizingMethod='crop');
+}
+#contents {
+	background:none;
+ filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/common/contents_box.png', sizingMethod='crop');
+}
+.png24 {
+	tmp:expression(setPng24(this));
+}
+#contents {
+	height:auto !important;
+	height:400px;
+}
+.login .id, .login .pw {
+	margin-top:-1px;
+	margin-bottom:-1px;
+}
+.siteFavorite .ranking li {
+	height:1px;
+}

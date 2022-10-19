@@ -1,0 +1,93 @@
+<html>
+<head>
+<script src=/initech/plugin/INIplugin.js></script>
+<script>
+function Sign(form1, form2, style)
+{
+	InitCache();
+    var data="";
+    data = AddSignValue2(data, "아이디", form1.USERID.value);
+    data = AddSignValue2(data, "사용자명", form1.USERNAME.value);
+    data = AddSignValue2(data, "주민등록번호", form1.JUMINNO.value);
+
+
+   if( PKCS7SignedData(form1, data, style)) {
+       if(EncFormVerify2(form1, form2)){
+		  		form2.submit();
+        return true;
+       } 
+   }
+
+   return false;
+}
+
+
+function AddSignValue2(data, name, value)
+{
+	if(data!="") data += "&";
+	data += name;
+	data += "=";
+	data += value;
+	return data;
+}
+
+
+</script>
+</head>
+
+<body>
+
+<form name=sendForm action="./signtest.jsp" method=post>
+	<input type=hidden name=INIpluginData>
+</form>
+
+<!--form name=readForm onSubmit="return Sign(document.readForm, document.sendForm);"-->
+<form name=readForm >
+	<input type=hidden name=PKCS7SignedData>
+
+	<font size=2 color=000099><b>[ 원문 ]</b></font>
+	<table>
+	<tr>
+		<td align=center bgcolor=f0f0f0 height=21 width="16%">
+		<font color=000099><b><font color="#000000">아이디</font></b></font></td>
+		<td align=center  width="33%">
+		<div align="left">
+		<font face="돋움" size="3">
+		<input type="text" name="USERID" maxlength="15" size="15" value="initech">
+			</font></div>
+		</td>
+	</tr>
+	<tr>
+		<td align=center bgcolor=f0f0f0 height=21 width="16%">
+		<font color=000099><b><font color="#000000">사용자명</font></b></font></td>
+		<td align=center  width="33%">
+		<div align="left">
+		<font face="돋움" size="3">
+		<input type="text" name="USERNAME" maxlength="15" size="15" value="이니텍">
+			</font></div>
+		</td>
+	</tr>
+	<tr>
+		<td align=center bgcolor=f0f0f0 height=21 width="16%">
+		<font color=000099><b><font color="#000000">주민등록번호</font></b></font></td>
+		<td align=center  width="33%">
+		<div align="left">
+		<font face="돋움" size="3">
+		<input type="text" name="JUMINNO" maxlength="15" size="15" value="">
+			</font></div>
+		</td>
+	</tr>
+	</table>
+	<p>
+
+	<input value="전자서명(1)" type=button onclick="Sign(document.readForm, document.sendForm,true)">
+	<input value="전자서명(2)" type=button onclick="Sign(document.readForm, document.sendForm,false)">		
+	<input value="전자서명(3)" type=button onclick="Sign2(document.readForm, document.sendForm)">	
+
+	<!--input value="전자서명" type=submit><P-->
+</form>
+<br>
+<!-- >left><a href="./src/Sign.jsp.txt"> 소스보기</a></left-->
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+	<title> NormalTest </title>
+	<script>
+	function set_data(ii)
+	{
+		document.sendForm.data.value = "";
+		for (i=0; i<ii; i++)
+			document.sendForm.data.value += document.readForm.data.value;
+	}
+	</script>
+</head>
+
+<body>
+<br><h3> 네트웍(웹서버) 테스트</h3>
+
+<form name=tt action="./NormalTest.jsp" method=POST>
+<b>일반적인 POST & 한글 테스트 <left> <a href="./src/NormalTest.jsp.txt"> 소스보기</a></left></b><br>
+    A:<input type=text name=A value="AAAAAAA">
+    B:<input type=text name=B value="BBBBBBB"><br>
+    C:<input type=text name=C value="입력한글">&nbsp;&nbsp;&nbsp
+	<input type="checkbox" name="check" checked>이게뭐지 
+	<input type=submit>
+</form>
+
+<form name=sendForm action="./PostTest.jsp" method="POST">
+	<b>대용량 POST TEST </b><br>
+	<input type=submit>
+	<input type=reset>
+	<br><textarea name="data" rows=4 cols=60></textarea>
+</form>
+
+<li>전송데이타크기  : 
+<input type=button value=" 1K" onclick="set_data(1);">
+<input type=button value=" 2K" onclick="set_data(2);">
+<input type=button value=" 3K" onclick="set_data(3);">
+<input type=button value=" 4K" onclick="set_data(4);">
+<input type=button value=" 5K" onclick="set_data(5);">
+<input type=button value="10K" onclick="set_data(10);">
+<input type=button value="20K" onclick="set_data(20);">
+<input type=button value="50K" onclick="set_data(50);">
+
+<form name=readForm>
+<input type=hidden name="data" 
+value="1234567890123456789012345678901234567890123456789
+2234567890123456789012345678901234567890123456789
+3234567890123456789012345678901234567890123456789
+4234567890123456789012345678901234567890123456789
+5234567890123456789012345678901234567890123456789
+6234567890123456789012345678901234567890123456789
+7234567890123456789012345678901234567890123456789
+8234567890123456789012345678901234567890123456789
+9234567890123456789012345678901234567890123456789
+0234567890123456789012345678901234567890123456789
+1234567890123456789012345678901234567890123456789
+2234567890123456789012345678901234567890123456789
+3234567890123456789012345678901234567890123456789
+4234567890123456789012345678901234567890123456789
+5234567890123456789012345678901234567890123456789
+6234567890123456789012345678901234567890123456789
+7234567890123456789012345678901234567890123456789
+8234567890123456789012345678901234567890123456789
+9234567890123456789012345678901234567890123456789
+0234567890123456789012345678901234567890123456789
+1111">
+</form>
+
+<hr size="1" width="550" color="#CCCCCC"></p>
+<p align="center"><font size="2">Copyright(c) 1997-2007 by INITECH</font><br></p>
+
+</body>
+</html>

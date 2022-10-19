@@ -1,0 +1,550 @@
+<html>
+<head>
+	<title> INISAFE Web Plugn 설치정보</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+	<script language="javascript" src="/initech/plugin/INIplugin.js"></script>
+	<script language="javascript" src="/initech/plugin/install.js"></script>
+	<script language="javascript" src="/initech/plugin/INITECH_PluginCA.js"></script>
+	<script language="javascript" src="/initech/plugin/cert.js"></script>
+	<!--script language="javascript" src="/initech/plugin/noframe.js"></script-->
+	<script language="javascript">
+
+    var org_SCert = "-----BEGIN CERTIFICATE-----\nMIICZTCCAg8CAgJ+MA0GCSqGSIb3DQEBBQUAMIGsMQswCQYDVQQGEwJLUjEOMAwG\nA1UECBMFU2VvdWwxDjAMBgNVBAcTBVNlb3VsMRAwDgYDVQQKEwdJTklURUNIMSUw\nIwYDVQQLExxQTFVHSU4gQ2VydGlmaWNhdGUgQXV0aG9yaXR5MRowGAYDVQQDExFJ\nTklURUNIIFBsdWdpbiBDQTEoMCYGCSqGSIb3DQEJARYZc3AxMjgtc3VwcG9ydEBp\nbml0ZWNoLmNvbTAeFw0wNTAyMDIwMjUyMDJaFw0xMDAyMDEwMjUyMDJaMIGIMQsw\nCQYDVQQGEwJLUjEOMAwGA1UEBxMFU2VvdWwxEDAOBgNVBAoTB0lOSVRFQ0gxFTAT\nBgNVBAsTDFN1cHBvcnQgVGVhbTEcMBoGA1UEAxMTSU5JcGx1Z2luIFRlc3QgQ2Vy\ndDEiMCAGCSqGSIb3DQEJARYTc3VwcG9ydEBpbml0ZWNoLmNvbTCBnzANBgkqhkiG\n9w0BAQEFAAOBjQAwgYkCgYEAtKQJvfGddovwEYPN8PO/zTabmKfJH/m1xVHxxK4i\nLqQJMrAA4sA6yRPpYlG9PsH2Gbb0/+IbkKYYS4OtJZO4jr5gmnbO73oB8AeX+htR\nbEkKOf6n3nBq0rSo+vSOo8MXFIAJC+lNkpYTr5uBipLGW6FzqrLG/qHhrerlg2N4\nAYkCAwEAATANBgkqhkiG9w0BAQUFAANBAGj3WLX4wA9MnHRa4xgrMQhpwIajMKHn\nkIIPo658LObUfGg3lt7cumAIqNo/hW1u01kT55Wcw9swl+UmhewJNrQ=\n-----END CERTIFICATE-----\n";
+
+	function ViewInit() {
+		var findframe = FindsecureFrame(parent);
+		if (findframe != null)
+			alert(findframe.Init);
+		else 
+			alert("암호화 프레임(secureframe)을 찾을수 없습니다.");
+	}
+
+	function SetTV(bTV) 
+	{
+		SetTVBanking(bTV);
+		if (bTV) {
+			LogoURL = 'http://' + window.location.host + '/initech/plugin/site/img/tv.initech.com.gif';
+			SetLogoPath();//이미지 URL 세팅							
+		} else {
+			LogoURL = 'http://' + window.location.host + '/initech/plugin/site/img/plugin.initech.com.gif';
+			SetLogoPath();//이미지 URL 세팅							
+		}
+		EncFormVerify(document.sendForm);
+	}
+
+	function ChangeOS(strOS) 
+	{
+		var ret = SetProperty('certmanui_language', strOS);
+		EncFormVerify(document.sendForm);
+	}
+
+	function TestSet(strAG1, strAG2) 
+	{
+		var ret = SetProperty(strAG1, strAG2);
+		EncFormVerify(document.sendForm);
+	}
+
+	function setdn_i() {
+		document.readForm.IssuerDN.value = "email=mailto@initech.com,cn=IniCA-Demo,ou=Support Team,o=INITECH,l=Seoul,c=KR";
+	}
+	function setdn_i_y() {
+		document.readForm.IssuerDN.value = "cn=yessignCA,ou=AccreditedCA,o=yessign,c=kr";
+	}
+	function setdn_i_t() {
+		document.readForm.IssuerDN.value = "cn=yessignCA-TEST,ou=AccreditedCA,o=yessign,c=kr";
+	}
+	function setdn_s() {
+		document.readForm.SubjectDN.value = "email=mailto@initech.com,cn=홍길동,ou=인증서비스팀,o=이니텍,c=KR";
+	}
+	function setdn_n() {
+		document.readForm.SerialNumber.value = "06AB";
+	}
+
+	function LoadCACertTest(readForm, sendForm) {
+		LoadCACert(CACert);
+		EncFormVerify2(readForm, sendForm);
+	}
+
+	function FilterUserCertTest(readForm, sendForm) { 
+		var storageFilter = "|";
+		var certFilter = "|";
+
+		if (readForm.HDD.checked) storageFilter += "HDD Disk|";
+		if (readForm.FDD.checked) storageFilter += "Floppy Disk|";
+		if (readForm.SecureKey.checked) storageFilter += "SecureKey|";
+		if (readForm.SGCARD.checked) storageFilter += "SGCARD|";
+
+		TT_obj = ModuleInstallCheck();
+
+		if (readForm.IssuerDN.value.length > 1) 
+			certFilter +=  "IssuerDN=" + TT_obj.URLEncode(readForm.IssuerDN.value) + "&"
+		if (readForm.SubjectDN.value.length > 1) 
+			certFilter += "SubjectDN=" + TT_obj.URLEncode(readForm.SubjectDN.value) + "&"
+		if (readForm.SerialNumber.value.length > 1) 
+			certFilter +=  "SerialNumber=" + TT_obj.URLEncode(readForm.SerialNumber.value) + "&"
+
+		var count = FilterUserCert(storageFilter, certFilter)
+		var msg = "인증서 필터링\n\n";
+			msg += "\nstorageFilter = " + storageFilter;
+			msg += "\ncertFilter = " + certFilter;
+			msg += "\n\n" + count + " 개의 인증서가 선택되었습니다.";
+		alert(msg);
+		EncFormVerify2(readForm, sendForm);
+	}
+	function CertRequestTest(request) {
+		alert("사설인증서 발급 테스트 시작");
+		if (CertRequest(request))
+			alert("인증서 발급테스트 성공\n\n[CertRequest]\n\n" + request.req.value);
+		else 
+			alert("인증서 신청이 취소되었습니다.");
+	}
+
+	function IssueCertificateTest() {
+		alert("공인인증서 발급 테스트 시작\n\n참조번호가 맟지 않다는 메세지가 나오면 정상임");
+		IssueCertificate("123456", "1234567880234");
+	}
+
+	function goOpen(type) {
+  	  if (type == "check")
+		window.open('./site/check.html','new_win','status=yes,scrollbars=yes,resizble=yes,width=600,height=500');
+	  else if (type == "install")
+		window.open(InstallPluginURL,'new_win','status=yes,scrollbars=yes,resizble=yes,width=600,height=500');
+	  else if (type == "download")
+		document.location = manualInstallURL;
+	  else if (type == "serverinfo")
+		window.open("./tools/ServerInfo.jsp", '_serverinfo','status=yes,scrollbars=yes,resizble=yes,width=785,height=700');
+	  else if (type == "time")
+		window.open(TimeURL, "_time",'status=yes,scrollbars=no,resizble=yes,width=200,height=50');
+	  else if (type == "readme")
+		document.location = '/initech/plugin/readme.html';
+	  else if (type == "idc")
+		top.window.location = 'http://download.initech.com/';
+	  else if (type == "default_example")
+		window.location = './site/example.html';
+	  else if (type == "plus_example")
+		window.location = './site/plus/plus_example.html';
+	  else
+		alert("ERR");
+	}
+
+	function goINIplugin(type) {
+		var readForm = document.test_readForm;
+		var sendForm = document.test_sendForm;
+		sendForm.INIpluginData.value = "";
+		if (type == 0) {
+			readForm.submit();
+		} else if (type == 1 ) {
+			if (EncForm2(readForm, sendForm)) {
+				sendForm.submit();
+			} else {
+				alert("암호화 실패");
+			}
+		} else if (type == 2 ) {
+			if (EncFormVerify2(readForm, sendForm)) {
+				sendForm.submit();
+			} else {
+				alert("암호화 실패");
+			}
+		}
+	}
+
+	function URL_start(){ 
+		window.location = document.URL.link.value; 
+	}
+
+
+	function CAVeiwCert2(cert) { CAVeiwCert(cert, true); }
+	function CAVeiwCert(cert, view) {
+		var count = 0;
+		var str = "-----END CERTIFICATE-----\n";
+		while ((c = cert.indexOf(str)) > 10) {
+			var cc  = cert.substring(0, c+str.length);
+			count++;
+			if (view) ViewCert(cc);
+			//alert(cc);
+			cert = cert.substring(c+str.length, cert.length);
+			while((t = cert.indexOf("\n")) < 5) {
+				cert = cert.substring(1, cert.length);
+				if (t <= -1) break;
+			}
+		}
+		return count;
+		//new_win= window.open("", "_cert",'status=yes,scrollbars=yes,resizble=yes,width=600,height=600');
+		//new_win.document.write(cert);
+	}
+
+	function InsertCACertTest() {
+		ViewCert(INITECHCert);
+		alert("INITECHCACert\n\n" + INITECHCert);
+		if (InsertCACert(INITECHCert))
+			alert("성공적으로 저장되었습니다.");
+		else
+			alert("저장에 실패하였습니다.");
+	}
+
+	function ResessionTest() {
+		if (ReSession())
+			alert("세션키가 초기화 되었습니다.");
+		else 
+			alert("세션키가 초기화 에러.");
+	}
+
+	function InitCacheTest() {
+		if (InitCache())
+			alert("인증서 캐쉬정보가 초기화 되었습니다.");
+		else 
+			alert("인증서 캐쉬정보 초기화 에러");
+	}
+
+	function ViewCachedCert() {
+		var cached = GetCachedCert();
+		var cached_serial = getCachedData('serial');
+		var cached_sdn = getCachedData('subjectdn');
+		var cached_idn = getCachedData('issuerdn');
+		if (!cached == "") {
+			var msg = "캐쉬된 인증서 정보\n\n";
+				msg += "serial    [" + cached_serial + "]\n";
+				msg += "subjectdn [" + cached_sdn + "]\n";
+				msg += "issuerdn  [" + cached_idn + "]\n";
+				msg += "\n" + cached;
+				alert(msg);
+				ViewCert(cached);
+		}
+		else 
+			alert("캐쉬된 인증서가 없습니다.");
+	}
+
+	function changeVersion() {
+		var getVer = _getCookie_("INISafeWeb");
+		if (getVer == 5.0) {
+			if (confirm('INISAFE Web(' + GetVersion() + ')을 사용중입니다.?\n\n예를 선택하면 V6으로 전환됩니다.(V5 <==> V6 전환테스트중임)')) {
+				document.cookie="INISafeWeb=6.0";
+				top.document.location.reload();
+				//top.location="http://" + window.location.host + "/initech/demo/";
+			}
+		} else {
+			if (confirm('INISAFE Web(' + GetVersion() + ')을 사용중입니다.?\n\n예를 선택하면 V5으로 전환됩니다.(V5 <==> V6 전환테스트중임)')) {
+				document.cookie="INISafeWeb=5.0";
+				top.document.location.reload();
+			}
+		}
+
+	}
+
+	function ___changeVersion() {
+		var getVer = _getCookie_("INISafeWeb");
+		if (getVer == 4.5) {
+			if (confirm('INISafeWeb(' + GetVersion() + ')을 사용중입니다.?\n\n예를 선택하면 5.0으로 전환됩니다.(45 <==> 50 전환테스트중임)')) {
+				document.cookie="INISafeWeb=5.0";
+				top.document.location.reload();
+				//top.location="http://" + window.location.host + "/initech/demo/";
+			}
+		} else {
+			if (confirm('INISafeWeb(' + GetVersion() + ')을 사용중입니다.?\n\n예를 선택하면 4.5으로 전환됩니다.(45 <==> 50 전환테스트중임)')) {
+				document.cookie="INISafeWeb=4.5";
+				top.document.location.reload();
+			}
+		}
+	}
+
+	</script>
+</head>
+
+<!--body bgcolor="#ffffff" text="#000000" onload="goINIplugin(1);"-->
+<body bgcolor="#ffffff" text="#000000" >
+<!-- script language="javascript" src="/initech/plugin/noframe.js"></script -->
+<table border="0" cellpadding="0" cellspacing="0">
+ <tr>
+   <td width="1092" background="./img/plugin_bg.gif">
+     <p><img src="./img/plugin_info.gif" width="537" height="44" border="0"></p>
+   </td>
+ </tr>
+</table>
+<br>
+
+<!--- client install info -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr>
+ <td bgcolor="#828DA6">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>INISAFE Web Plugin Client - PC 설치정보</strong>
+  </font>
+ </td>
+ <td style="font-size:9pt;" width="100" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:goOpen('idc')">DownLoad서버</strong></a>
+  </font>
+ </td>
+ <td style="font-size:9pt;" width="50" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:goOpen('readme')">README</strong></a>
+  </font>
+ </td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr><td>
+  <blockquote><p><font><span style="font-size:9pt;">
+  <script>
+	var plugin = "<b>Plugin 설치정보</b><br>";
+	if (navigator.appName == 'Netscape') {
+		var L = navigator.plugins.length;
+		plugin += L + "개의 plugin이 설치되어 있음";
+		for (i=0; i<L; i++)
+			plugin += "<br>" + navigator.plugins[i].name + "&nbsp;&nbsp;<b>" + navigator.plugins[i].filename + " </b>[" + navigator.plugins[i].description + "]";
+	} else {
+		var plugn = "";
+		var CLSID6 = "286A75C3-11FB-4FB4-AC4A-4DD1B0750050";
+
+
+		document.writeln('<OBJECT ID="INISafeWebV6" CLASSID="CLSID:' + CLSID6 + '" width=1 height=1 ></OBJECT>');
+		if( !((typeof(this.document.INISafeWebV6) == "undefined") || (this.document.INISafeWebV6 == "undefined")
+			||(this.document.INISafeWebV6 == null) || (this.document.INISafeWebV6.object == null) ))
+			plugin +=  "INISAFE Web <b>V(<a href='javascript:INISafeWebV6.About();'>" + this.document.INISafeWebV6.GetVersion() + "</a>)</b>가 설치되어 있습니다.<br>";
+		else 
+				plugin +=  "INISAFE Web V(6.x.x.x)가 설치되어 있지 않습니다.<br>";
+
+
+	}
+	document.write(plugin);
+	</script>
+    <script language=javascript>
+	if (navigator.appName == 'Netscape') {
+		s = navigator.userAgent.indexOf("/");
+		e = navigator.userAgent.indexOf(" ");
+		ver = navigator.userAgent.substring(s+1, s+4);
+	} else {
+		s = navigator.userAgent.indexOf("MSIE ");
+		if (s < 0) { 
+			ver = "확인불가";
+		} else {
+			tmp = navigator.userAgent.substring(s+5);
+			e = tmp.indexOf(";");
+			ver = tmp.substring(0, 3);
+		}
+	}
+	var msg = "<br><b>브라우져 버전[" + ver + "</b>]<br>";
+		msg += "navigator.appName [<b>" + navigator.appName + "</b>]<br>";
+		msg += "navigator.userAgent [<b>" + navigator.userAgent + "</b>]<br>";
+		msg += "navigator.appCodeName [<b>" + navigator.appCodeName + "</b>]<br>";
+		msg += "navigator.appVersion [<b>" + navigator.appVersion + "</b>]<br>";
+		msg += "navigator.systemLanguage [<b>" + navigator.systemLanguage + "</b>]<br>";
+		msg += "navigator.javaEnabled() [<b>" + navigator.javaEnabled() + "</b>]<br>";
+		msg += "navigator.systemLanguage [<b>" + navigator.systemLanguage + "</b>]<br>";
+		msg += "navigator.language [<b>" + navigator.language + "</b>]<br>";
+		msg += "navigator.platform [<b>" + navigator.platform + "</b>]<br>";
+	document.write(msg);
+    </script>
+  </span></font></p>
+ </td></tr>
+</table>
+
+<!--- server install info -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr>
+ <td bgcolor="#828DA6">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>INISAFE Web Plugin Client - Server 설정정보</strong>
+  </font>
+ </td>
+ <td style="font-size:9pt;" width="55" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:goOpen('time')">TimeCheck</strong></a>
+  </font>
+ </td>
+
+ <!--td style="font-size:9pt;" width="55" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:goOpen('install')">설치화면</strong></a>
+  </font>
+ </td>
+ <td style="font-size:9pt;" width="55" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:goOpen('check')">초기화면</strong></a>
+  </font>
+ </td-->
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr><td>
+  <blockquote><p><font><span style="font-size:9pt;">
+  <script>
+	document.write("INISAFE Web Plugn <b>V[IE:" + ieVersion + "][NS:" + nsVersion + "]</b>이 설치되며 ");
+	document.write("설정된 알고리즘은 <b>" + cipher + "</b>입니다.");
+
+	document.write("<br>");
+	if (org_SCert != SCert)
+	  document.write("INISAFE Web Plugin용 <a href='javascript:ViewCert(SCert);'><b>서버인증서(SCert)</b></a>와 ");
+	else
+	  document.write("이니텍 테스트용 <a href='javascript:alert(SCert);ViewCert(SCert);'><b>서버인증서(SCert)</b></a>와 ");
+
+	if (CACert != '')
+	  document.write( CAVeiwCert(CACert, false) + "개의 <a href='javascript:CAVeiwCert2(CACert, true);'><b>인증기관인증서(CACert)</b></a>가 설정되어 있습니다. ");
+	else
+	  document.write("인증기관인증서(CACert)가 설정되어 있지 않습니다.");
+
+	document.write("<br>");
+	if (org_SCert == SCert)
+	  document.write("<b>서버인증서(INITECH Plugin용 또는 공인인증서)를 발급받아 설치하시기 바랍니다.</b>");
+
+	var outurl = window.location.href;
+	var e = outurl.indexOf("info.html");
+	outurl = outurl.substring(0, e);
+	document.write("<br><br>- INIplugin.js [<a href='" + outurl + "INIplugin.js'>" + outurl + "INIplugin.js</a>]");	
+	document.write("<br>- install.js [<a href='" + outurl + "install.js'>" + outurl + "install.js</a>]");	
+	document.write("<br>- cert.js [<a href='" + outurl + "cert.js'>" + outurl + "cert.js</a>]");	
+
+	//document.write("<br><br>- InitechBaseURL [<a href='" + InitechBaseURL + "cert.js'>" + InitechBaseURL + "</a>]");	
+	document.write("<br>- baseURL [<a href='" + baseURL + "'>" + baseURL + "</a>]");	
+	document.write("<br>- InstallModuleURL [<a href='" + InstallModuleURL + "'>" + InstallModuleURL + "</a>]");	
+	document.write("<br>- iePackageURL [<a href='" + iePackageURL + "'>" + iePackageURL + "</a>]");	
+	document.write("<br>- nsPackageURL [<a href='" + nsPackageURL + "'>" + nsPackageURL + "</a>]");	
+	document.write("<br>- ieManualPackageURL [<a href='" + ieManualPackageURL + "'>" + ieManualPackageURL + "</a>]");	
+	document.write("<br>- manualInstallURL [<a href='" + manualInstallURL + "'>" + manualInstallURL + "</a>]");	
+	document.write("<br>- InstallPluginURL [<a href='" + InstallPluginURL + "'>" + InstallPluginURL + "</a>]");	
+	document.write("<br>- TimeURL [<a href='" + TimeURL + "'>" + TimeURL + "</a>]");	
+	document.write("<br>- LogoURL [<a href='" + LogoURL + "'>" + LogoURL + "</a>]");	
+
+	document.write("<br>- CMP_Info [" + YessignCAIP + ":" + YessignCMPPort + "]");	
+	if (YessignCAIP == "203.233.91.234") 	  
+		document.write(" <b>TEST_CMP</b>");	
+	else if (YessignCAIP == "203.233.91.71") 	  
+		document.write(" REAL_CMP");        
+	else	  
+		document.write(" <b>오류</b>");	
+
+	if (secureframename == "secureframe")
+		document.write("<br>- secureframename [" + secureframename + "]");
+	else
+		document.write("<br>- secureframename [<b>" + secureframename + "</b>]");
+
+
+	document.write("<br><br>INISAFE Web Plugn의 기본적인 설정은 INISAFEWeb(INIplugin).html의 <a href='javascript:ViewInit();'>Init() function</a>에서 변경이 가능합니다");
+  
+  </script>
+  <br>
+
+  </span></font></p>
+ </td></tr>
+</table>
+
+
+<!--- 기능 -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr>
+ <td bgcolor="#828DA6">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>INISAFE Web Plugin Client - 기능</strong>
+  </font>
+ </td>
+ <td style="font-size:9pt;" width="65" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:ManageCert()">인증서관리</strong></a>
+  </font>
+ </td>
+ <td style="font-size:9pt;" width="60" bgcolor="#828DA6" align="right">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong><a href="javascript:INIAbout()">INIAbout</strong></a>
+  </font>
+ </td>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr><td>
+  <blockquote><p><font><span style="font-size:9pt;">
+	128bit 암호화 기술을 이용하여 인터넷 뱅킹,인터넷 증권 거래 등을 비롯하여 웹상에서 전송되는 데이터들을 암호화함으로써
+	개인 및 기업의 정보를 더욱 안전하게 지킬수 있는 INISAFE Web은 암호화 기능 이외에 다음과 같은 기능을 제공합니다.
+	
+	<br><br>사용자의 PC에 설치된 이니텍 사설인증서 와 PPKI공인 인증서를 관리할 수있는 
+	<a href="javascript:ManageCert();"><b>인증서관리(ManageCert)</b></a>기능과 
+	<a href="javascript:CertRequestTest(document.request);"><b>사설인증서 발급(CertRequest)</b></a> 및 
+	<a href="javascript:IssueCertificateTest();"><b>금결원 공인인증서 발급(IssueCertificate)</b></a> 기능을 지원합니다.
+
+	<br><br>지정된 인증기관 인증서만 <a href="javascript:LoadCACertTest(document.readForm, document.sendForm);"><b>인증서선택(LoadCACert)</b></a>이 가능하고 TV뱅킹 사용자를 위한 로그인화면 <a href="javascript:SetTV(true)"><b>확대</b></a> / <a href="javascript:SetTV(false)"><b>축소</b></a> 기능과
+	사용자 PC의 OS구분 없이 사용자 언어를 <a href="javascript:ChangeOS('ENG')"><b>영문(ENG)</b></a> / <a href="javascript:ChangeOS('KOR')"><b>한글(KOR)</b></a> 전환이 가능합니다.
+
+	<br><br>
+	아래의 <a href="javascript:FilterUserCertTest(document.readForm, document.sendForm);"> 인증서필터링(FilterUserCert)</a> 기능을 이용하면 고객의 PC에 설치된 인증서중 지정된 인증서만 보여주게 할수가 있습니다.
+	<blockquote>
+		<form name=readForm>
+			<input type=hidden name=INIpluginData value="">
+			<b>저장소선택</b> :
+			<input type=checkbox name="HDD" checked>HDD&nbsp;
+			<input type=checkbox name="FDD">FDD&nbsp;
+			<input type=checkbox name="SecureKey">SecureKey&nbsp;
+			<input type=checkbox name="SGCARD">SGCARD&nbsp;
+
+			<br><b>인증서선택</b> :
+			16진수(짝수)Serial = <input type=text name="SerialNumber"  size=24 value="">
+				<input type=button value="set" onClick="setdn_n();">
+			<br>
+			SubjectDN = <input type=text name="SubjectDN"  size=41 value="">
+				<input type=button value="set" onClick="setdn_s();">
+			<br>
+			IssuerDN = <input type=text name="IssuerDN" size=33  value="">
+				<input type=button value="set" onClick="setdn_i();">
+				<input type=button value="set" onClick="setdn_i_y();">
+				<input type=button value="set" onClick="setdn_i_t();">
+		</form>
+		<form name=request> 
+			<input type=hidden name=C value="KR">
+			<input type=hidden name=L value="Seoul">
+			<input type=hidden name=O value="initech">
+			<input type=hidden name=OU value="support">
+			<input type=hidden name=CN value="wakano">
+			<input type=hidden name=EMAIL value="mailto@initech.com">
+			<input type=hidden name=challenge value="ddddddddddddddd">
+			<input type=hidden name=req value="">
+		</form>
+		<form name=sendForm>
+			<input type=hidden name=INIpluginData value="">
+		</form>
+	</blockquote>
+	기타 기능 : 
+		&nbsp;&nbsp;<a href="javascript:InitCacheTest();">InitCache()</a> 
+		&nbsp;&nbsp;<a href="javascript:ResessionTest();">Resession()</a> 
+		&nbsp;&nbsp;<a href="javascript:InsertCACertTest();">InsertCACert()</a>
+		&nbsp;&nbsp;<a href="javascript:alert(GetClientUID());">GetClientUID()</a> 
+	<br>캐쉬 기능 : 
+		&nbsp;&nbsp;<a href="javascript:alert(IsCachedCert());">IsCachedCert()</a> 
+<!--		&nbsp;&nbsp;<a href="javascript:alert(GetCachedCert());">GetCachedCert()</a> -->
+		&nbsp;&nbsp;<a href="javascript:ViewCachedCert(GetCachedCert());">GetCachedCert()</a> 
+
+    <br>
+	<br>SetProperty 기능
+	
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;<a href="javascript:TestSet('certmanui_language', 'KOR');">한글OS(certmanui_language, KOR)</a>
+		&nbsp;&nbsp;<a href="javascript:TestSet('certmanui_language', 'ENG');">영문OS(certmanui_language, ENG)</a>
+	
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;<a href="javascript:TestSet('certmanui_help', 'http://www.initech.com/sup/faq.jsp');">도움말(certmanui_help, URL)</a> 
+
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;<a href="javascript:TestSet('certmanui_phone', 'SHINHAN|http://image.shinhan.com/bank/etc/infovine/ver17/dll&INITECH|SOFTCAMP');">휴대폰(certmanui_phone, URL)</a>
+		&nbsp;&nbsp;<a href="javascript:TestSet('certmanui_phoneURL', 'http://ezbank.shinhan.com/infovine/download/download.html');">휴대폰2(certmanui_phoneURL, URL)</a>
+		
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;<a href="javascript:TestSet('certmanui_securekey', 'softcamp');">키보드보안(certmanui_securekey, softcamp)</a>
+
+  </span></font>
+ </td></tr>
+</table>
+
+
+
+<!--- Copyright -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+   <tr><td colspan="2"><hr noshade="noshade" size="1"/></td></tr>
+   <tr><td colspan="2" align="center">
+        <font size="-1">
+         <em>C<a href="javascript:changeVersion();">o</a>pyright &#169; 1998-2007, <a href='http://www.initech.com'>INITECH</a> Co., Ltd. All rights
+		 r<a href="javascript:goOpen('serverinfo')">e</a>eserved<br>mailto : <a href=mailto:support@initech.com>support@initech.com</a></em>
+        </font>
+       </td>
+   </tr>
+</table>
+
+</body>
+</html>
+
+

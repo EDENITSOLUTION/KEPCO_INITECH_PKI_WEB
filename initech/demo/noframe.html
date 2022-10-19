@@ -1,0 +1,75 @@
+<html>
+<head>
+	<title>암호화 스크립트 사용예제</title>
+	<meta http-equiv="Content-Type" Pragma="no-cache" Cache-control="no-cache" content="text/html; charset=euc-kr">
+
+	<script language="javascript" src="/initech/plugin1/cert.js"></script>
+	<script language="javascript" src="/initech/plugin1/install.js"></script>
+	<script language="javascript" src="/initech/plugin1/INIplugin.js"></script>
+	<script language="javascript" src="/initech/plugin1/noframe.js"></script>
+	
+	<script>
+	function CheckSendForm(readForm, sendForm)
+	{
+		if (EncForm2(readForm, sendForm)) {
+			sendForm.submit();
+			return false;
+		} else {
+			alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+		}
+		return false; //반드시 false를 return;
+	}
+
+	function EncLinkTest()
+	{
+		var url = "./noframe.jsp";
+		var value = "A=AAAAAA&B=BBBBBB&C=" + URLEncode("입력한글");
+		alert(value);
+		EncLink(url,value,'new_win','status=yes,scrollbars=no,resizble=no,width=550,height=750');
+	}
+	function EncLocationTest()
+	{
+		var url = "./noframe.jsp?";
+			url += "A=AAAAAA&B=BBBBBB&C=";
+			url += URLEncode("입력한글");
+		alert(url);
+		location = EncLocation(url);
+	}
+	</script>
+</head>
+
+<body>
+
+<form name=form1 action="./noframe.jsp" method=POST onsubmit="return EncForm(this);">
+	<b>1개의 form 문을 이용한 암호화(EncForm) 예제</b><br>
+    <input type=hidden name=INIpluginData>
+    A:<input type=text name=A value="AAAAAAA">
+    B:<input type=text name=B value="BBBBBBB"><br>
+    C:<input type=text name=C value="입력한글">&nbsp;&nbsp;&nbsp
+	<input type="checkbox" name="check" checked>CheckBox 
+	<input type=submit value="암호화 전송">
+</form>
+
+<form name=sendForm action="./noframe.jsp" method="POST">
+    <input type=hidden name=INIpluginData>
+</form>
+
+<form name=readForm method=POST onsubmit="return CheckSendForm(this, sendForm);">
+	<b>2개의 form 문을 이용한 암호화(EncForm2) 예제</b><br>
+    <input type=hidden name=INIpluginData>
+    A:<input type=text name=A value="AAAAAAA">
+    B:<input type=text name=B value="BBBBBBB"><br>
+    C:<input type=text name=C value="입력한글">&nbsp;&nbsp;&nbsp
+	<input type="checkbox" name="check" checked>CheckBox 
+	<input type=submit value="암호화 전송">
+</form>
+
+<b>GET 방식의 <a href="javascript:EncLinkTest();">EncLink</a>
+&nbsp;&nbsp;<a href='javascript:EncLocationTest()'>EncLocation</a>
+</b><br>이부분은 대용량의 데이터 전송시 올바르게 동작하지 않습니다.
+
+
+<hr size="1" width="550" color="#CCCCCC"></p>
+<p align="center"><font size="2">Copyright(c) 1997-2007 by INITECH</font><br></p>
+
+</html>

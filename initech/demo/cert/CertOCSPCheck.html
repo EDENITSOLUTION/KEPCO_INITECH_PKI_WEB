@@ -1,0 +1,34 @@
+<html>
+<head>
+<script language="javascript" src="/initech/plugin/INIplugin.js"></script>
+<script language="JavaScript">
+		
+	function CheckSendForm(readForm, sendForm, url)
+	{
+		InitCache();
+		
+		if (EncFormVerify2(readForm, sendForm)) {
+			sendForm.action = url;
+			sendForm.submit();
+			return false;
+		} else {
+			alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+		}
+		return false; //반드시 false를 return;
+	}	
+</script>
+</head>
+<body>
+	<form name=sendForm method=POST >
+		<input type=hidden name=INIpluginData value="">
+	</form>
+	
+    
+    <form name=logon method=POST onsubmit="return CheckSendForm(this, sendForm, './CertOCSPCheck.jsp');">
+     <b>OCSP  </b>를 통한 인증서 검증하는 예제 입니다. <br> 
+      <input type="submit" value="인증서 전송"> <left><a href="./src/CertOCSPCheck.jsp.txt"> 소스보기</a></left>
+    </form>
+
+    
+</body>
+</html>

@@ -1,0 +1,38 @@
+SMAP
+_ini_0certNew_0send__jsp.java
+JSP
+*S JSP
+*F
++ 1 inica70_init.jsp
+certcenter64/inica70/import/inica70_init.jsp
++ 2 inica70_ca_send.jsp
+certcenter64/inica70/import/inica70_ca_send.jsp
++ 3 ini_certNew_send.jsp
+certcenter64/inica70/ini_certNew_send.jsp
++ 4 iniplugin_init.jsp
+certcenter64/inica70/import/iniplugin_init.jsp
++ 5 inica70_err_check.jsp
+certcenter64/inica70/import/inica70_err_check.jsp
+*L
+141#1,13:24
+153#1:37,2
+345#2,133:38
+477#2:171,39
+1#3:209
+10#4,39:210
+6#3,2:249
+7#3:251
+2#1,138:252
+139#1:390
+12#2,334:391
+9#3:725
+7#5,9:726
+10#3:735
+20#3:736,2
+31#3:738,2
+44#3:740,2
+72#3:742,2
+76#3:744,2
+86#3:746,2
+89#3:748
+*E

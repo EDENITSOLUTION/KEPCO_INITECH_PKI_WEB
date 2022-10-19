@@ -1,0 +1,99 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<title> INISafeWeb Install Page</title>
+<style type="text/css">
+<!--
+.text {  font-family: "돋움"; font-size: 12px; text-decoration: none; color: #FFFFFF}
+-->
+</style>
+<script src="/initech/plugin64/install.js"></script>
+<script src="/initech/plugin64/cert.js"></script>
+<script src="/initech/plugin64/INIplugin.js"></script>
+<script>
+	var bINIinstall	= false;
+	function Back()
+	{
+		//alert("암호화모듈(INISafe Web)이 성공적으로 설치(업그레이드)되었습니다.");
+		history.back();
+		//opener.document.location.reload(); 
+		//opener.top.document.location.reload(); 
+		//this.close();
+	}
+	function Check()
+	{
+		if(ModuleInstallCheck()!=null)
+		{
+			InstallModule(InstallModuleURL);
+			bINIinstall = true;
+			setTimeout("Back()", 1000);
+		}
+		else
+		{
+			setTimeout("Check()", 1000);
+		}
+	}
+
+	function setupPlugin()
+	{
+		//top.location = manualInstallURL;
+		top.location.replace(manualInstallURL);
+	}
+
+</script>
+
+<body onload="Check();" bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" link="#00FF99" vlink="#00FF99" alink="#00FF99">
+
+<script language=javascript> LoadPlugin(); </script>
+
+<div align="center">
+  <p>&nbsp;</p><p>&nbsp;</p>
+  <table width="423" border="0" cellspacing="0" cellpadding="0" height="348">
+    <tr> 
+      <td background="/initech/plugin/site/img/plugin_bg.gif" valign="top" align="right">
+        <table width="418" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td height="38"><img src="/initech/plugin/site/img/plugin.gif" width="408" height="15"></td>
+          </tr>
+          <tr> 
+            <td height="239" valign="top" class="text"> 
+              <center>
+                <b><font color="#00FF99"><br>
+                **고객 컴퓨터의 암호화 프로그램 확인중입니다.**</font></b><br>
+                <font color="#00FF99">(잠시만 기다려주시기 바랍니다) <br>
+                <br>
+                </font> 
+              </center>
+              <div align="left">
+                <table width="410" border="0" cellspacing="0" cellpadding="10">
+                  <tr> 
+                    <td  class="text"> 처음 접속하신 경우에는 설치를 위햐여 약 10초에서 수분이 소요 되며 
+                      기존 사용자는 암호화 프로그램 로딩을 위하여 5초정도 소요 됩니다.<br>
+                      <br>
+                      암호화 프로그램의 설치여부를 묻는<font color="#FFFF00"> <b><font color="#00FF99">''보안경고''</font></b></font>창이 
+                      나타나면 반드시<font color="#FFFF00"><b><font color="#00FF99">''예''</font></b></font>를 
+                      선택하여 주십시요. 취소를 선택 하신 경우는 <a href="javascript:top.document.location.reload()">새로고침</a> 
+                      을 하여 다시 설치 하시기 바랍니다.<br>
+                      이는 안전한 통신 방법을 제공하기 위해 필요한 소프트웨어를 설치하는 절차이며 '아니오'를 선택하시는 
+                      경우는 다음 절차로 넘어갈수 없습니다.<br>
+                      <br>
+                      오류발생시 또는 화면이 장시간 정지시 <font color="#FFFF00"><a href="javascript:setupPlugin();"><b><font color="#00FF99">암호화 
+                      프로그램 설치안내</font></b></a></font><font color="#00FF99"><b>''</b></font>를 참고하여 조치후 이용하시기 바랍니다. </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr> 
+            <td height="65" align="center" class="text"><font color="#000000">장애시 
+              문의 : 고객센터<a href=mailto:support@initech.com  class="text"><font color="#3366FF"> 
+              support@initech.com</font></a></font></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  
+</div>
+</body>
+</html>

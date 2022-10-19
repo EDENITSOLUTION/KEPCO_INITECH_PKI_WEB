@@ -1,0 +1,159 @@
+<html>
+<head>
+	<title>INISAFE Web - Secure Frame </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+	<meta http-equiv="Progma" content="no-cache">
+
+	<script src="/initech/plugin64/install.js"></script>
+	<script src="/initech/plugin64/cert.js"></script>
+	<script src="/initech/plugin64/INIplugin.js"></script>
+
+	<script>
+var bINIinstall = false;					// 초기화 화면을 무시하고 싶으면 true로 설정(최대한 사용금지)
+function Init() 
+{
+	if (ModuleInstallCheck() != null)
+	{
+
+		InstallModule(InstallModuleURL);	// 추가 DLL 다운로드(암호화만 사용시 주석처리)
+
+		ReSession();						// 세션키 초기화
+		InitCache();						// 인증서 캐쉬 초기화
+
+		SetProperty("certmanui_topmost", "yes");	// 인증서나 제출창을 맨 위로 띄우는 함수
+		SetProperty("certmanui_GPKI", "all");		// all Certificate
+
+		SetProperty("codepage", "949");				// 한글처리에 문제가 발생시 주석처리 요망
+		SetVerifyNegoTime(3600, 3600);		// 인증서 유효기간 범위오차	default (0, 0)
+
+		SetLogoPath();						// 인증서 선택창의 이미지 변경(INIplugin.js의 LogoURL 설정
+		DisableInvalidCert(false);			// 로그인창에서 페기/만료된인증서 표시여부 default (false)
+
+		SetProperty("certmanui_phone", "KDB|https://banking.kdb.co.kr/pb/infovine/virtkey.html|1|html|615|305|22|&INITECH|AHNLAB25AOS");
+		SetProperty("certmanui_phoneURL", "https://banking.kdb.co.kr/pb/infovine/download.html");
+		SetProperty("certmanui_phoneVer", "1,2,3,7" );
+//		SetProperty("certmanui_phoneIssue", "4");
+
+		SetProperty("certmanui_phoneServiceList", "mobisign|infovine");
+		SetProperty("certmanui_mobiVer", "5.0.2.14");
+		SetProperty("certmanui_mobiURL", "http://www.mobisign.kr/mobisigndll.htm");
+		SetProperty("certmanui_mobiClientCode", "0100001");
+		SetProperty("certmanui_mobiOIDFilter", "2;yessignCA;1.2.410.200005.1.1.4;yessignCA;1.2.410.200005.1.1.2;");
+
+		SetProperty("certmanui_hsm","yes");
+
+		SetProperty("certmanui_SendCertOnlyImgVerify","no");
+
+		SetProperty("certmanui_PasswordDlgImgDesc","false");
+
+		SetProperty("certmanui_screenkeyboardcheckmode","1");
+
+		//고도화 모드로 동작하도록 추가
+		SetProperty("UseCertMode","1");
+
+		//1024 bit 인증서 보안경고창 출력여부
+		SetProperty("OldCertNotSafeMsg","1");
+
+		SetProperty("certmanui_changepassworddlgdescriptionkor", "기존의 인증서 암호를 입력하시고 새로운 암호를 입력하십시오.\n인증서 암호는 영문을 반드시 포함하여 8자리 이상 입력하셔야\n합니다.\n인증서 암호는 영문대소문자를 구분합니다.");
+		SetProperty("certmanui_changepassworddlgdescriptioneng", "Enter existing certificate password and a new password. Certificate password should be at least 8 characters long, including at least one alphabetical character. Certificate password is case sensitive.");
+
+		SetProperty("certmanui_topmost","yes");		
+
+		SetProperty("certmanui_screenkeyboardprovider","besoft");
+		SetProperty("certmanui_screenkeyboardprovideroption", "libfile=LotteCap_LaunchSafeOn.dll&ipwidth=450&ipheight=400&ipurl=http%3a%2f%2fsafeon.besoft.co.kr%2fbesoft%2fsafeon%2flottecap_real%2fdownload.html&ipmsg=Test Msg");
+
+		SetProperty("certmanui_screenkeyboardprovider","inca");
+		SetProperty("certmanui_screenkeyboardprovideroption","url=http%3a%2f%2f172.20.25.20%3a8080%2finca%2fkeypad%2fkpdencoder.jsp");
+				
+
+		//특정 도메인에서 인증서 선택창을 크게 하고싶을때 사용 
+		if (window.location.host == "tv.initech.com")
+		{
+			SetTVBanking(true);
+		}
+
+		//서버인증서 세팅(cert.js의 SCert 확인)
+		if (!LoadCert(SCert))
+		{
+			alert("서버인증서를 로드하는데 실패습니다.\r\n보안 프로그램이 동작하지 않습니다");
+			return;
+		}
+
+		bINIinstall = true;					 
+	}
+	else
+	{
+		setTimeout("Init()", 1000);			// 초기화 로딩화면 속도가 느리다 생각들면 500(0.5초)으로 변경
+	}
+} /* end of Init() */
+
+function bSupportBrowser()
+{
+	// non IE
+	if ( navigator.appName == 'Netscape' && navigator.userAgent.indexOf('Trident') ==  -1) 
+	{
+		s = navigator.userAgent.indexOf("/");
+		e = navigator.userAgent.indexOf(" ");
+		ver = navigator.userAgent.substring(s+1, s+4);
+		if (ver>=4.0) return true;
+	} 
+	else 
+	{
+		// IE 11 미만
+		if (navigator.userAgent.indexOf("MSIE ") != -1)
+		{
+			s = navigator.userAgent.indexOf("MSIE ");
+			tmp = navigator.userAgent.substring(s+5);
+			e = tmp.indexOf(";");
+			ver = tmp.substring(0, 3);
+			if (ver>=4.0) return true;
+		}
+		// IE 11 이상
+		else if (navigator.userAgent.indexOf("rv:") != -1)
+		{
+			// IE 11 인 경우는 4.0 보다 크므로 버전체크 pass
+			return true;
+		}
+		else
+		{
+			alert("버전확인불가");				
+		}
+	}
+
+	var msg = "지금 사용하고 계시는 브라우져는\n";
+	msg += "INISAFE Web Plugn이 지원하지 않습니다.\n";
+	msg += "최신버전으로 업그레이드 하신후 다시 접속하시기 바랍니다.\n";
+	msg += "\n\버전정보[";
+	msg += ver + "]";
+	msg += "\n\n브라우져 정보\n";
+	msg += "navigator.appName \t[" + navigator.appName + "]\n";
+	msg += "navigator.userAgent \t[" + navigator.userAgent + "]\n";
+	msg += "navigator.appCodeName \t[" + navigator.appCodeName + "]\n";
+	msg += "navigator.appVersion \t[" + navigator.appVersion + "]\n";
+	msg += "navigator.systemLanguage \t[" + navigator.systemLanguage + "]\n";
+	msg += "navigator.javaEnabled() \t[" + navigator.javaEnabled() + "]\n";
+	msg += "navigator.systemLanguage \t[" + navigator.systemLanguage + "]\n";
+	msg += "navigator.language \t\t[" + navigator.language + "]\n";
+	msg += "navigator.platform \t\t[" + navigator.platform + "]\n";
+
+	alert(msg);
+	return false;
+} /* end of bSupportBrowser() */	
+	</script>
+</head>
+
+<body bgcolor="red" onload="Init();">
+	<script language=javascript>
+if (bSupportBrowser())
+{
+	document.write("<center><font size=2>");
+	LoadPlugin(); 
+	document.write("INITECH INISAFEWeb Install Info - ");
+	document.write(" 접속가능버전 : IE[" + ieVersion + "] NS[" + nsVersion + "]");
+	document.write(" 설치버전 : [" + GetVersion() + "]");
+	document.write(" " + secureframename + "(" + window.location.host + ")");
+	document.write("</font></center>");
+}
+	</script>
+</body>
+</html>

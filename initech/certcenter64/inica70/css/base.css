@@ -1,0 +1,27 @@
+
+/* body ½ºÅ¸ÀÏ */
+body {
+	color:#000;
+	font-size:75%;
+	line-height:1.2;
+	font-family:'Nanum Gothic', "³ª´®°íµñ", "µ¸¿ò", Dotum, "±¼¸²", Gulim, Verdana, AppleGothic, sans-serif;
+
+}
+
+/* ¸µÅ© */
+a, a:link {color:#424242;text-decoration:none;} 
+a:visited {text-decoration:none;}
+a:hover {color:#f00;text-decoration:none;}
+a:focus {color:#f00;text-decoration:none;}
+a:active {color:#f00;text-decoration:none;}
+} 
+/* ÀÌ¹ÌÁö, Æû°ü·Ã ¿ä¼Ò */
+img {
+	vertical-align:top;
+}
+label, select, input, textarea {
+	vertical-align:middle;
+}
+/* -------------------------------------------------- */
+
+.txblue { color:#005ed7; }

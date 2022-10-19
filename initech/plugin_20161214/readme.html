@@ -1,0 +1,188 @@
+<html>
+<head>
+	<title> INISAFE Web Plugn README</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+</head>
+
+<body bgcolor="#ffffff" text="#000000">
+<table border="0" cellpadding="0" cellspacing="0">
+ <tr>
+   <td width="1092" background="./down/img/plugin_bg.gif">
+     <p><img src="./down/img/plugin_readme.gif" width="537" height="44" border="0"></p>
+   </td>
+ </tr>
+</table>
+<br>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr>
+ <td bgcolor="#828DA6">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>1.1 INISAFE Web plugin 설치 - 개요</strong>
+  </font>
+ </td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr><td>
+  <blockquote><p><font><span style="font-size:9pt;">
+INISAFE Web plugin 은 예약된 프레임인 secureframe에 로딩되어야하고 이 프레임은 서비스시 유지되어야 한다.
+제공되는 암호화 자바 스크립트들이 모두 이곳을 참조하고 있어야하며 INISAFE Web을 사용하기 위해서는 
+적어도 두개의 프레임(secureframe과 contentframe)으로 구성되어야 한다.
+  </span></font></p>
+ </td></tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr>
+ <td bgcolor="#828DA6">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>1.2 INISAFE Web plugin 설치 - 구성화일</strong>
+  </font>
+ </td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr><td>
+  <blockquote><p><font><span style="font-size:9pt;">
+    - INISAFEWeb.html : INISAFE Web plugin 로딩및 초기화 (2.1방식으로 사용시 참조)
+<br>- INIplugin.html : INISAFE Web plugin 설치, 로딩, 초기화 (2.2방식으로 사용시 참조)
+<br>- noframe.js : secureframe을 사용하지 않고 해당페이지에서 직접 plugin을 로딩 및 초기화하여 사용하는 Java Script
+<br>
+<br>- INIplugin.js : 실제 암복호화할때 사용하는 함수 정의
+<br>- install.js : INISAFE Web 설치, 로딩할때 사용하는 LoadPlugin() 및 CheckPlugin() 함수 정의
+<br>- cert.js : SCert(서버의 인증서)와 CACerts(서버가 받아들이는 CA인증서)
+<br>
+<br>- dll/*.* : plugin 설치 후 추가적으로 설치되는 dll로 INIS60.vcs파일을 이용하여 버전관리를 함
+<br>- down/
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;download.html : 수동설치 페이지
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INIS60.cab : IE용 INISAFE Web plugin
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INIS60.jar : NS용 INISAFE Web plugin
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INIS60.exe : IE 및 NS용 수동설치파일
+<br>
+<br>- info.html : check.html에서 로딩 체크후 로딩되었으면 이동하는 샘플 페이지(plugin설치 정보 및 JS변수값 설정 확인용)
+<br>
+<br>- site/
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index_plugin.html : 프레임을 secureframe, contentframe으로 구성하는 샘플(2.1방식)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install.html : INISAFE Web plugn설치안내, 수동설치링크
+<br>	
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index_check.html : 프레임을 secureframe, contentframe으로 구성하는 샘플(2.2방식)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check.html : INIplugin설치안내, 수동설치링크, INIplugin이 로딩되기 전에 사용자의 작동을 억제.
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;example.html : JavaScript 샘플 예제
+<br>
+
+  </span></font></p>
+ </td></tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr>
+ <td bgcolor="#828DA6">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>1.3 INISAFE Web plugin 설치 - 기본설치</strong>
+  </font>
+ </td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr><td>
+  <blockquote><p><font><span style="font-size:9pt;">
+(1) webroot/initech/plugin에 구성파일을 모두 카피한다.
+<br>
+<br>(2) INISAFEWeb.html(INIplugin.html)에서 
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INIplugin.js, install.js, cert.js의 위치를 수정 및 확인한다.
+<br>
+<br>(3) install.js에서
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nsManualPackageURL, ieManualPackageURL을 맞게 수정한다.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nsVersion, ieVersion, CheckVersion이 설치될 버전으로 수정한다.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;manualInstallURL, InstallPluginURL을 맞게 수정한다.
+<br>
+<br>(4) INIplugin.js에서
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TimeURL을 맞게 수정한다.(클라이언트 인증서 제출시)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YessignCAIP를 맞게 수정한다.(금결원인증서신청시)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YessignCMPPort를 맞게 수정한다.(금결원인증서신청시)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cipher를 알맞는 것으로 수정한다.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InstallModuleURL을 알맞게 수정한다.
+<br>
+<br>(5) cert.js에서
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCert를 설치될 사이트 인증서로 교체한다.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CACert를 설치될 사이트가 받아들일 수 있는 CA인증서로 교체한다.
+<br>
+<br>(6) 설치가 완료되면 테스트할 PC에설치된 INISAFE Web Plugin을 삭제하고 아래와 같이 접속하여 설정된 상태를 확인한다.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  http://URL/initech/plugin/index.html
+  </span></font></p>
+ </td></tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr>
+ <td bgcolor="#828DA6">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>2.1 암호화프레임설정 - INISAFEWeb.html을 이용한 설정방법</strong>
+  </font>
+ </td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr><td>
+  <blockquote><p><font><span style="font-size:9pt;">
+site/index.html과 같이 두개의 프레임으로 나누어서 secureframe에는 INISAFEWeb.html이 
+로딩되고 또 하나의 프레임인 contentframe에는 실제 서비스 페이지로 설정을 한다.
+만약 사용자 PC에 지정된 plugin모듈이 설치가 되지 않을 경우에는 INISAFEWeb.html에서 자동으로 
+설치 페이지인 install.html로 이동하게 되며 설치가 된다.
+<br>
+<br>(1) servicedir/에 /initech/plugin/site/index_plugin.html을 복사한다.
+<br>(2) index_plugin에서 contentframe에 설정되어 있는 info.html을 실제 서비스 페이지로 수정한다.
+  </span></font></p>
+ </td></tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr>
+ <td bgcolor="#828DA6">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>2.2 암호화프레임설정 - INIplugin.html을 이용한 설치화면 설정방법</strong>
+  </font>
+ </td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr><td>
+  <blockquote><p><font><span style="font-size:9pt;">
+site/index_check.html과 같이 두개의 프레임으로 나누어서 secureframe에는 INIplugin.html을 
+로딩하게 되는데 이 INIplugin.html에는 INISAFE Web plugin 설치, 로딩, 초기화가 이루어진다. 
+그리고 다른 하나의 프레인 contentframe에는 check.html페이지가 로딩되는데 이 페이지는 INISAFE Web의 
+설치 안내와 자동설치 실패시 수동설치를 할 수 있도록 수동설치 페이지의 링크가 되어 있다.
+그리고 이 페이지는 INIplugin 로딩이 무사히  끝나면 실제 서비스 페이지로 자동으로 이동한다.
+<br>
+<br>(1) servicedir/에 /initech/plugin/site/index_check.html, check.html을 복사한다.
+<br>(2) index_check.html에서 INIplugin.html, check.html 의 위치를 수정한다.
+<br>(3) check.html에서 설치후 이동할 페이지인 startURL을 수정한다.
+  </span></font></p>
+ </td></tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr>
+ <td bgcolor="#828DA6">
+  <font color="#ffffff" face="arial,helvetica,sanserif">
+   <strong>2.3 암호화프레임설정 - 2.2방식에서 2.1방식으로 바꾸는 방법</strong>
+  </font>
+ </td>
+</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+ <tr><td>
+  <blockquote><p><font><span style="font-size:9pt;">
+(1) install.js의 변수 선언부에 아래의 값을 추가한다.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var InstallPluginURL = "http://" + window.location.host + "/initech/plugin/site/install.html";
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var CheckVersion     = ieVersion;	//접속가능버전을 명시 ieVersion과 동일하게 사용을 권장
+<br>(2) install.js의 마지막에 CheckPlugin() 함수를 추가한다.
+<br>(3) INIplugin.html에서 LoadPlugin()을 CheckPlugin()으로 바꾼다.
+<br>(4) index.html에서 contentframe에 설정되어 있는 URL을 check.html의 값을 startURL에 설정되어 있는 값을 변경한다.
+<br>(5) /initech/plugin/site/install.html을 참고하여 install.js에 설정한 InstallPluginURL 페이지를 새로 생성한다.
+  </span></font></p>
+ </td></tr>
+</table>
+

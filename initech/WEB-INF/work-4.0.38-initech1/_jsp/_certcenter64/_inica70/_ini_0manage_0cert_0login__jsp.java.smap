@@ -1,0 +1,17 @@
+SMAP
+_ini_0manage_0cert_0login__jsp.java
+JSP
+*S JSP
+*F
++ 1 ini_manage_cert_login.jsp
+certcenter64/inica70/ini_manage_cert_login.jsp
++ 2 iniplugin_init.jsp
+certcenter64/inica70/import/iniplugin_init.jsp
+*L
+1#1:60
+10#2,134:61
+4#1,9:195
+12#1:204
+130#1,5:205
+134#1,2:210
+*E

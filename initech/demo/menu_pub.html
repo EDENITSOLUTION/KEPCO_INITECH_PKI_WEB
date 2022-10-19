@@ -1,0 +1,253 @@
+<html>
+<head>
+	<title> INIplugin128 for JAVA</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+	<style type="text/css">
+	<!--
+		.text {  font-family: "돋움"; font-size: 12px; line-height: 13px; text-decoration: none}
+		A:link {text-decoration: none}
+		A:visited {text-decoration: none}
+		.chapter {font-size: 18pt}
+		A:hover {color: "#FF5050"}
+		-->
+	</style>
+	<script language="javascript" src="/initech/plugin/INIplugin.js"></script>
+	<script language="javascript">
+	function TimeCheck()
+	{
+		var servertime = "1014200997";
+
+		var now = new Date();
+		var nNowSec = now.getTime()/1000;
+		var nTolerableSec = 60*60*24*10;  //시간오차
+		var nTimeDiff = servertime - nNowSec;
+//		alert("시간 " + now + "\n\n초 " + nNowSec + "\n\n오차 " + nTimeDiff);
+
+		// client time check
+		if ( nTimeDiff <  -nTolerableSec || nTimeDiff > nTolerableSec ) {
+			alert("'날짜 및 시간' 정보가 올바르지 않습니다.\n\n'제어판-날짜/시간'에서 시간을 맞추시기 바랍니다.");
+			return false;
+		}
+		return true;
+		//<input type=hidden name=svclck value="1014200997" >
+	}
+
+	function new_window(url)
+	{
+		//new_win= window.open(url,'new_win','status=yes,scrollbars=no,resizble=no,width=500,height=550');
+		new_win= window.open(url);
+	}
+
+	function new_window3(url)
+	{
+		new_win= window.open(url,'new_win','status=yes,scrollbars=no,resizble=no,width=300,height=250');
+	}
+
+
+	function upgrade_check()
+	{
+		//PC에 설치된 버전과 최신버전.. 1.17.0.1
+		var ver = "4, 1, 19, 0";
+		if (!EnableFunction(ver))
+			new_win= window.open('/initech/plugin/download.html','new_win','status=yes,scrollbars=no,resizble=no,width=300,height=250');
+	}
+
+	</script>
+
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" link="#000000" vlink="#000000" alink="#000000">
+
+<table width="165" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td colspan="2" height="21"><img src="img/left.gif" width="165" height="21"></td>
+  </tr>
+  <tr> 
+    <td width="7" rowspan="2">&nbsp;</td>
+    <td width="158" align="center" background="img/left1.gif" height="47" class="text"><a href="/initech/plugin/start.html" target="main"><font size="2" face="돋움">INIplugin4Java<br>
+      with IniCrypto4Java</font></a> </td>
+  </tr>
+  <tr> 
+    <td width="158" align="right" bgcolor="F2F2F2" valign="top" background="img/left_bg.gif"> 
+
+      <table width="158" border="0" cellspacing="0" cellpadding="0" height="20">
+		<form name=logon action="./logon/Logon.jsp" method=POST target="main" 
+							onsubmit="return InitCache() && EncFormVerify(this);">
+			<input type=hidden name=INIpluginData value="">
+			<input type=hidden name=logon value="logon">
+			<input type=image src="img/leftlog.gif" border="0" alt="로그온" name="image">
+			<tr> 
+			  <td bgcolor="9F9F9F" align="center" height="0"> 
+				<table width="158" border="0" cellspacing="1" cellpadding="0" height="20">
+				  <tr> 
+					<td bgcolor="#FFFFFF" valign="middle"> 
+					  <table width="156" border="0" cellspacing="0" cellpadding="0" height="18">
+						<tr> 
+						  <td width="25"><img src="img/leftmenu2.gif" width="25" height="18"></td>
+						  <td valign="bottom"><a href="./test/NormalTest.html" target="main"><font size="2" face="돋움">네트웍(웹서버) 테스트</font></a></td>
+						</tr>
+					  </table>
+					</td>
+				  </tr>
+				</table>
+			  </td>
+			</tr>
+		</form>
+      </table>
+
+	  <!-- 암호화 Script(start) -->
+      <img src="img/1px.gif" width="158" height="2"><br>
+      <table width="158" border="0" cellspacing="0" cellpadding="0" height="20">
+        <tr> 
+          <td bgcolor="9F9F9F" align="center"> 
+            <table width="158" border="0" cellspacing="1" cellpadding="0" height="20">
+              <tr> 
+                <td bgcolor="#FFFFFF" valign="middle"> 
+                  <table width="156" border="0" cellspacing="0" cellpadding="0" height="18">
+                    <tr> 
+                      <td width="25"><img src="img/leftmenu2.gif" width="25" height="18"></td>
+                      <td valign="bottom"><a href="./test/ScriptTest.html" target="main"><font face="돋움" size="2">암호화 Script 예제</font></a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+	  <!-- 암호화 Script(end) -->
+
+	  <!-- 서명+암호화(start) -->
+	  <img src="img/1px.gif" width="158" height="2"><br>
+      <table width="158" border="0" cellspacing="0" cellpadding="0" height="20">
+        <tr> 
+          <td bgcolor="9F9F9F" align="center"> 
+            <table width="158" border="0" cellspacing="1" cellpadding="0" height="20">
+              <tr> 
+                <td bgcolor="#FFFFFF" valign="middle"> 
+                  <table width="156" border="0" cellspacing="0" cellpadding="0" height="18">
+                    <tr> 
+                      <td width="25"><img src="img/leftmenu2.gif" width="25" height="18"></td>
+                      <td valign="bottom"><a href="./test/CryptoTest.html" target="main"><font face="돋움" size="2">서명+암호화
+                        예제</font></a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+	  <!-- 서명+암호화(end) -->
+
+<br>
+
+	  <!-- 사설인증센터(start) -->
+      <img src="img/1px.gif" width="158" height="2"><br>
+      <table width="158" border="0" cellspacing="0" cellpadding="0" height="20">
+        <tr> 
+          <td bgcolor="9F9F9F" align="center"> 
+            <table width="158" border="0" cellspacing="1" cellpadding="0" height="20">
+              <tr> 
+                <td bgcolor="#FFFFFF" valign="middle"> 
+                  <table width="156" border="0" cellspacing="0" cellpadding="0" height="18">
+                    <tr> 
+                      <td width="25"><img src="img/leftmenu1.gif" width="25" height="18"></td>
+                      <td valign="bottom"><a href="./certificate/inica30/ini_certificate.html" target="main"><font face="돋움" size="2">사설인증센터</font></a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+	  <!-- 사설인증센터(end) -->
+
+	  <!-- 공인인증센터(start) -->
+      <img src="img/1px.gif" width="158" height="2"><br>
+      <table width="158" border="0" cellspacing="0" cellpadding="0" height="20">
+        <tr> 
+          <td bgcolor="9F9F9F" align="center"> 
+            <table width="158" border="0" cellspacing="1" cellpadding="0" height="20">
+              <tr> 
+                <td bgcolor="#FFFFFF" valign="middle"> 
+                  <table width="156" border="0" cellspacing="0" cellpadding="0" height="18">
+                    <tr> 
+                      <td width="25"><img src="img/leftmenu1.gif" width="25" height="18"></td>
+                      <td valign="bottom"><a href="./certificate/oppra/opp_certificate.html" target="main"><font face="돋움" size="2">공인인증센터</font></a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+	  <!-- 공인인증센터(end) -->
+
+	  <!-- 인증서유효성확인(start) -->
+	  <img src="img/1px.gif" width="158" height="2"><br>
+      <table width="158" border="0" cellspacing="0" cellpadding="0" height="20">
+        <tr> 
+          <td bgcolor="9F9F9F" align="center"> 
+            <table width="158" border="0" cellspacing="1" cellpadding="0" height="20">
+              <tr> 
+                <td bgcolor="#FFFFFF" valign="middle"> 
+                  <table width="156" border="0" cellspacing="0" cellpadding="0" height="18">
+                    <tr> 
+                      <td width="25"><img src="img/leftmenu1.gif" width="25" height="18"></td>
+                      <td valign="bottom"><a href="./crl/crl.html" target="main"><font face="돋움" size="2">인증서유효성확인</font></a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+	  <!-- 인증서유효성확인(end) -->
+
+<br>
+
+
+
+	  <!-- FAQ(start) -->
+      <img src="img/1px.gif" width="158" height="2"><br>
+      <table width="158" border="0" cellspacing="0" cellpadding="0" height="20">
+        <tr> 
+          <td bgcolor="9F9F9F" align="center"> 
+            <table width="158" border="0" cellspacing="1" cellpadding="0" height="20">
+              <tr> 
+                <td bgcolor="#FFFFFF" valign="middle"> 
+                  <table width="156" border="0" cellspacing="0" cellpadding="0" height="18">
+                    <tr> 
+                      <td width="25"><img src="img/leftmenu2.gif" width="25" height="18"></td>
+                      <td valign="bottom"><a href="http://www.initech.com/fra_support.html" target="_new"><font face="돋움" size="2">FAQ</font></a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+	  <!-- FAQ(end) -->
+<br>
+
+  <tr> 
+    <td colspan="2"><a href="http://www.initech.com/fra_pro.html" target="_new"><img src="img/leftimg.gif" border="0" width="165" height="162"></a></td>
+  </tr>
+  <tr> 
+    <td rowspan="3" width="7">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="37" valign="bottom" align="center" width="158" class="text">Copyright 
+      (c) 1998-2002 INITECH All Rights Reserved</td>
+  </tr>
+</table>
+<map name="Map"> 
+  <area shape="rect" coords="23,1,136,17" href="#" onfocus='this.blur()'>
+</map>
+</body>
+</html>

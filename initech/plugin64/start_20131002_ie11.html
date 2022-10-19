@@ -1,0 +1,165 @@
+<html>
+<head>
+	<title> INIplugin128 설치완료</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+		<style type="text/css">
+			<!--
+			.text {  font-family: "돋움"; font-size: 12px; line-height: 17px; text-decoration: none}
+			-->
+		</style>
+	</head>
+	<script language="javascript" src="/initech/plugin/INITECH_PluginCA.js"></script>
+	<script language="javascript" src="/initech/plugin64/INIplugin.js"></script>
+	<script language="javascript" src="/initech/plugin64/cert.js"></script>
+	<script language="javascript" src="/initech/plugin64/install.js"></script>
+	<script language="javascript">
+
+	function about() { 
+
+		var msg = "*** INIpluign 설치버전정보 ***\n\n";
+			msg += "접속가능버전 IE[" + ieVersion + "] NS[" + nsVersion + "]";
+			msg += "\n설치버전 [" + GetVersion() + "]";
+
+
+		if (navigator.appName == 'Netscape') {
+			s = navigator.userAgent.indexOf("/");
+			e = navigator.userAgent.indexOf(" ");
+			ver = navigator.userAgent.substring(s+1, s+4);
+		} else {
+			s = navigator.userAgent.indexOf("MSIE ");
+			tmp = navigator.userAgent.substring(s+5);
+			e = tmp.indexOf(";");
+			ver = tmp.substring(0, 3);
+		}
+
+		    msg += "\n\n\n*** 접속브라우져정보 ***\n\n";
+			msg += navigator.userAgent;
+			msg += "\n\브라우져버전 = [";
+			msg += ver + "]";
+
+			alert(msg);
+	}
+
+	function savacert() { 
+		if (InsertCACert(INITECHCert))
+			alert("성공적으로 저장되었습니다.");
+		else
+			alert("저장에 실패하였습니다.");
+	}
+
+	function ManualInstall() { 
+	top.location = manualInstallURL; 
+	}
+
+	function ServerInfo() { 
+		location = "./info.html"; 
+	}
+
+	function PatchInstall() { 
+		top.location = "./patch/index.html"; 
+	}
+
+	function InstallCheck() { 
+		//new_win= window.open('./check.html','new_win','status=yes,scrollbars=yes,resizble=yes,width=600,height=500');
+		new_win= window.open('./install.html','new_win','status=yes,scrollbars=yes,resizble=yes,width=600,height=500');
+	}
+
+	function CertRequestTest(request) {
+		alert("사설인증서 발급 테스트 시작");
+		if (CertRequest(request))
+			alert("인증서 발급테스트 성공");
+		else 
+			alert("인증서 신청이 취소되었습니다.");
+	}
+
+	function IssueCertificateTest() {
+		alert("공인인증서 발급 테스트 시작\n\n참조번호가 맟지 않다는 메세지가 나오면 정상임");
+		IssueCertificate("123456", "1234567880234")
+	}
+
+	</script>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<script language="javascript" src="/initech/plugin/noframe.js"></script>
+<center>
+<table width="610" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td height="63" align="center"><br>
+      <br>
+      <b><font size="3"> INISAFE Web 암호화 모듈 설치 완료</font></b></td>
+  </tr>
+   <tr> 
+    <td>
+      <hr width="100%" size="1" align="center" noshade>
+    </td>
+  </tr>
+  <tr> 
+    <td align="center" height="97"><font size="2"><br>
+      이화면이 보이고 아래의 버튼이 정상적으로 동작을 한다면<br>
+      설치(로딩)가 완료된상태입니다.</font></td>
+  </tr>
+
+  <tr> 
+    <td align="center"> 
+      <table width="550" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td align="center"><img src="img/maintitle1.gif" width="115" height="27"></td>
+          <td width="430" height="47"> <b>:</b> 
+            <img src="img/mainbut01.gif" width="98" height="27" border="0" onclick="ManageCert();">
+			<img src="img/mainbut02.gif" width="107" height="27" border="0" onClick="about()">
+			<img src="img/mainbut03.gif" width="100" height="27" border="0" onClick="savacert()">
+          </td>
+        </tr>
+        <tr><form name=request> 
+          <td align="center"><img src="img/maintitle2.gif" width="115" height="27" border="0"></td>
+          <td width="430" height="47"> <b>:</b> 
+            <img src="img/mainbut04.gif" width="111" height="27" border="0" onClick="CertRequestTest(document.request)">
+			<img src="img/mainbut05.gif" width="108" height="27" border="0" onClick="IssueCertificateTest()">
+			<img src="img/mainbut06.gif" width="107" height="27" border="0" onClick="JavaScript:location='./etc/Catherine.p12'">
+          </td>
+			<input type=hidden name=C value="KR">
+			<input type=hidden name=L value="Seoul">
+			<input type=hidden name=O value="initech">
+			<input type=hidden name=OU value="support">
+			<input type=hidden name=CN value="wakano">
+			<input type=hidden name=EMAIL value="mailto@initech.com">
+			<input type=hidden name=challenge value="ddddddddddddddd">
+			<input type=hidden name=req value="">
+        </form></tr>
+        <tr> 
+          <td align="center"><img src="img/maintitle3.gif" width="115" height="27" border="0"></td>
+          <td width="430" height="47"> <b>:</b> 
+            <img src="img/mainbut07.gif" width="86" height="27" border="0" onClick="InstallCheck();">
+			<img src="img/mainbut08.gif" width="86" height="27" border="0" onClick="ManualInstall();">
+			<img src="img/mainbut09.gif" width="106" height="27" border="0" onClick="PatchInstall();">
+			<img src="img/mainbut10.gif" width="86" height="27" border="0" onClick="ServerInfo();">
+          </td>
+        </tr>
+        <tr> 
+          <td align="center"><img src="img/maintitle4.gif" width="115" height="27" border="0"></td>
+          <td width="430" height="47"><b>:</b> 
+		    <img src="img/mainbut11.gif" width="92" height="27" border="0" onClick="javascript:location='./etc/securekey.zip'">
+		    <img src="img/mainbut12.gif" width="101" height="27" border="0" onClick="javascript:location='./etc/scd10en.exe'">
+		    <img src="img/mainbut13.gif" width="165" height="27" border="0" onClick="javascript:location='./etc/UnaxINIplugin40.exe'">
+		  </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+<tr> 
+    <td height="50">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td>
+      <hr width="100%" size="1" align="center" noshade>
+    </td>
+  </tr>
+  <tr align="center"> 
+    <td  class="text">Copyright (c) 1998-2003 INITECH All Rights Reserved<br>
+      mailto : <a href=mailto:support@initech.com>support@initech.com</a> </td>
+  </tr>
+</table>
+</body>
+</html>
