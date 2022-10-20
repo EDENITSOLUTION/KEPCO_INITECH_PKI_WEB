@@ -216,7 +216,8 @@ function startDownload()
 	if ( myMimetype ) {
 		if(getUserAgentVersion()>=5.0){
 			if(myVersionCompare()<0){
-				top.location = manualInstallURL;
+				//2022.10.20 로컬테스트를 위해 주석처리
+				//top.location = manualInstallURL;
 				return true;
 			} else{
 				return true;
@@ -253,7 +254,8 @@ function startDownload()
 	else
 	{
 		if(getUserAgentVersion()>=5.0){
-			top.location = manualInstallURL;
+			//2022.10.20 로컬테스트를 위해 주석처리
+			//top.location = manualInstallURL;
 			return true;
 		}
 		else{
