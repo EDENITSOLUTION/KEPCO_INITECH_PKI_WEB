@@ -24,10 +24,23 @@ String admUID = "kepcoca";
 String admPWD = "kepcoca!@##";
 String userIP = request.getRemoteAddr();
 
+String adm2UID = "kepcoca2";
+String adm2PWD = "kepcoca!@##";
+
 String isManagerIpCheck = "Y"; //관리자 IP체크유무(Y:체크함,N:체크안함)
 String isAcsOK = "Y"; //관리자IP접근가능유무(Y:접근가능함,N:접근불가)
 
-String acsIPs[] = {"10.200.107.210","10.200.107.159","10.180.5.75","10.180.5.76","10.180.5.74"};
+String acsIPs[] = {"10.220.15.27","10.220.15.23","10.200.107.127","10.200.107.150","10.200.107.135","10.180.5.74","10.180.5.75","10.180.5.76","10.200.107.185","10.200.107.148","10.200.107.189","168.78.245.31","10.200.107.141","10.200.153.103","10.220.15.16","10.220.15.21","10.200.107.153"};
+// 10.200.107.127  최태욱
+// 10.200.107.150  백순웅
+// 10.200.107.135  김현이
+// 10.180.5.74-76  유지보수(KDN)
+// 10.200.107.185  전대산
+// 10.200.107.148  김진구
+// 10.200.107.189  강성간
+// 168.78.245.31   운영서버
+// 10.200.107.153  박소윤
+
 String acsErrMsg = "";
 
 if (isManagerIpCheck.equals("N")){ //관리자IP체크하지않는다면
@@ -101,7 +114,12 @@ function CheckSendForm() {
 </html-->
 <%
 
-}else {
+} else if (m_userID.equals(adm2UID) && m_userPWD.equals(adm2PWD) && isAcsOK.equals("Y") ) {
+	session.setAttribute("admin2Login",m_userID);
+	session.setMaxInactiveInterval(1000);
+	response.sendRedirect("ini_manage_insa.jsp"); 
+
+} else {
 	response.setCharacterEncoding("EUC-KR");
 	PrintWriter writer = response.getWriter();
 	writer.println("<script type='text/javascript'>");

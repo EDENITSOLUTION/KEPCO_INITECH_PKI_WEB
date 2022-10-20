@@ -1,0 +1,57 @@
+<%@ page import="java.io.*" %>
+<%@ page import="java.sql.*"%> 
+<%@ page import="java.util.*"%> 
+<%@ include file= "./import/func.jsp" %> 
+<%!
+
+public String do_op_cert_info_list(String uid, String certSN) {
+
+	Connection conn = null;
+	ResultSet rs    = null;
+
+	int rsCnt = 0 ; // 유효한 인증서 갯수(1:유효, 그외 폐기)
+
+	StringBuffer buffer = new StringBuffer();
+
+
+	try{
+
+		conn = getConnection();
+		conn.setAutoCommit(false);		
+		Statement stmt = conn.createStatement();   
+
+		//-------------------------------------------
+		// Query section
+		//-------------------------------------------    
+		String queary = "SELECT count(userid) as cnt FROM ldap_info WHERE userid = '"+uid+"' and serial = '"+ certSN +"'  and status <> 'R' and expiredate >= sysdate ";
+		rs = stmt.executeQuery(queary);
+
+		while(rs.next()) {	    	
+			rsCnt = rs.getInt("cnt");
+		}
+
+
+		if (rsCnt == 1){ //LDAP_INFO 테이블에 유효한 인증서는 오직 하나만 존재해야함
+			buffer.append("RESULT=000"); //유효한 인증서일때 result 코드 000 리턴
+		}else{
+			buffer.append("RESULT=999");  //유효하지 않을 경우 result 코드 999 리턴			
+		}   	
+
+
+	} catch (Exception e) {
+		e.printStackTrace();
+		buffer.append("RESULT=998");
+	}finally{
+		try{
+			conn.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	return buffer.toString();
+}
+
+
+
+%>	

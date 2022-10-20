@@ -307,7 +307,7 @@ public String Make_SMS_MSG(String strRecvPhone, String strSmsMsg, String strEmpN
         int iRECVPHONE = 15 ;//--
         String RECVPHONE = strRecvPhone ; //--
         int iCALLBACK = 15 ;//--
-        String CALLBACK = "0613451166"; //15 + 1 //--
+        String CALLBACK = "0613458000"; //15 + 1 //--
         int iMESSAGE = 80 ; //--
         String MESSAGE = strSmsMsg; //strMsgText ; //80 + 1 //--
         int iEMPNO = 8 ; //--
@@ -370,94 +370,93 @@ public String rtnMessage(String MsgCode){
 
 public String getRefUserPhone(String refUserId) {
 
-        String refUserPhoneNum = null;
+	String refUserPhoneNum = null;
+	
+	try{
+		Context ictRef = new InitialContext();
+		DataSource dsRef = (DataSource) ictRef.lookup("java:comp/env/jdbc/USERS");
+		ResultSet rsRef = null;
+		Connection conRef = null;
+		Statement stmtRef = null;
 
-        try{
-                Context ictRef = new InitialContext();
-                DataSource dsRef = (DataSource) ictRef.lookup("java:comp/env/jdbc/USERS");
-                ResultSet rsRef = null;
-                Connection conRef = null;
-                Statement stmtRef = null;
+		String refQry = "" ;
+		refQry = refQry + "SELECT "; 
+		refQry = refQry + "             X.EMPNO ";
+		refQry = refQry + "     ,       X.USER_NAME ";
+		refQry = refQry + "     ,   X.CELLNO ";
+		refQry = refQry + "     ,       X.VAL1 ";
+		refQry = refQry + "     ,       X.VAL2 ";
+		refQry = refQry + "     ,( ";
+		refQry = refQry + "             CASE WHEN X.VAL1 = 'ok' THEN X.CELLNO ";
+		refQry = refQry + "             ELSE ";
+		refQry = refQry + "                     CASE WHEN X.VAL2 = 'ok' THEN  ";
+		refQry = refQry + "                             CASE WHEN LENGTH(X.CELLNO) = 10 THEN ";
+		refQry = refQry + "                                     SUBSTR(X.CELLNO,1,3) || '-' || SUBSTR(X.CELLNO,4,3) ";
+		refQry = refQry + "                                     || '-' || SUBSTR(X.CELLNO,7,4) ";
+		refQry = refQry + "                             ELSE ";
+		refQry = refQry + "                                     SUBSTR(X.CELLNO,1,3) || '-' || SUBSTR(X.CELLNO,4,4) ";
+		refQry = refQry + "                                     || '-' || SUBSTR(X.CELLNO,8,4) ";
+		refQry = refQry + "                             END ";
+		refQry = refQry + "                     ELSE 'x' ";
+		refQry = refQry + "                     END ";
+		refQry = refQry + "             END ";
+		refQry = refQry + "     ) AS PHONENUM ";
+		refQry = refQry + "     , X.MAILADDR ";
+		refQry = refQry + " FROM ( ";
+		refQry = refQry + "     SELECT ";
+		refQry = refQry + "             EMPNO ";
+		refQry = refQry + "             , NAME AS USER_NAME ";
+		refQry = refQry + "             , CELLNO ";
+		refQry = refQry + "             , DECODE ( ";
+		refQry = refQry + "                     REGEXP_REPLACE(  ";
+		refQry = refQry + "                             REGEXP_SUBSTR(  ";
+		refQry = refQry + "                                     CELLNO,  ";
+		refQry = refQry + "                                     '01[0-9]{1}-[0-9]{3,4}-[0-9]{4}',  ";
+		refQry = refQry + "                                     1 ";
+		refQry = refQry + "                             ), '[^0-9]', '-' ";
+		refQry = refQry + "                     )  ";
+		refQry = refQry + "             , '','x','ok') VAL1  ";
+		refQry = refQry + "             , DECODE ( ";
+		refQry = refQry + "                     REGEXP_REPLACE(  ";
+		refQry = refQry + "                             REGEXP_SUBSTR(  ";
+		refQry = refQry + "                                     CELLNO,  ";
+		refQry = refQry + "                                     '01[0-9]{1}[0-9]{7,8}',  ";
+		refQry = refQry + "                                     1 ";
+		refQry = refQry + "                             ), '[^0-9]', '-' ";
+		refQry = refQry + "                     )  ";
+		refQry = refQry + "             , '','x','ok') VAL2 ";
+		refQry = refQry + "    , MAILNO ";
+		refQry = refQry + "                      ,( ";
+		refQry = refQry + "    CASE WHEN MAILNO IS NULL THEN 'x' ";
+		refQry = refQry + "    ELSE ";
+		refQry = refQry + "             CASE INSTR(MAILNO,'@',1)  ";
+		refQry = refQry + "                     WHEN 0 THEN MAILNO || '@kepco.co.kr' ";
+		refQry = refQry + "       ELSE MAILNO ";
+		refQry = refQry + "       END ";
+		refQry = refQry + "     END ";
+		refQry = refQry + "    ) AS MAILADDR ";
+		refQry = refQry + "     FROM  V_INSA ";
+		refQry = refQry + "     WHERE EMPNO = '"+ refUserId +"' ";
+		refQry = refQry + ") X ";
 
-                String refQry = "" ;
-                refQry = refQry + "SELECT "; 
-                refQry = refQry + "             X.EMPNO ";
-                refQry = refQry + "     ,       X.USER_NAME ";
-                refQry = refQry + "     ,   X.CELLNO ";
-                refQry = refQry + "     ,       X.VAL1 ";
-                refQry = refQry + "     ,       X.VAL2 ";
-                refQry = refQry + "     ,( ";
-                refQry = refQry + "             CASE WHEN X.VAL1 = 'ok' THEN X.CELLNO ";
-                refQry = refQry + "             ELSE ";
-                refQry = refQry + "                     CASE WHEN X.VAL2 = 'ok' THEN  ";
-                refQry = refQry + "                             CASE WHEN LENGTH(X.CELLNO) = 10 THEN ";
-                refQry = refQry + "                                     SUBSTR(X.CELLNO,1,3) || '-' || SUBSTR(X.CELLNO,4,3) ";
-                refQry = refQry + "                                     || '-' || SUBSTR(X.CELLNO,7,4) ";
-                refQry = refQry + "                             ELSE ";
-                refQry = refQry + "                                     SUBSTR(X.CELLNO,1,3) || '-' || SUBSTR(X.CELLNO,4,4) ";
-                refQry = refQry + "                                     || '-' || SUBSTR(X.CELLNO,8,4) ";
-                refQry = refQry + "                             END ";
-                refQry = refQry + "                     ELSE 'x' ";
-                refQry = refQry + "                     END ";
-                refQry = refQry + "             END ";
-                refQry = refQry + "     ) AS PHONENUM ";
-                refQry = refQry + "     , X.MAILADDR ";
-                refQry = refQry + " FROM ( ";
-                refQry = refQry + "     SELECT ";
-                refQry = refQry + "             EMPNO ";
-                refQry = refQry + "             , NAME AS USER_NAME ";
-                refQry = refQry + "             , CELLNO ";
-                refQry = refQry + "             , DECODE ( ";
-                refQry = refQry + "                     REGEXP_REPLACE(  ";
-                refQry = refQry + "                             REGEXP_SUBSTR(  ";
-                refQry = refQry + "                                     CELLNO,  ";
-                refQry = refQry + "                                     '01[0-9]{1}-[0-9]{3,4}-[0-9]{4}',  ";
-                refQry = refQry + "                                     1 ";
-                refQry = refQry + "                             ), '[^0-9]', '-' ";
-                refQry = refQry + "                     )  ";
-                refQry = refQry + "             , '','x','ok') VAL1  ";
-                refQry = refQry + "             , DECODE ( ";
-                refQry = refQry + "                     REGEXP_REPLACE(  ";
-                refQry = refQry + "                             REGEXP_SUBSTR(  ";
-                refQry = refQry + "                                     CELLNO,  ";
-                refQry = refQry + "                                     '01[0-9]{1}[0-9]{7,8}',  ";
-                refQry = refQry + "                                     1 ";
-                refQry = refQry + "                             ), '[^0-9]', '-' ";
-                refQry = refQry + "                     )  ";
-                refQry = refQry + "             , '','x','ok') VAL2 ";
-                refQry = refQry + "    , MAILNO ";
-                refQry = refQry + "                      ,( ";
-                refQry = refQry + "    CASE WHEN MAILNO IS NULL THEN 'x' ";
-                refQry = refQry + "    ELSE ";
-                refQry = refQry + "             CASE INSTR(MAILNO,'@',1)  ";
-                refQry = refQry + "                     WHEN 0 THEN MAILNO || '@kepco.co.kr' ";
-                refQry = refQry + "       ELSE MAILNO ";
-                refQry = refQry + "       END ";
-                refQry = refQry + "     END ";
-                refQry = refQry + "    ) AS MAILADDR ";
-                refQry = refQry + "     FROM  V_INSA ";
-                refQry = refQry + "     WHERE EMPNO = '"+ refUserId +"' ";
-                refQry = refQry + ") X ";
+		conRef = dsRef.getConnection();
+		stmtRef = conRef.createStatement();
+		rsRef = stmtRef.executeQuery(refQry);
 
-                conRef = dsRef.getConnection();
-                stmtRef = conRef.createStatement();
-                rsRef = stmtRef.executeQuery(refQry);
+		if (rsRef.next())       {
+			refUserPhoneNum = rsRef.getString("PHONENUM").replace("-","");
+		}
 
-                if (rsRef.next())       {
-                        refUserPhoneNum = rsRef.getString("PHONENUM").replace("-","");
-                }
+		rsRef.close();
+		stmtRef.close();
+		conRef.close();
 
-                rsRef.close();
-                stmtRef.close();
-                conRef.close();
-
-        }
-        catch(Exception ex){
-                        ex.printStackTrace();
-        } finally {
-        }
+	}
+	catch(Exception ex){
+			ex.printStackTrace();
+	} finally {
+	}
  
-        return refUserPhoneNum;
+	return refUserPhoneNum;
 }
 %>
-

@@ -290,7 +290,7 @@ public String Make_SMS_MSG(String strRecvPhone, String strSmsMsg, String strEmpN
 	int iRECVPHONE = 15 ;//--
 	String RECVPHONE = strRecvPhone ; //--	
 	int iCALLBACK = 15 ;//--
-	String CALLBACK = "0613451166"; //15 + 1 //--	
+	String CALLBACK = "0613458000"; //15 + 1 //--	
 	int iMESSAGE = 80 ; //--
 	String MESSAGE = strSmsMsg; //strMsgText ; //80 + 1 //--	
 	int iEMPNO = 8 ; //--

@@ -60,6 +60,7 @@ public class _ini_0manage_0cert_0logout__jsp extends com.caucho.jsp.JavaPage
     
 //session.invalidate();
 session.removeAttribute("adminLogin");
+session.removeAttribute("admin2Login");
 response.sendRedirect("ini_manage_cert_login.jsp");
 
 
@@ -122,7 +123,7 @@ response.sendRedirect("ini_manage_cert_login.jsp");
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_manage_cert_logout.jsp"), -1399344445535968305L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_manage_cert_logout.jsp"), -6555673268557780463L, true);
     _caucho_depends.add(depend);
   }
 

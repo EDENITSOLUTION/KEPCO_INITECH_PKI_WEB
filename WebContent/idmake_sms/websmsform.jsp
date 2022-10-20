@@ -1,7 +1,36 @@
+<%@ page language="java" %>
 <%@ page contentType="text/html;charset=EUC-KR" %>
-<%@ page import="java.io.*,java.util.*,java.lang.*" %>
+<%@ page import="java.io.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.util.Date.*" %>
+<%@ page import="java.util.Calendar.*" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.lang.*" %>
 <%@ page import="java.lang.String.*" %>
+<%@ page import="java.text.*"%>
 <%@ page import='java.sql.*, javax.sql.*, javax.naming.*' %>
+<%@ page import="java.lang.String.*" %>
+<%@ page import="java.security.MessageDigest,java.security.NoSuchAlgorithmException" %>
+
+<%!
+ public byte[] getHashValue(String inputString) {
+	MessageDigest md = null;
+	try {
+		md = MessageDigest.getInstance("MD5");
+		md.update(inputString.getBytes());
+	} catch (NoSuchAlgorithmException e) {
+		e.printStackTrace();
+	}
+	
+	return md.digest(); 
+}
+
+public String getBase64Data(byte[] inputByte) throws IOException {
+	String returnString = "";
+	returnString = new String(com.initech.util.Base64Util.encode(inputByte, false));
+	return returnString;
+}
+%>
 <%
 boolean is_insa = true; //SMS인사정보 연동 유무
 
@@ -24,10 +53,18 @@ if (empno.equals("ex099129")) { //ex099129는 전화번호 변경 가능하도록하자.
 }else{
 	exRead = "readonly='readonly'";
 }
+
+String refuserid2 = request.getParameter("refuserid2") ;
+if (refuserid2 == null) {
+	refuserid2 = "";
+}
+
 //타임아이디
 String tmid = request.getParameter("tmid");
 
 int cnt_user = 0 ; // 사번에 해당하는 사용자 존재 유무(0:없음, 그외 존재)
+int pwdCnt = 0;
+int certCnt = 0 ;
 String userName = null;
 String phone = "010-9911-7557";
 String phone1 = null;
@@ -38,7 +75,7 @@ String cellQry = null ;
 String PHONENUM = null;
 String isChk = "Y"; // 인사정보에 연락처가 제대로 등록안되었을 경우 플래그
 String cellNotice = null; //인사정보에 연락처가 제대로 등록 안되었을 경우 메세지
-int winH = 460;
+int winH = 485;
 int winW = 330;
 
 int phoneLen = 0 ;
@@ -62,6 +99,7 @@ if (is_insa) { //인사정보 연동시
 	Context ic = new InitialContext();
 	DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/USERS");
 	ResultSet rs = null;
+	ResultSet rRs = null;
 
 	Connection conn = null;
 	Statement stmt = null;
@@ -145,8 +183,25 @@ if (is_insa) { //인사정보 연동시
 				phoneLen = phone.length();
 			}
 			cnt_user = 1;
+			
+			rs = stmt.executeQuery("select count(userid) as cnt from user_pwd where userid='" + empno + "' " );
+			while (rs.next()){
+				pwdCnt = rs.getInt("cnt");
+			}
 
+			rs = stmt.executeQuery("select count(name) as cnt from certs where name='" + empno + "' " );
+			while (rs.next()){
+				certCnt = rs.getInt("cnt");
+			}
 
+			if (pwdCnt < 1) {
+				String q = "";
+				q += "	INSERT INTO USER_PWD";
+				q += "	   (USERID, USERPWD,CRDATE,USERNAME,USERIP) ";
+				q += "		VALUES";
+				q += "	 ('"+empno+"', '"+getBase64Data(getHashValue(empno + "!@"))+"', SYSDATE, '"+userName+"', '"+request.getRemoteAddr()+"')";
+				rs = stmt.executeQuery(q);
+			}
 			//연락처가 제대로 등록이 안된 경우
 
 			if (PHONENUM.equals("x")  ){
@@ -183,7 +238,9 @@ if (is_insa) { //인사정보 연동시
 	refuserid = empno;
 }
 		
-
+if (!"".equals(refuserid2)) {
+	refuserid = refuserid2;
+}
 
 if (cnt_user > 0 ) { //사용자 정보가 존재한다면 인증폼보여주자
 %>
@@ -191,6 +248,7 @@ if (cnt_user > 0 ) { //사용자 정보가 존재한다면 인증폼보여주자
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <title>[1]SMS 인증하기</title>
 <style type="text/css">
 <!--
@@ -217,7 +275,7 @@ if (isChk.equals("N")) {
 <%
 }else{
 %>
-	window.resizeTo(<%=winW%>,400)
+	window.resizeTo(<%=winW%>,530)
 <%
 }
 %>
@@ -238,6 +296,7 @@ function  NumberCheck(no)
 function  CheckEmpno(no)
 {
 	numstr = '0123456789';
+	/*
 	for(var i=0;i<no.value.length;i++) {  
 		if(numstr.indexOf(no.value.charAt(i)) == -1) { 
 			alert('사번 입력은 숫자만 입력이 가능합니다.'); 
@@ -246,6 +305,7 @@ function  CheckEmpno(no)
 			return false;
 		}
 	}
+	*/
 	return true;
 }
 
@@ -315,10 +375,16 @@ if (isChk.equals("Y")) {
 	}
 	
 	//alert(form.isOkEmp.value + " / emp: " + form.empno.value  + " / refuserid : " + form.refuserid.value + " / hdnRefEmp : " + form.hdnRefEmp.value);
-	
 	form.target = "_self";
 	form.action='websmssend.jsp';
-	form.submit();
+	
+	if(form.refuserid.value == form.empno.value) {
+		form.submit();
+	} else {
+		if(CheckEmpno(document.data.refuserid)) {
+			form.submit();
+		}
+	}
 }
 
 function changeUserPhone(){
@@ -364,14 +430,25 @@ function isRightUser(){
 		form.refuserid.focus();
 		return false;
 	}
+
 	form.target = "hdnFrame";
 	form.action = "checkUserId.jsp";
 	form.submit();
-	
+
 }
 function fncChangeMod(){
 	location.href="webmailform.jsp?empno=<%=empno%>&tmid=<%=tmid%>";
 }
+function fncChangeMod2(){
+	location.href="apppushform.jsp?empno=<%=empno%>&tmid=<%=tmid%>";
+}
+
+<% if (!"".equals(refuserid2)) { %>
+window.onload = function() {
+	document.data.isOkEmp.value='Y';
+	document.data.hdnRefEmp.value='<%=refuserid2%>';
+}
+<% } %>
 </script>
 </head>
 <body>
@@ -394,20 +471,43 @@ function fncChangeMod(){
 	<tr> 
 		<td height="30" style="border-top:solid 1px #cecece;"><img src="/idmake_sms/IMAGE/title.gif" width="98" height="21" border="0" /></td>
 	</tr>
+	<tr>
+		<td>
+			<table width="100%" border="0" cellpadding="0">
+				<tr>
+					<td style="text-align:center;">
+						<img src="/idmake_sms/IMAGE/popup_sms_n.gif" alt="" /><br/>
+						<input type="radio" name="chk" checked="checked" /><br/>휴대전화로 발송
+					</td>
+					<td style="text-align:center;">
+						<img src="/idmake_sms/IMAGE/popup_email_n.gif" alt="" /><br/>
+						<input type="radio" name="chk" onclick="fncChangeMod();" /><br/>이메일로 발송
+					</td>
+					<td style="text-align:center;">
+						<img src="/idmake_sms/IMAGE/popup_push_n.gif" alt="" /><br/>
+						<input type="radio" name="chk" onclick="fncChangeMod2();" /><br/>해외사용자 전용
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 	<tr> 
 		<td valign="top">
 			<table width="100%" border="0" cellpadding="0" style="border:solid 1px #d7d5d5;">
 				<tr>
-					<td style="background-color:#ffffff;padding-left:10px;">
+					<td style="background-color:#ffffff;padding-top:10px;padding-left:10px;">
 						<table width="98%" border="0" cellpadding="0" cellspacing="0">
+							<!--
 							<tr> 
 								<td colspan="2" style="padding-top:5px;padding-bottom:5px;"><img src="/idmake_sms/IMAGE/title2.gif" width="200" height="13" border="0" /></td>
 							</tr>
 							<tr> 
 								<td colspan="2" style="padding-right:10px;padding-top:5px;padding-bottom:10px;">
-									<span style="cursor:pointer;font-weight:bold;color:#ffffff;background-color:#6633ff;border:solid 1px #666666;padding:2px;" onclick="fncChangeMod();">이메일 인증으로 변경</span>
+									<span style="cursor:pointer;font-weight:bold;color:#ffffff;background-color:#6633ff;border:solid 1px #666666;padding:6px 5.5px 2px 5.5px;" onclick="fncChangeMod();">이메일 인증으로 변경</span>
+									<span style="cursor:pointer;font-weight:bold;color:#ffffff;background-color:#6633ff;border:solid 1px #666666;padding:6px 5.5px 2px 5.5px;" onclick="fncChangeMod2();">PUSH 인증으로 변경</span>
 								 </td>
 							</tr>	
+							-->
 	<%
 	String cell[] = org_phone.split("-"); 
 	phone1 =  cell[0] ;
@@ -424,9 +524,9 @@ function fncChangeMod(){
 							
 							<tr> 
 								<td>
-									<input type="text" name="phone1" size="3" class="input" maxlength="3" value="<%=phone1%>" onkeyup='javascript:NumberCheck(document.data.phone1)' <%=exRead%> />&nbsp;-&nbsp; 
-									<input type="text" name="phone2" size="4" class="input" maxlength="4" value="<%=phone2%>" onkeyup='javascript:NumberCheck(document.data.phone2)' <%=exRead%> />&nbsp;-&nbsp; 
-									<input type="text" name="phone3" size="4" class="input" maxlength="4" value="<%=phone3%>" onkeyup='javascript:NumberCheck(document.data.phone3)' <%=exRead%> />
+									<input type="text" name="phone1" size="3" class="input" maxlength="3" value="<%=phone1%>" onkeyup='javascript:NumberCheck(document.data.phone1)' disabled="disabled" <%=exRead%> />&nbsp;-&nbsp; 
+									<input type="text" name="phone2" size="4" class="input" maxlength="4" value="<%=phone2%>" onkeyup='javascript:NumberCheck(document.data.phone2)' disabled="disabled" <%=exRead%> />&nbsp;-&nbsp; 
+									<input type="text" name="phone3" size="4" class="input" maxlength="4" value="<%=phone3%>" onkeyup='javascript:NumberCheck(document.data.phone3)' disabled="disabled" <%=exRead%> />
 								</td>
 								<td style="width:60px; text-align:right; padding-right:10px;">
 								<%if (isChk.equals("Y")){%>
@@ -448,12 +548,24 @@ function fncChangeMod(){
 							<%
 							}
 							%>
-							<tr id="tr_refuserid" style="display:<%if (isChk.equals("Y")) {%>none<%}else{%><%}%>;">
+							<tr id="tr_refuserid" style="display:<%if (isChk.equals("Y") && "".equals(refuserid2)) {%>none<%}else{%><%}%>;">
 								<td height=25 colspan="2">
 									<br />
-									<span style="color:#6600cc;font-weight:bold;"><strong>※입력하신 사번에 해당하는 사원의 핸드폰 번호로 SMS 인증번호가 전송됩니다.</strong></span> 
-									<br /><br />
-									인증받을 사번 : <input type="text" name="refuserid" value="<%=refuserid%>" size="8" class="input" style="width:100px;"  <%if (empno.equals("ex099129")) {%><%}else{%> onkeyup="CheckEmpno(document.data.refuserid);"<%}%> /> <img src="/idmake_sms/IMAGE/btn_userConfirm.gif" border="0" align="absmiddle" style="cursor:pointer;" onclick="isRightUser();" />
+									<span style="color:#6600cc;font-weight:bold;"><strong>※ 입력하신 사번에 해당하는 사원의 핸드폰 번호로 SMS 인증번호가 전송됩니다.</strong></span> 
+									<br />
+									<%
+										if ( pwdCnt < 1 || certCnt < 1   ) {
+									%>
+									<span>※ 최초 인증서를 받을경우 이전 비밀번호는 <br/><strong style="color:red;">'사번!@'</strong> 입니다. </span><br/>
+									<%
+										}	
+									%>
+									<span style="display:inline-block; width:110px; font-size:8pt; padding-bottom:2px;"><%=userName%>님의 비밀번호 :</span> <input type="password" name="orguserpw" value="" class="input" style="width:93px; margin-top:5px;" />
+																		
+									<span style="display:inline-block; width:110px; font-size:8pt; padding-bottom:2px; margin-top:10px;">대리자 사번 :</span> <input type="text" name="refuserid" value="<%=refuserid%>" size="8" class="input" style="width:93px; margin-top:10px;"  <%if (empno.equals("ex099129")) {%><%}else{%> onkeyup="CheckEmpno(document.data.refuserid);"<%}%> /> 
+									<img src="/idmake_sms/IMAGE/btn_userConfirm1.gif" border="0" align="absmiddle" style="cursor:pointer; margin-left:4px; vertical-align:bottom; margin-bottom:1px;" onclick="isRightUser();" />
+									
+									
 								</td>
 							</tr>
 							<tr> 

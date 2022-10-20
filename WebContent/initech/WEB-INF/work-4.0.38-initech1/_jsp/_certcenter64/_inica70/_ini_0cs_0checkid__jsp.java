@@ -263,6 +263,7 @@ String pwdSyncKey = "5ac1bb6d4172409089a7df3aa6ec91c2";
 String pwdSyncDidx = "1";
 
 
+
 boolean m_bDebug = true;
 String m_How = null;
 
@@ -584,6 +585,7 @@ String m_OU = "\uc815\ubcf4\uae30\uc220\ucc98";	//\uc815\ubcf4\uae30\uc220\ucc98
 String m_O = "\ud55c\uad6d\uc804\ub825\uacf5\uc0ac";
 String m_L = "\uc11c\uc6b8\ud2b9\ubcc4\uc2dc";
 String m_C = "KR";
+String m_POLICY = "71"; // 20180718 njjang \ucd94\uac00
 
 //\uc778\uc99d\uc11c \uc2e0\uccad(\ucde8\uc18c) \uc131\uacf5\uc2dc \ubc1b\uc544\uc624\ub294 \uac12\ub4e4 : \ubcc0\uacbd\ud558\uc9c0 \ub9d0\uac83
 String m_caSerial = null;
@@ -706,15 +708,12 @@ if (m_IniErrCode == null)
 	try {
 		
 		conn = ds.getConnection();
-		//Creat Query and get results
 		stmt = conn.createStatement();
-
 		rs = stmt.executeQuery("select serial from LDAP_INFO where userid='" + m_ID + "' and status='V'");
-		
 		while( rs.next() ) {
 			m_certserial = rs.getString("serial");
 		}
-		
+
 		if (m_bDebug) System.out.println(m_ID + "( " + m_How + " ) : m_certserial: " + m_certserial);
 		
 	} catch(Exception e) {
@@ -727,11 +726,11 @@ if (m_IniErrCode == null)
 	if (m_bDebug) System.out.println(m_ID + "( " + m_How + " ) : host(DB) connect end ...");
 }
 
-    out.write(_jsp_string4, 0, _jsp_string4.length);
+    out.write(_jsp_string1, 0, _jsp_string1.length);
     
 	if (m_How.equals("certRevoke")) {
 
-    out.write(_jsp_string5, 0, _jsp_string5.length);
+    out.write(_jsp_string4, 0, _jsp_string4.length);
      if (m_IniErrCode == null) 
 {
 	String userid = m_ID;	
@@ -742,7 +741,7 @@ if (m_IniErrCode == null)
 	String cn = m_ID;
 
 	String mail = m_MAIL;
-	String policy = "71";
+	String policy = m_POLICY;
 	String serialno = m_certserial;
 
 	HashMap hash = null;
@@ -859,7 +858,7 @@ if (m_IniErrCode == null)
 
 	/* RA SDK \ucd08\uae30\ud654 */
 	//IniOPPRA iniRA = new IniOPPRA("172.20.25.121", 4007);
-	IniOPPRA iniRA = new IniOPPRA("10.180.2.66", 4000);
+	IniOPPRA iniRA = new IniOPPRA("10.180.2.67", 4000);
 	iniRA.setCharEncoding("euc-kr");
 	/* IniOPPRA iniRA = new IniOPPRA("172.20.25.140", 4007); */
 	iniRA.initialize();
@@ -1066,7 +1065,7 @@ if (m_IniErrCode == null)
 	/* THE END */
 }
 
-    out.write(_jsp_string4, 0, _jsp_string4.length);
+    out.write(_jsp_string1, 0, _jsp_string1.length);
     
 	}
 
@@ -1097,7 +1096,7 @@ if (m_IniErrCode == null)
 
 
 
-    out.write(_jsp_string6, 0, _jsp_string6.length);
+    out.write(_jsp_string5, 0, _jsp_string5.length);
     
 	if (m_IniErrCode == null) {
 		if (m_bDebug) System.out.println(m_ID + "( " + m_How + " ) *** Success ***\n");
@@ -1111,7 +1110,7 @@ if (m_IniErrCode == null)
     
 }
 
-    out.write(_jsp_string4, 0, _jsp_string4.length);
+    out.write(_jsp_string1, 0, _jsp_string1.length);
   }
 
   private com.caucho.make.DependencyContainer _caucho_depends
@@ -1173,13 +1172,13 @@ if (m_IniErrCode == null)
     com.caucho.vfs.Depend depend;
     depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_cs_checkid.jsp"), -2637910625758440159L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -8960418715910081368L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -1077120484095086999L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_init.jsp"), -7759514701566643355L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_init.jsp"), 4796767119961629043L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_db_check.jsp"), 7639038416292097162L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_db_check.jsp"), -8880508645217506896L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_ca_send.jsp"), 3322387933915330306L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_ca_send.jsp"), 2108205030861484585L, true);
     _caucho_depends.add(depend);
     depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_err_check.jsp"), 7889382124300349123L, true);
     _caucho_depends.add(depend);
@@ -1213,20 +1212,18 @@ if (m_IniErrCode == null)
     }
   }
 
-  private final static char []_jsp_string5;
+  private final static char []_jsp_string4;
   private final static char []_jsp_string2;
   private final static char []_jsp_string3;
-  private final static char []_jsp_string1;
   private final static char []_jsp_string0;
-  private final static char []_jsp_string4;
-  private final static char []_jsp_string6;
+  private final static char []_jsp_string1;
+  private final static char []_jsp_string5;
   static {
-    _jsp_string5 = "\n		\n\n\n\n\n\n\n".toCharArray();
+    _jsp_string4 = "\n		\n\n\n\n\n\n\n".toCharArray();
     _jsp_string2 = "\n\n	\n".toCharArray();
     _jsp_string3 = "\n\n\n\n	\n\n\n".toCharArray();
-    _jsp_string1 = "\n\n\n".toCharArray();
     _jsp_string0 = "\n\n\n\n\n\n\n\n".toCharArray();
-    _jsp_string4 = "\n\n".toCharArray();
-    _jsp_string6 = "\n	\r\n\r\n".toCharArray();
+    _jsp_string1 = "\n\n".toCharArray();
+    _jsp_string5 = "\n	\r\n\r\n".toCharArray();
   }
 }

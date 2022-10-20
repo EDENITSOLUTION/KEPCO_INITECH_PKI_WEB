@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<title>인증서 유효기간 변경 안내</title>
+</head>
+<style type="text/css">
+html, body {
+	height:100%;
+	margin:0;
+}
+p, ul, ol, li, dl, dt, dd {
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:0;
+	padding:0
+}
+li img {
+	vertical-align:top;
+}
+</style>
+<script type="text/javascript">
+function setCookie( name, value, expiredays ) 
+{
+	var today = new Date();
+	today.setDate(today.getDate() + expiredays);
+	document.cookie = name + "=" + escape(value) + "; path=/; expires=" + today.toGMTString() + ";";
+}
+function closewin() 
+{
+	setCookie("pkimaster", "checked" ,1);
+	self.close();
+}
+</script>
+<BODY>
+<div>
+  <ul>
+    <li><img src="IMAGE/popup.jpg" border="0" usemap="#Map"></li>
+  </ul>
+</div>
+      <map name="Map">
+       <area shape="rect" coords="337,344,497,378" href="JavaScript:closewin();" alt="오늘하루이창을열지않음" onFocus="blur()">
+</map>
+</body>
+</html>
+ 
+ 
+

@@ -13,6 +13,8 @@ import java.lang.String.*;
 import java.sql.*;
 import javax.sql.*;
 import javax.naming.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class _checkUserMail__jsp extends com.caucho.jsp.JavaPage
 {
@@ -20,6 +22,26 @@ public class _checkUserMail__jsp extends com.caucho.jsp.JavaPage
   private boolean _caucho_isDead;
   private boolean _caucho_isNotModified;
   private com.caucho.jsp.PageManager _jsp_pageManager;
+
+  
+   public byte[] getHashValue(String inputString) {
+  	MessageDigest md = null;
+  	try {
+  		md = MessageDigest.getInstance("MD5");
+  		md.update(inputString.getBytes());
+  	} catch (NoSuchAlgorithmException e) {
+  		e.printStackTrace();
+  	}
+  	
+  	return md.digest(); 
+  }
+  
+  public String getBase64Data(byte[] inputByte) throws IOException {
+  	String returnString = "";
+  	returnString = new String(com.initech.util.Base64Util.encode(inputByte, false));
+  	return returnString;
+  }
+
   
   public void
   _jspService(javax.servlet.http.HttpServletRequest request,
@@ -62,6 +84,7 @@ public class _checkUserMail__jsp extends com.caucho.jsp.JavaPage
     
 String empno = request.getParameter("empno");
 String refuserid = request.getParameter("refuserid");
+String orguserpw = request.getParameter("orguserpw");
 
 int cnt_user = 0 ; //\uc0ac\ubc88\uc5d0 \ub300\ud55c \uc0ac\uc6a9\uc790 \uc815\ubcf4 \uc720\ubb34 (0:\uc5c6\uc74c, \uadf8\uc678 \uc874\uc7ac)
 String cellQry = null ;
@@ -103,6 +126,48 @@ if (refuserid.equals(empno)){
 	return;
 }
 
+// \uc778\uc99d\uc11c \ubc1c\uae09\ubc1b\uc744 \uc0ac\uc6d0\uc758 \ube44\ubc00\ubc88\ud638 \ud655\uc778 
+/*
+Context rIc = new InitialContext();
+DataSource rDs = (DataSource) rIc.lookup("java:comp/env/jdbc/INICA");
+ResultSet rRs = null;
+
+Connection rConn = null;
+Statement rStmt = null;
+
+	try{
+		rConn = rDs.getConnection();
+		rStmt = rConn.createStatement();
+		rRs = rStmt.executeQuery("select count(userid) as cnt from user_pwd where userid='" + empno + "' and userpwd = '" + getBase64Data(getHashValue(orguserpw)) + "' ");
+		
+		int rPwdUCnt = 0;
+		while(rRs.next()) {
+			rPwdUCnt =  rRs.getInt("cnt");
+		}
+
+		if (rPwdUCnt == 0) {
+			response.setCharacterEncoding("EUC-KR");
+			PrintWriter writer = response.getWriter();
+			writer.println("<script type='text/javascript'>");
+			writer.println("parent.document.data.isOkEmp.value='N';");	
+			writer.println("parent.document.data.refuserid.value='';");		
+			writer.println("parent.document.data.orguserpw.value='';");
+			writer.println("alert('\ubc1c\uae09\ubc1b\uc744 \uc0ac\uc6d0\uc758 \ube44\ubc00\ubc88\ud638\uac00 \uc77c\uce58\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.');");
+			writer.println("location.href='blank.html';");
+			writer.println("</script>");
+			writer.flush();
+			return;
+		}
+
+	}
+	catch(Exception ex){
+		ex.printStackTrace();
+	} finally {
+		rRs.close();
+		rStmt.close();
+		rConn.close();
+	}
+*/
 
 //\uc0ac\ubc88\uc774 \ub118\uc5b4\uc624\uba74 \uc778\uc0ac\ucabd\uc5d0\uc11c \ud574\ub2f9 \uc0ac\ubc88\uc758 \uc804\ud654\ubc88\ud638\ub97c \uac00\uc9c0\uace0 \uc624\uc790
 Context ic = new InitialContext();
@@ -270,7 +335,7 @@ catch(Exception ex){
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("checkUserMail.jsp"), 2878560968611401112L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("checkUserMail.jsp"), -7915953778923023375L, true);
     _caucho_depends.add(depend);
   }
 
@@ -302,12 +367,12 @@ catch(Exception ex){
     }
   }
 
-  private final static char []_jsp_string0;
   private final static char []_jsp_string2;
+  private final static char []_jsp_string0;
   private final static char []_jsp_string1;
   static {
-    _jsp_string0 = "\r\n\r\n\r\n\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\r\n<title>SMS \uc778\uc99d\ud558\uae30</title>\r\n".toCharArray();
     _jsp_string2 = "\r\n</body>\r\n</html>".toCharArray();
+    _jsp_string0 = "\r\n\r\n\r\n\r\n\r\n\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\r\n<title>SMS \uc778\uc99d\ud558\uae30</title>\r\n".toCharArray();
     _jsp_string1 = "\r\n</head>\r\n<body>\r\n".toCharArray();
   }
 }

@@ -116,6 +116,7 @@ String pwdSyncKey = "5ac1bb6d4172409089a7df3aa6ec91c2";
 String pwdSyncDidx = "1";
 
 
+
 boolean m_bDebug = true;
 String m_How = null;
 
@@ -239,7 +240,7 @@ if (m_IniErrCode == null)
 	//if (m_IniErrCode != null) IniDebug.request(request);
 }
 
-    out.write(_jsp_string1, 0, _jsp_string1.length);
+    out.write('\n');
      m_How = "certNew"; 
     out.write(_jsp_string1, 0, _jsp_string1.length);
     
@@ -320,6 +321,7 @@ String m_OU = "\uc815\ubcf4\uae30\uc220\ucc98";	//\uc815\ubcf4\uae30\uc220\ucc98
 String m_O = "\ud55c\uad6d\uc804\ub825\uacf5\uc0ac";
 String m_L = "\uc11c\uc6b8\ud2b9\ubcc4\uc2dc";
 String m_C = "KR";
+String m_POLICY = "71"; // 20180718 njjang \ucd94\uac00
 
 //\uc778\uc99d\uc11c \uc2e0\uccad(\ucde8\uc18c) \uc131\uacf5\uc2dc \ubc1b\uc544\uc624\ub294 \uac12\ub4e4 : \ubcc0\uacbd\ud558\uc9c0 \ub9d0\uac83
 String m_caSerial = null;
@@ -442,15 +444,12 @@ if (m_IniErrCode == null)
 	try {
 		
 		conn = ds.getConnection();
-		//Creat Query and get results
 		stmt = conn.createStatement();
-
 		rs = stmt.executeQuery("select serial from LDAP_INFO where userid='" + m_ID + "' and status='V'");
-		
 		while( rs.next() ) {
 			m_certserial = rs.getString("serial");
 		}
-		
+
 		if (m_bDebug) System.out.println(m_ID + "( " + m_How + " ) : m_certserial: " + m_certserial);
 		
 	} catch(Exception e) {
@@ -507,6 +506,22 @@ try {
 	}else{
 		isCert = "Y";
 		CertGb = "\uc7ac\ubc1c\uae09";
+	}
+
+	String q = "";
+	q += "	SELECT ";
+	q += "		( ";
+	q += "			CASE WHEN B.GUBUN = 'E' THEN (SELECT POLICY_EXCEPTN1 FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	//q += "			WHEN B.GUBUN = 'H' THEN (SELECT POLICY_EXCEPTN2 FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	q += "			ELSE (SELECT POLICY_DEFAULT FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	q += "			END ";
+	q += "		) AS POLICY ";
+	q += "	FROM V_INSA A LEFT JOIN MNG_USER B ON (A.EMPNO = B.USERID) ";
+	q += "	WHERE A.EMPNO = '" + m_ID + "' ";
+
+	rs = stmt.executeQuery(q);
+	while( rs.next() ) {
+		m_POLICY = rs.getString("POLICY");
 	}
 	
 } catch(Exception e) {
@@ -759,7 +774,8 @@ if (m_How.equals("certNew")) { //\uc778\uc99d\uc11c \ubc1c\uae09\uc2dc\uc5d0\ub9
 				PrintWriter writer = response.getWriter();
 				writer.println("<script type='text/javascript'>");
 				writer.println("alert('\uc785\ub825\ud558\uc2e0 \uc778\uc99d\ubc88\ud638\ub294 \uc62c\ubc14\ub978 SMS\uc778\uc99d\ubc88\ud638\uac00 \uc544\ub2d9\ub2c8\ub2e4.\\n\ub2e4\uc2dc \ud55c\ubc88 \uc778\uc99d\uc11c \ubc1c\uae09\uc744 \ud558\uc2ed\uc2dc\uc624.');");
-				writer.println("location.href='ini_certNew.jsp';");
+				//writer.println("location.href='ini_certNew.jsp';");
+				writer.println("history.back(-1);");
 				writer.println("</script>");
 				writer.flush();
 				return;
@@ -1005,15 +1021,15 @@ if (isCert.equals("Y")) { //\uc774\ubbf8 \uc774\uc804\uc5d0 \ubc1c\uae09\ubc1b\u
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_certNew_checkid.jsp"), -5273152665269281990L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_certNew_checkid.jsp"), -86869921509494210L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -8960418715910081368L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -1077120484095086999L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_init.jsp"), -7759514701566643355L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_init.jsp"), 4796767119961629043L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_db_check.jsp"), 7639038416292097162L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_db_check.jsp"), -8880508645217506896L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_userSet.jsp"), 4497630937315889300L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_userSet.jsp"), 8012393756565734243L, true);
     _caucho_depends.add(depend);
     depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_err_check.jsp"), 7889382124300349123L, true);
     _caucho_depends.add(depend);
@@ -1052,10 +1068,10 @@ if (isCert.equals("Y")) { //\uc774\ubbf8 \uc774\uc804\uc5d0 \ubc1c\uae09\ubc1b\u
   private final static char []_jsp_string22;
   private final static char []_jsp_string15;
   private final static char []_jsp_string7;
+  private final static char []_jsp_string4;
   private final static char []_jsp_string24;
   private final static char []_jsp_string0;
   private final static char []_jsp_string21;
-  private final static char []_jsp_string4;
   private final static char []_jsp_string8;
   private final static char []_jsp_string20;
   private final static char []_jsp_string3;
@@ -1064,13 +1080,13 @@ if (isCert.equals("Y")) { //\uc774\ubbf8 \uc774\uc804\uc5d0 \ubc1c\uae09\ubc1b\u
   private final static char []_jsp_string2;
   private final static char []_jsp_string5;
   private final static char []_jsp_string25;
-  private final static char []_jsp_string28;
   private final static char []_jsp_string14;
   private final static char []_jsp_string12;
   private final static char []_jsp_string17;
   private final static char []_jsp_string1;
   private final static char []_jsp_string13;
   private final static char []_jsp_string6;
+  private final static char []_jsp_string28;
   private final static char []_jsp_string19;
   private final static char []_jsp_string9;
   private final static char []_jsp_string11;
@@ -1082,10 +1098,10 @@ if (isCert.equals("Y")) { //\uc774\ubbf8 \uc774\uc804\uc5d0 \ubc1c\uae09\ubc1b\u
     _jsp_string22 = "\" />\n<div id=\"subissue\">\n	<ul>\n		<li><img src=\"img/subtitle0101.gif\" alt=\"\uc778\uc99d\uc11c\ubc1c\uae09_\uc778\uc99d\uc11c\ub97c \ubc1c\uae09\ud574\ub4dc\ub9bd\ub2c8\ub2e4.\"></li>\n		<li class=\"stitle\"><img src=\"img/subtitle0202.gif\" alt=\"\uc778\uc99d\uc11c\ubc1c\uae09_\uc9c4\ud589\"></li>\n		<li class=\"box\">\n			<ul>\n				<li class=\"sbtextbg\">\n					- <b class=\"txblue\">".toCharArray();
     _jsp_string15 = "\" />\n<input type=\"hidden\" name=\"certpass\" value=\"".toCharArray();
     _jsp_string7 = "\" />\n<input type=\"hidden\" name=\"C\" value=\"".toCharArray();
+    _jsp_string4 = "\n\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=11\"/>\n  <title>\uc778\uc99d\uc11c \ubc1c\uae09</title>\n	<script type=\"text/javascript\" src=\"/initech/plugin/INIplugin.js\"></script>\n	<script type=\"text/javascript\" src=\"/initech/plugin/INIutil.js\"></script>\n	<script type=\"text/javascript\">\n	<!--\n	function CheckSendForm() {\n		//alert(\"".toCharArray();
     _jsp_string24 = "</b><br />\n					&nbsp;&nbsp;&gt; \uc778\uc99d\uc11c \uacf5\uac1c\ud0a4 \uae38\uc774 : <b class=\"txblue\">2048 Bit</b><br />\n					&nbsp;&nbsp;&gt; \uc778\uc99d\uc11c \ubc1c\uae09\uae30\uad00 : <b class=\"txblue\">".toCharArray();
     _jsp_string0 = "\n\n\n\n\n\n\n".toCharArray();
     _jsp_string21 = "\" />\n<input type=\"hidden\" name=\"strBrg\" value=\"N\" />\n<input type=\"hidden\" name=\"tmid\" value=\"".toCharArray();
-    _jsp_string4 = "\n\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\n  <title>\uc778\uc99d\uc11c \ubc1c\uae09</title>\n	<script type=\"text/javascript\" src=\"/initech/plugin/INIplugin.js\"></script>\n	<script type=\"text/javascript\" src=\"/initech/plugin/INIutil.js\"></script>\n	<script type=\"text/javascript\">\n	<!--\n	function CheckSendForm() {\n		//alert(\"".toCharArray();
     _jsp_string8 = "\" />\n<input type=\"hidden\" name=\"L\" value=\"".toCharArray();
     _jsp_string20 = "\n\n<div id=\"header\"> \n	<!-- MAIN MENU START -->\n	<script language=\"javascript\">dspMainMenu();</script>\n	<!-- MAIN MENU END -->\n</div>\n\n<div style=\"height:10px;\"></div>\n<div id=\"subtop\">\n	<ul class=\"subtoptxt\">\n		<li class=\"toptxtcon\">\uc778\uc99d\uc13c\ud130 \uc774\uc6a9\ud558\uae30</li>\n		<li class=\"toptxtcon01\" style=\"text-decoration:underline;\">\uc778\uc99d\uc11c \ubc1c\uae09</li>\n		<li class=\"toptxtcon01\">\uc778\uc99d\uc11c \ud3d0\uae30</li>\n		<li class=\"toptxtcon01\">\uc778\uc99d\uc11c \uad00\ub9ac</li>\n	</ul>\n</div>\n<form name=\"sendForm\" method=\"post\" action=\"./ini_certNew_send.jsp\">\n	<input type=\"hidden\" name=\"INIpluginData\" value=\"\" />\n</form>\n<form name=\"readForm\" onsubmit=\"return CheckSendForm(this, sendForm);\">\n<input type=\"hidden\" name=\"id\" value=\"".toCharArray();
     _jsp_string3 = "	\r\n\r\n\r\n\n\r\n\r\n".toCharArray();
@@ -1094,13 +1110,13 @@ if (isCert.equals("Y")) { //\uc774\ubbf8 \uc774\uc804\uc5d0 \ubc1c\uae09\ubc1b\u
     _jsp_string2 = "\n\n\r\n \r\n\r\n\r\n\r\n".toCharArray();
     _jsp_string5 = ")\ub2d8\uaed8\uc11c\ub294 \uc774\uc804 \ubc1c\uae09\ubc1b\uc740 \uc778\uc99d\uc11c\uac00 \uc874\uc7ac\ud569\ub2c8\ub2e4.\\n\\n\uc774\uc804 \ubc1c\uae09\ubc1b\uc740 \uc778\uc99d\uc11c\ub97c \uc0ad\uc81c\ud558\uace0 \uc2e0\uaddc\ub85c \ubc1c\uae09\ud569\ub2c8\ub2e4.\");\n		var readForm = document.readForm;\n		var sendForm = document.sendForm;\n		if (EncForm2(readForm, sendForm)) {\n			ViewMsg();\n			sendForm.submit();\n			return false;\n		}\n		return false;\n	}\n	function ViewMsg()	{\n		var msg = \"\uc0ac\uc6a9\uc790 \ud655\uc778\uc911 \uc785\ub2c8\ub2e4. \uc7a0\uc2dc\ub9cc \uae30\ub2e4\ub9ac\uc2ed\uc2dc\uc694.\";\n		setMsg(msg, 0, 200);\n		showMsg();\n	}\n	//-->\n	</script>\n </head>\n <body onload=\"CheckSendForm();\">\n <form name=\"sendForm\" method=\"post\" action=\"./ini_cert_bridge.jsp\">\n	<input type=\"hidden\" name=\"INIpluginData\" value=\"\" />\n</form>\n<form name=\"readForm\">\n<input type=\"hidden\" name=\"id\" value=\"".toCharArray();
     _jsp_string25 = " <!-- ".toCharArray();
-    _jsp_string28 = "\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\n<title>\uc778\uc99d\uc13c\ud130 \uc774\uc6a9\uc548\ub0b4</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/import.css\" />\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\" />\n\n<script type=\"text/javascript\" src=\"js/jquery-1.7.2.min.js\"></script>\n<script type=\"text/javascript\" src=\"js/jquery.flexslider-min.js\"></script>\n<script type=\"text/javascript\" src=\"js/jquery.als-1.1.min.js\"></script>\n<script type=\"text/javascript\" src=\"js/common.js\"></script>\n\n<script language=\"javascript\" src=\"/initech/plugin/INIplugin.js\"></script>\n<script language=\"javascript\">\n	function fncAlert() {\n		alert(\"\uc774\uc804\uc5d0 \ubc1c\uae09\ubc1b\uc73c\uc2e0 \uc778\uc99d\uc11c \ube44\ubc00\ubc88\ud638\uc640 \ub3d9\uc77c\ud569\ub2c8\ub2e4.\\n\\n\uc774\uc804\uc5d0 \ubc1c\uae09\ubc1b\uc73c\uc2e0 \uc778\uc99d\uc11c \ube44\ubc00\ubc88\ud638\uc640 \ub2e4\ub978 \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\uc5ec \uc8fc\uc2ed\uc2dc\uc624!\");\n		location.href=\"/initech/certcenter64/inica70/index.jsp\" ;\n	}\n</script>\n</head> \n\n<body onload=\"fncAlert();\">\n</body>\n</html>\n".toCharArray();
     _jsp_string14 = "\" />\n<input type=\"hidden\" name=\"sms\" value=\"".toCharArray();
     _jsp_string12 = "\" />\n<input type=\"hidden\" name=\"EMAIL\" value=\"".toCharArray();
     _jsp_string17 = "\" />\n</form>  \n </body>\n</html>\n\n\n\n".toCharArray();
     _jsp_string1 = "\n\n".toCharArray();
     _jsp_string13 = "\" />\n<input type=\"hidden\" name=\"req\" value=\"\" />\n<input type=\"hidden\" name=\"keybits\" value=\"2048\" />\n<input type=\"hidden\" name=\"pw\" value=\"".toCharArray();
     _jsp_string6 = "\" />\n<input type=\"hidden\" name=\"regno\" value=\"".toCharArray();
+    _jsp_string28 = "\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\n<title>\uc778\uc99d\uc13c\ud130 \uc774\uc6a9\uc548\ub0b4</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/import.css\" />\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\" />\n\n<script type=\"text/javascript\" src=\"js/jquery-1.7.2.min.js\"></script>\n<script type=\"text/javascript\" src=\"js/jquery.flexslider-min.js\"></script>\n<script type=\"text/javascript\" src=\"js/jquery.als-1.1.min.js\"></script>\n<script type=\"text/javascript\" src=\"js/common.js\"></script>\n\n<script language=\"javascript\" src=\"/initech/plugin/INIplugin.js\"></script>\n<script language=\"javascript\">\n	function fncAlert() {\n		alert(\"\uc774\uc804\uc5d0 \ubc1c\uae09\ubc1b\uc73c\uc2e0 \uc778\uc99d\uc11c \ube44\ubc00\ubc88\ud638\uc640 \ub3d9\uc77c\ud569\ub2c8\ub2e4.\\n\\n\uc774\uc804\uc5d0 \ubc1c\uae09\ubc1b\uc73c\uc2e0 \uc778\uc99d\uc11c \ube44\ubc00\ubc88\ud638\uc640 \ub2e4\ub978 \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\uc5ec \uc8fc\uc2ed\uc2dc\uc624!\");\n		history.back(-1);\n		//location.href=\"/initech/certcenter64/inica70/index.jsp\" ;\n	}\n</script>\n</head> \n\n<body onload=\"fncAlert();\">\n</body>\n</html>\n".toCharArray();
     _jsp_string19 = "\"); \n	\n	if(req==\"\") return false;\n	form.req.value = req;\n	\n	return true;		\n}\n//\ud328\uc2a4\uc6cc\ub4dc\ub97c \uc6f9\ud398\uc774\uc9c0\uc5d0\uc11c \ubc1b\uae30 \uc704\ud574 \ucd94\uac00 \uc885\ub8cc\n\nfunction CheckSendForm(readForm, sendForm)\n{\n	bAutoSubmit = false;\n	\n	// 1024, 2048 \uc124\uc815\n	//var bits = (document.forms[\"readForm\"].keybits[0].checked)?\"1024\":\"2048\";\n	var bits = \"2048\";\n	SetProperty(\"SetBitPKCS10CertRequest\", bits);\n	\n	// p10 \ud14c\uc2a4\ud2b8\ub97c \uc704\ud55c DN\uac12 \ucd94\ucd9c\n	// var dn = CertRequest_DN(readForm);\n	//alert(dn);\n	\n	//if(CertRequest(readForm))\n	if(CertRequest_NoUI(readForm))\n		if (EncForm2(readForm, sendForm)) {\n			ViewMsg();\n			sendForm.submit();\n			return false;\n		}\n	alert(\"\uc778\uc99d\uc11c \uc2e0\uccad\uc774 \ucde8\uc18c \ub418\uc5c8\uc2b5\ub2c8\ub2e4.\");\n	return false;\n}\n\nfunction ViewMsg()\n{\n	var msg = \"\uc778\uc99d\uc11c\ubc84\uc5d0\uc11c \uc778\uc99d\uc11c\ub97c \ubc1b\uc544\uc624\ub294 \uc911\uc785\ub2c8\ub2e4. \uc7a0\uc2dc\ub9cc \uae30\ub2e4\ub9ac\uc2ed\uc2dc\uc694.\";\n	setMsg(msg, 0, 200);\n	showMsg();\n}\n\nfunction AutoSubmit()\n{\n	if (bAutoSubmit)\n		return CheckSendForm(readForm, sendForm);\n}\n\nfunction AutoRequest()\n{\n	setTimeout(\"AutoSubmit()\", 5000);\n}\n</script>\n\n	\n\n\n<!--[if IE 6]>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ie6.css\">\n<![endif]-->\n<!--[if IE 7]>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ie7.css\">\n<![endif]-->\n</head> \n<body onload=\"defaultStatus='';\">\n".toCharArray();
     _jsp_string9 = "\" />\n<input type=\"hidden\" name=\"O\" value=\"".toCharArray();
     _jsp_string11 = "\" />\n<input type=\"hidden\" name=\"CN\" value=\"".toCharArray();

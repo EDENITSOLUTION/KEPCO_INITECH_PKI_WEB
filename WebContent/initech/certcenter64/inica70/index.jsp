@@ -15,9 +15,8 @@
 
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
-    <script type="text/javascript" src="js/jquery.als-1.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.als-1.1.min.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>
-
 	<script language="javascript" src="/initech/plugin/INIplugin.js"></script>
 	<script language="javascript" src="/initech/plugin/INIutil.js"></script>
 
@@ -28,8 +27,36 @@
 <link rel="stylesheet" type="text/css" href="css/ie7.css">
 <![endif]-->
 </head> 
-<body>
 
+<link href="style.css" rel="stylesheet" type="text/css">
+<script language="JavaScript" type="text/JavaScript">
+
+function getCookie(name)
+{
+        var nameOfCookie=name+"=";
+        var x=0;
+        while(x<=document.cookie.length) {
+                var y=(x+nameOfCookie.length);
+                if(document.cookie.substring(x,y)==nameOfCookie) {
+                        if((endOfCookie=document.cookie.indexOf(";",y))==-1)
+                                endOfCookie=document.cookie.length;
+                        return unescape(document.cookie.substring(y,endOfCookie));
+                }
+                x=document.cookie.indexOf(" ",x)+1;
+                if(x==0) break;
+        }
+        return"";
+}
+</script>
+
+<script language="javascript">
+                function OpenWindow(){
+                        if (getCookie('pkimaster') != 'checked') window.open("popup/1211-3/popup.htm","_blank","top=0,left=0,width=500,height=374,resizable=1,scrollbars=no");
+                }
+</script>
+</head>
+
+<body onLoad="OpenWindow()">
 <div id="header">
 	
 	<!-- MAIN MENU START -->
@@ -62,6 +89,8 @@
 			<li class="in0102"><a href="ini_myCert_info.jsp">발급받은 인증서를 조회합니다</a></li>
 			<li class="in0102"><a href="#" onclick="ManageCert();">출장이나 다른 PC에서 사용하고자 할때</a></li>
 			<li class="in0102"><a href="#" onclick="ManageCert();">인증서를 복사 또는 백업하고자 할때</a></li>
+			<li class="in0102"><a href="ini_myCert_list.jsp" onclick="window.open(this.href, '1', 'width=1000, height=500, scrollbars=yes'); return false;">발급받은 인증서 내역을 조회합니다</a></li>
+
 			<!-- <li class="in01">인증서 관리</li>
 			<li class="in0102"><a href="sub01_03.html">출장이나 다른 PC에서 사용하고자 할때</a></li>
 			<li class="in0102"><a href="sub01_03.html">인증서를 조회하고자 할때</a></li>

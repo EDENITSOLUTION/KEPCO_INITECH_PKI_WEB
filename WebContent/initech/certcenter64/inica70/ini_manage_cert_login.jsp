@@ -14,6 +14,7 @@ if (adminLogin == null) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <title>인증센터 이용안내</title>
 <link rel="stylesheet" type="text/css" href="css/import.css" />
 <link rel="stylesheet" type="text/css" href="css/main.css" />
@@ -79,9 +80,11 @@ function enterCheck(){
 <div id="subtop">
 	<ul class="subtoptxt">
 		<li class="toptxtcon">인증센터 관리자</li>
+		<!--
 		<li class="toptxtcon01" style="text-decoration:underline;width:150px;text-align:left;">인증서 발급 내역 조회</li>
 		<li class="toptxtcon01">&nbsp;</li>
 		<li class="toptxtcon01">&nbsp;</li>
+		-->
 	</ul>
 </div>
 
@@ -100,12 +103,12 @@ function enterCheck(){
 				<li class="sbtextbg"> - 인증서 발급내역 조회를 위한 관리자 ID 및 비밀번호를 입력하십시오.</li>
 				<li class="sbtextbg2">
 					<b>사용자 ID</b> 
-					<input type="text" name="id" maxlength="8" size="20" style="border: 1px solid #dedede;" />
+					<input type="text" name="id" maxlength="8" size="20" style="width:150px; border: 1px solid #dedede;" />
 				</li>
 
 				<li class="sbtextbg2">
 					<b>비밀번호</b> 
-					&nbsp;<input type="password" name="pw" maxlength="30" size="20" onkeydown="enterCheck();" style="border: 1px solid #dedede;" />
+				<input type="password" name="pw" maxlength="30" size="21" onkeydown="enterCheck();" style="margin-left:5px;width:150px;  border: 1px solid #dedede;" />
 				</li>
 
 				<li class="dotted1"></li>

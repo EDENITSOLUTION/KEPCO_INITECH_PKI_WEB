@@ -1170,7 +1170,6 @@ function EncFile(url, form)
 	if (obj == null) return false;
 
 	filetemp = GatherFileValue(form, 0, true);
-	//	filetemp = "test=d:\\cert.zip";
 	alert("function encfile filetem = " + filetemp);
 	alert("function encfile url = " + url);
 	alert("function encfile cipher = " + cipher);

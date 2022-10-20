@@ -19,7 +19,7 @@
 	String strMyRefPhoneNum = null;
 	
 	String strMsgText = null; //SMS발송메세지
-        String strMsgText = null;
+        String strMgsText1 = null;
 	String strMakingText = null;
 	String strMakingText1 = null;
 	String REFPHONE = null ;
@@ -132,7 +132,7 @@
 			
 			while (rsSms.next()){
 				userMail = rsSms.getString("MAILADDR");
-				userPhone = rsSms.getString("PHONENUM").replace("-","");;
+                                userPhone = rsSms.getString("PHONENUM").replace("-","");
 				userName = rsSms.getString("USER_NAME");
 			}
 			resultCd = "SEND-YES";
@@ -185,38 +185,41 @@
 					cnt_log_user = rsNew.getInt("cnt");
 				}
 				if (cnt_log_user == 0){
-					resultCd = "SEND-NO";
-				}else{ // 사용자 정보 존재할때				
-					rsNew = stmtNew.executeQuery(newQry1);				
-					while (rsNew.next()){
-						strSeq = rsNew.getString("seq");
-						strUserid = rsNew.getString("userid");
-						strUserip = rsNew.getString("userip");
-						strCrdate = rsNew.getString("crdate");
-						strRetcode = rsNew.getString("retcode");
-						strSmsnum = rsNew.getString("smsnum");
-						strUserphone = rsNew.getString("userphone");
-						strRefuserid = rsNew.getString("refuserid");
-					}
-					resultCd = "SEND-YES";
-					
-					if (strUserid.trim().equals(strRefuserid.trim())){
-						strMsgText = "[한전 인터넷망]" + userName + "("+ userId +")님의 인증서 발급이 완료되었습니다.";
-						strMsgText1 = strMsgText;	
-						strMakingText = Make_SMS_MSG(strMyPhoneNum, strMsgText, userId);
-						strMakingText1 = strMakingText;
-					}
-	                                else{
-                                                strMsgText = "[한전 인터넷망]" + userName + "("+ userId +")님의 인증서 대리발급이 완료되었습니다.";
-						strMsgText1 = "[한전 인터넷망]" + userName + "("+ userId +")님의 인증서 대리발급이 완료되었습니다.";
-						strMakingText = Make_SMS_MSG(strMyPhoneNum, strMsgText, userId);
-						strMakingText1 = Make_SMS_MSG(strMyPhoneNum, strMsgText1, strRefuserid);
+                                        resultCd = "SEND-NO";
+                                }else{ // 사용자 정보 존재할때
+                                        rsNew = stmtNew.executeQuery(newQry1);
+                                        while (rsNew.next()){
+                                                strSeq = rsNew.getString("seq");
+                                                strUserid = rsNew.getString("userid");
+                                                strUserip = rsNew.getString("userip");
+                                                strCrdate = rsNew.getString("crdate");
+                                                strRetcode = rsNew.getString("retcode");
+                                                strSmsnum = rsNew.getString("smsnum");
+                                                strUserphone = rsNew.getString("userphone");
+                                                strRefuserid = rsNew.getString("refuserid");
+                                        }
+                                        resultCd = "SEND-YES";
+
+                                        if (strUserid.trim().equals(strRefuserid.trim())){
+                                                strMsgText = "[한전 인터넷망]" + userName + "("+ userId +")님>
+의 인증서 발급이 완료되었습니다.";
+                                                strMsgText1 = strMsgText;
+                                                strMakingText = Make_SMS_MSG(strMyPhoneNum, strMsgText, userId);
+                                                strMakingText1 = strMakingText;
+                                                                               else{
+                                                strMsgText = "[한전 인터넷망]" + userName + "("+ userId +")님>
+의 인증서 대리발급이 완료되었습니다.";
+                                                strMsgText1 = "[한전 인터넷망]" + userName + "("+ userId +")님
+의 인증서 대리발급이 완료되었습니다.";
+                                                strMakingText = Make_SMS_MSG(strMyPhoneNum, strMsgText, userId);
+                                                strMakingText1 = Make_SMS_MSG(strMyPhoneNum, strMsgText1, strRefuserid);
 
 
-					}	
-				
-					cnt_log_user = 1;
-				}
+                                        }
+                                        
+                                        cnt_log_user = 1;
+                                }
+
 
 				rsNew.close();
 				stmtNew.close();
@@ -239,15 +242,14 @@
 		RETURNCODE = sms.SendSMS(SENDIP, SENDPORT, strMakingText);
 		RETURNCODE = RETURNCODE.trim();
 		RETURNMSG = rtnMessage(RETURNCODE);
-		
-		if (strUserid.trim().equals(strRefuserid.trim())){
-		}else{
-			RETURNCODE = sms.SendSMS(SENDIP, SENDPORT, strMakingText1);
-               		 RETURNCODE = RETURNCODE.trim();
-               		 RETURNMSG = rtnMessage(RETURNCODE);
-		}
-				
 
+		if (strUserid.trim().equals(strRefuserid.trim())){
+                }else{
+                        RETURNCODE = sms.SendSMS(SENDIP, SENDPORT, strMakingText1);
+                         RETURNCODE = RETURNCODE.trim();
+                         RETURNMSG = rtnMessage(RETURNCODE);
+                }
+		
 		resultCd = RETURNCODE;
 		
 	}
@@ -307,7 +309,7 @@ public String Make_SMS_MSG(String strRecvPhone, String strSmsMsg, String strEmpN
 	int iRECVPHONE = 15 ;//--
 	String RECVPHONE = strRecvPhone ; //--	
 	int iCALLBACK = 15 ;//--
-	String CALLBACK = "0613451166"; //15 + 1 //--	
+	String CALLBACK = "0613458000"; //15 + 1 //--	
 	int iMESSAGE = 80 ; //--
 	String MESSAGE = strSmsMsg; //strMsgText ; //80 + 1 //--	
 	int iEMPNO = 8 ; //--

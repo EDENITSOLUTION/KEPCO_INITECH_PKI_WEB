@@ -11,7 +11,7 @@
 <%@ include file="import/inica70_userSet.jsp" %>
 <%@ include file="import/inica70_ca_send.jsp" %>
 <%@ include file="import/inica70_err_check.jsp" %>
-<%@ include file="import/fncSMS.jsp" %>
+<%@ include file="import/sendSMS.jsp" %>
 <%
 //인증서 발급이 정상적으로 이루어졌다면 
 //RA쪽 USER_PWD 테이블에 사용자의 비밀번호를 입력 또는 업데이트 해주자!

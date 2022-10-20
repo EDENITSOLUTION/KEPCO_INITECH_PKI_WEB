@@ -77,6 +77,7 @@ public static String makeCertString(String varName, String certificate)
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <title>인증센터 이용안내</title>
 	<link rel="stylesheet" type="text/css" href="css/import.css" />
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
@@ -134,7 +135,35 @@ public static String makeCertString(String varName, String certificate)
 		<li class="box">
 			<ul>
 				<li class="sbtextbg2"><img src="img/bullet_list.gif" align="center"> <b class="txblue"><%=certUserNm%>(<%=m_ID%>)</b>님의 인증서가 성공적으로 폐기가 되었습니다.</li>
-				<li class="sbtextbg2"><img src="img/bullet_list.gif" align="center"> 인증서의 유효기간은 3개월이며, 유효기간이 지난 인증서는 사용하실 수 없습니다.</li>
+				<li class="sbtextbg2"><img src="img/bullet_list.gif" align="center"> 인증서의 유효기간은 
+					<%
+					if ("69".equals(m_POLICY)) {
+						out.print("1개월");
+					} else if ("70".equals(m_POLICY)) {
+						out.print("2개월");
+					} else if ("71".equals(m_POLICY)) {
+						out.print("3개월");
+					} else if ("72".equals(m_POLICY)) {
+						out.print("4개월");
+					} else if ("73".equals(m_POLICY)) {
+						out.print("5개월");
+					} else if ("74".equals(m_POLICY)) {
+						out.print("6개월");
+					} else if ("75".equals(m_POLICY)) {
+						out.print("7개월");
+					} else if ("76".equals(m_POLICY)) {
+						out.print("8개월");
+					} else if ("77".equals(m_POLICY)) {
+						out.print("9개월");
+					} else if ("78".equals(m_POLICY)) {
+						out.print("10개월");
+					} else if ("79".equals(m_POLICY)) {
+						out.print("11개월");
+					} else if ("80".equals(m_POLICY)) {
+						out.print("12개월");
+					}
+					%>				
+				개월이며, 유효기간이 지난 인증서는 사용하실 수 없습니다.</li>
 				<li class="sbtextbg2"><img src="img/bullet_list.gif" align="center"> PowerNet 로그인을 위해서 PowerNet ToolBand의 통합인증을 클릭하십시오. 이용해주셔서 감사합니다</li>
 				<li class="dotted1"></li>
 				<li class="sbtextbg2" style="padding:15px; 0 15px 0 ">&nbsp;</li>

@@ -27,8 +27,8 @@
         }
 
        resultString = do_op_cert_info_list(uid, sn);
-      
 
+        
        out.println(resultString);
    
    

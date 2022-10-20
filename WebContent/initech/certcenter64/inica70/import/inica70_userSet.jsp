@@ -47,6 +47,22 @@ try {
 		isCert = "Y";
 		CertGb = "재발급";
 	}
+
+	String q = "";
+	q += "	SELECT ";
+	q += "		( ";
+	q += "			CASE WHEN B.GUBUN = 'E' THEN (SELECT POLICY_EXCEPTN1 FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	//q += "			WHEN B.GUBUN = 'H' THEN (SELECT POLICY_EXCEPTN2 FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	q += "			ELSE (SELECT POLICY_DEFAULT FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	q += "			END ";
+	q += "		) AS POLICY ";
+	q += "	FROM V_INSA A LEFT JOIN MNG_USER B ON (A.EMPNO = B.USERID) ";
+	q += "	WHERE A.EMPNO = '" + m_ID + "' ";
+
+	rs = stmt.executeQuery(q);
+	while( rs.next() ) {
+		m_POLICY = rs.getString("POLICY");
+	}
 	
 } catch(Exception e) {
 	e.printStackTrace();
@@ -298,7 +314,8 @@ if (m_How.equals("certNew")) { //인증서 발급시에만 체크하자
 				PrintWriter writer = response.getWriter();
 				writer.println("<script type='text/javascript'>");
 				writer.println("alert('입력하신 인증번호는 올바른 SMS인증번호가 아닙니다.\\n다시 한번 인증서 발급을 하십시오.');");
-				writer.println("location.href='ini_certNew.jsp';");
+				//writer.println("location.href='ini_certNew.jsp';");
+				writer.println("history.back(-1);");
 				writer.println("</script>");
 				writer.flush();
 				return;

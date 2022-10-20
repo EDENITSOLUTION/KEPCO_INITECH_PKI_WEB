@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+.extension{}
+.extension:after{content:""; display:block; float:none; clear:both;}
+
+.copyWrap{
+	width:1042px;
+	margin:0 auto;
+	position:relative;
+}
+h3.copyTitle{
+	border-bottom:2px solid #c4c4c4;
+	padding:30px 0 10px 0;
+}
+.copyWrap .copyContentBox{
+	width:1004px;
+	position:relative;
+	border:1px solid #dcdcdc;
+	border-radius:4px;
+	margin:20px auto;
+}
+.copyWrap .copyContentBox .stepBox{
+	width:881px;
+	margin:40px auto;
+}
+.copyWrap .copyBtn a{
+	display:block;
+	width:348px;
+	height:64px;
+	line-height:64px;
+	margin:0 auto 20px auto;
+	text-align:center;
+	color:#fff;
+	font-size:20px;
+	background:#006dba;
+	font-weight:bold;
+}

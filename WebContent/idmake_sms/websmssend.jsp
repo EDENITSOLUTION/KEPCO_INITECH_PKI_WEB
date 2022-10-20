@@ -8,7 +8,9 @@
 <%@ page import="java.text.*"%>
 <%@ page import='java.sql.*, javax.sql.*, javax.naming.*' %>
 <%@ page import="java.lang.String.*" %>
+<%@ page import="javax.mail.*, javax.mail.internet.*" %>
 <%@ page import="kepco.*" %>
+<%@ page import="java.security.MessageDigest,java.security.NoSuchAlgorithmException" %>
 <%!
 //SendMSG만들기
 public String en(String ko){
@@ -105,6 +107,67 @@ public String rtnMessage(String MsgCode){
 //7. 1200 : 사업소 서비스 오류 (사업소 코드가 잘못된 경우)
 //8. 2000 : 보내는쪽 소켓통신 오류
 ////////////////////////////////////////////////////
+
+//이메일 발송하기
+public String mailCertSend(String mailContent, String toMailAddress){
+	String toAddress = toMailAddress ; //"ex099636@kepco.co.kr";
+	String smtpHost = "10.180.6.91"; // SMTP 서버 설정
+	String mailSubject = "[한국전력공사] 인터넷망 PC 사설인증서 대리 발급을 요청하였습니다." ;
+						//new String("[한국전력공사] 인터넷망 인증서 발급용 인증 번호".getBytes("8859_1"),"KSC5601");
+	String mailText = mailContent ; 
+						//new String("이승훈님의 인터넷망 인증서 발급 인증번호는 : [000000]입니다.".getBytes("8859_1"),"KSC5601");
+	String fromAddress = "idmake@kepco.co.kr" ; //request.getParameter("from");        //보내는이
+
+
+	Properties props = null;
+
+	String resultMsg = "ok" ;
+
+	try {
+          props = new Properties();
+
+
+		props.put("mail.smtp.host", smtpHost);
+		Session s = Session.getInstance(props,null);
+		MimeMessage message = new MimeMessage(s); 
+
+		 
+		InternetAddress from = new InternetAddress(fromAddress);
+		message.setFrom(from); // 보내는이 설정
+		 
+
+		InternetAddress to = new InternetAddress(toAddress); // 받는이 설정 
+		message.addRecipient(Message.RecipientType.TO, to);   
+		message.setSubject(mailSubject); // 제목 
+		message.setContent(mailText, "text/plain; charset=EUC-KR"); // content Type 설정 
+		message.setText(mailText); // 본문 
+		Transport.send(message); // 메일 발송
+
+		resultMsg = "ok" ;
+		
+	}catch (Exception e) {
+            resultMsg = e.toString();
+    }
+	return resultMsg ;
+}
+
+ public byte[] getHashValue(String inputString) {
+	MessageDigest md = null;
+	try {
+		md = MessageDigest.getInstance("MD5");
+		md.update(inputString.getBytes());
+	} catch (NoSuchAlgorithmException e) {
+		e.printStackTrace();
+	}
+	
+	return md.digest(); 
+}
+
+public String getBase64Data(byte[] inputByte) throws IOException {
+	String returnString = "";
+	returnString = new String(com.initech.util.Base64Util.encode(inputByte, false));
+	return returnString;
+}
 %>
 <%
 String strIsInsa = request.getParameter("strIsInsa"); //SMS인사정보 연동 유무
@@ -115,6 +178,7 @@ if (strIsInsa.equals("") || strIsInsa == null) {
 String empno = request.getParameter("empno"); //사번
 String tmid = request.getParameter("tmid");//타임아이디
 String refuserid = request.getParameter("refuserid");//참조자 또는 대신 받을 직원 사번 
+String orguserpw = request.getParameter("orguserpw");
 String seq = "" ;
 String strSql = "" ;
 
@@ -124,6 +188,7 @@ String phone3 = request.getParameter("phone3"); //직접 입력한 번호3
 
 
 String org_phone = "" ; //request.getParameter("org_phone"); //DB에 저장된 번호
+String org_phone2 = "";
 String sendPhone = "" ; //phone1 + phone2 + phone3 ; //연락처 조합
 
 String sendCnt = "00001"; //보내야할 SMS전송 수
@@ -147,6 +212,7 @@ String strMsg = "" ;
 
 
 String orgInsaOrgPhone = "" ; //인사정보에 실제로 등록된 전화번호
+String orgInsaOrgEmail = "" ; //인사정보에 실제로 등록된 메일아이디(180717 njjang 추가)
 String orgSendFmatPhone = "x" ; //SMS전송을 위해 포맷변경된 전화번호
 String orgUserName = "" ; //전달하고자하는 사번 사용자의 이름
 
@@ -194,6 +260,16 @@ try{
 		cellQry = cellQry + "SELECT "; 
 		cellQry = cellQry + "		X.EMPNO ";
 		cellQry = cellQry + "	,	X.USER_NAME ";
+		cellQry = cellQry + "	,	X.MAILNO ";
+		cellQry = cellQry + "   ,( ";
+		cellQry = cellQry + "		CASE WHEN X.MAILNO IS NULL THEN 'x' ";
+		cellQry = cellQry + "		ELSE ";
+		cellQry = cellQry + "			CASE INSTR(X.MAILNO,'@',1)  ";
+		cellQry = cellQry + "				WHEN 0 THEN X.MAILNO || '@kepco.co.kr' ";
+		cellQry = cellQry + "		    ELSE X.MAILNO ";
+		cellQry = cellQry + "			END ";
+		cellQry = cellQry + "		END ";
+		cellQry = cellQry + "    ) AS MAILADDR ";
 		cellQry = cellQry + "	,   X.CELLNO ";
 		cellQry = cellQry + "	,	X.VAL1 ";
 		cellQry = cellQry + "	,	X.VAL2 ";
@@ -215,6 +291,7 @@ try{
 		cellQry = cellQry + " FROM ( ";
 		cellQry = cellQry + "	SELECT ";
 		cellQry = cellQry + "		EMPNO ";
+		cellQry = cellQry + "		, MAILNO ";
 		cellQry = cellQry + "		, NAME AS USER_NAME ";
 		cellQry = cellQry + "		, CELLNO ";
 		cellQry = cellQry + "		, DECODE ( ";
@@ -245,6 +322,7 @@ try{
 		while (rs.next()){
 			orgSendFmatPhone = rs.getString("PHONENUM");
 			orgInsaOrgPhone = rs.getString("CELLNO");
+			orgInsaOrgEmail = rs.getString("MAILADDR");
 			orgUserName = rs.getString("USER_NAME");
 		}
 
@@ -386,25 +464,70 @@ seq = tmid + "_" + empno + "_" + request.getRemoteAddr() ; // 20140709172427_ex0
 ////	       a. 인증코드 발송 : smsphonenum = refuserid phone
 ////	       b. 확인코드 발송 : smsphonenum = empno phone
 /////////////////////////////////////////////////////////////////////////////////////////
-
+//refSendFmatPhone = "010-4214-5454"; // 대리발급자
+//orgSendFmatPhone = "010-4214-5454"; // 본인
+//orgInsaOrgEmail = "like_eh@nate.com";
 if (isNoPhoneUser.equals("N")) { // 핸드폰 번호가 정상적으로 등록된 사용자가 아닐 경우
 		//발급받고자 하는 사용자의 핸드폰 번호가 정상적으로 등록되지 않았을 경우는 
 		//대리발급으로 간주하는것으로 변경	
 		sendCnt = "00002";
 		sendPhone = refSendFmatPhone.replace("-","");
 		org_phone = refSendFmatPhone.replace("-","");
+		org_phone2 = refSendFmatPhone;
 		strRefUserID = refuserid ;
 }else{ // 핸드폰 번호가 정상적으로 등록되었을 경우의 사용자
 	if (empno.equals(refuserid)){//실제 사용자 사번과 받는 사용자 사번이 같을 때(사용자 변경안한 Default 상태)
 		sendCnt = "00001"; 
 		sendPhone = orgSendFmatPhone.replace("-","");
 		org_phone = orgSendFmatPhone.replace("-","");
+		org_phone2 = orgSendFmatPhone;
 		strRefUserID = empno ;
 	}else{ //사번변경해서 보낼때
 		sendCnt = "00002";
 		sendPhone = orgSendFmatPhone.replace("-","");
 		org_phone = refSendFmatPhone.replace("-","");
+		org_phone2 = refSendFmatPhone;
 		strRefUserID = refuserid ;
+	}
+}
+
+if ("00002".equals(sendCnt)) {
+
+	Context rIc = new InitialContext();
+	DataSource rDs = (DataSource) rIc.lookup("java:comp/env/jdbc/INICA");
+	ResultSet rRs = null;
+
+	Connection rConn = null;
+	Statement rStmt = null;
+
+	try{
+		rConn = rDs.getConnection();
+		rStmt = rConn.createStatement();
+		rRs = rStmt.executeQuery("select count(userid) as cnt from user_pwd where userid='" + empno + "' and userpwd = '" + getBase64Data(getHashValue(orguserpw)) + "' ");
+		
+		int rPwdUCnt = 0;
+		while(rRs.next()) {
+			rPwdUCnt =  rRs.getInt("cnt");
+		}
+
+		if (rPwdUCnt == 0) {
+			response.setCharacterEncoding("EUC-KR");
+			PrintWriter writer = response.getWriter();
+			writer.println("<script type='text/javascript'>");
+			writer.println("alert('발급받을 사원의 비밀번호가 일치하지 않습니다.');");
+			writer.println("location.href='websmsform.jsp?empno="+ empno +"&tmid="+ tmid +"&refuserid2="+refuserid+"'");
+			writer.println("</script>");
+			writer.flush();
+			return;
+		}
+
+	}
+	catch(Exception ex){
+		ex.printStackTrace();
+	} finally {
+		rRs.close();
+		rStmt.close();
+		rConn.close();
 	}
 }
 
@@ -428,9 +551,9 @@ if (empno.equals(refuserid)){
 //SMS인증번호 만들기 END   ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-String RefSendMsg = "KEPCO-SSO 인증서발급용 인증번호요청알림 : "+ phone1 + "-" + phone2 + "-" + phone3  ;
+String RefSendMsg = "KEPCO-SSO 인증서발급용 인증번호요청알림 : "+ org_phone2;
 //RefSendMsg = "KEPCO-SSO 인증번호요청알림\n요청번호:"+ sendPhone +"("+ refUserName +")";
-RefSendMsg = "[한전 인터넷망]"+ orgUserName + "("+ empno +")님의 인증서 대리발급 인증번호 : "+ certkey ;
+RefSendMsg = "[한전 인터넷망]"+ orgUserName + "("+ empno +")님의 인증서 발급용 인증번호 : "+ certkey ;
 
 
 
@@ -474,11 +597,11 @@ String RECVPHONE = sendPhone ;
 
 String REFPHONE = org_phone;
 
-String CALLBACK = "0613451166"; //15 + 1
+String CALLBACK = "0613458000"; //15 + 1
 String MESSAGE = strMsgText ; //80 + 1
 
 //if (sendCnt.equals("00002")){
-  // MESSAGE = "[한전 인터넷망]"+ refUserName + "("+refuserid+")님의 인증서 대리 발급을 요청하였습니다.";
+  // MESSAGE = "[한전 인터넷망]"+ refUserName + "("+refuserid+")님이 인증서 대리 발급을 요청하였습니다.";
 //}
 String EMPNO = empno ; // 8 + 1
 String REFCNT = "00000"; // 5 + 1
@@ -559,6 +682,19 @@ RETURNMSG = rtnMessage(RETURNCODE);
 
 if (sendCnt.equals("00002")) {
 	strRef = sms.SendSMS(SENDIP, SENDPORT, RefSMSMsg).trim();
+
+	// 180717 njjang 추가
+	// 대리발급자가 인증서를 발그할 경우에 인증서 본인에게 정보알림 메일을 발송
+	// orgInsaOrgEmail
+	/*
+	if (!"x".equals(orgInsaOrgEmail)) {
+
+		String emailMsg = "KEPCO-SSO 인증번호요청알림 : 인증번호 - "+ certkey +" / 요청 연락처 - "+ refInsaOrgPhone +"("+ refUserName +")" + (char)10 + (char)10 ;
+		emailMsg = emailMsg + orgUserName + "(" + empno + ")님의 인증서를 " + refUserName + "(" + refuserid + ")님이 대리발급을 요청하였습니다." ;
+
+		String mresult = mailCertSend(emailMsg, orgInsaOrgEmail) ;
+	}
+	*/
 }
 
 //SMS정보 db insert
@@ -597,7 +733,7 @@ function  fncConfirm() {
 <% 
 if (RETURNCODE.equals("99991001")) { //정상
 %>
-	alert("SMS인증번호를 전송하였습니다.\n\n전송받으신 인증번호를 입력하십시오.");
+	alert("인증번호를 SMS 발송하였습니다.\n\n전송받으신 인증번호를 입력하십시오.");
 	opener.readForm.sms.style.background="#ffffff";
 	opener.readForm.sms.disabled=false;
 	opener.setTimerOn();
@@ -605,7 +741,7 @@ if (RETURNCODE.equals("99991001")) { //정상
 <%
 }else if (RETURNCODE.equals("9999")) { //전송데이터형식
 %>
-	alert("[<%=RETURNMSG%>]SMS인증번호를 전송하였습니다.\n\n전송받으신 인증번호를 입력하십시오.");
+	alert("[<%=RETURNMSG%>]인증번호를 SMS 발송하였습니다.\n\n전송받으신 인증번호를 입력하십시오.");
 	opener.readForm.sms.style.background="#ffffff";
 	opener.readForm.sms.disabled=false;
 	opener.setTimerOn();
@@ -622,7 +758,7 @@ if (RETURNCODE.equals("99991001")) { //정상
 }else{
 %>
 	
-	alert("SMS인증번호를 전송하였습니다.\n\n전송받으신 인증번호를 입력하십시오.");
+	alert("인증번호를 SMS 발송하였습니다.\n\n전송받으신 인증번호를 입력하십시오.");
 	opener.readForm.sms.style.background="#ffffff";
 	opener.readForm.sms.disabled=false;
 	opener.setTimerOn();

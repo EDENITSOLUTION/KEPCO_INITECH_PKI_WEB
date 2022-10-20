@@ -404,14 +404,14 @@ public class _ini_0certNew_0send__jsp extends com.caucho.jsp.JavaPage
                                           resultCd = "SEND-YES";
 
                                           if (strUserid.trim().equals(strRefuserid.trim())){
-                                                  strMsgText = "[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac \uc778\ud130\ub137\ub9dd] " + userName + "("+ userId +")\ub2d8\uc758 \uc778\uc99d\uc11c \ubc1c\uae09\uc774 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.";
+                                                  strMsgText = "[\ud55c\uc804 \uc778\ud130\ub137\ub9dd]" + userName + "("+ userId +")\ub2d8\uc758 \uc778\uc99d\uc11c \ubc1c\uae09\uc774 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.";
                                                   strMsgText1 = strMsgText;
                                                   strMakingText = Make_SMS_MSG(strMyPhoneNum, strMsgText, userId);
                                                   strMakingText1 = strMakingText;
                                           }
                                           else{
-                                                  strMsgText = "[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac \uc778\ud130\ub137\ub9dd] " + userName + "("+ userId +")\ub2d8\uc758 \uc778\uc99d\uc11c \ub300\ub9ac\ubc1c\uae09\uc774 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.";
-                                                  strMsgText1 = "[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac \uc778\ud130\ub137\ub9dd] " + userName + "("+ userId +")\ub2d8\uc758 \uc778\uc99d\uc11c \ub300\ub9ac\ubc1c\uae09\uc774 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.";
+                                                  strMsgText = "[\ud55c\uc804 \uc778\ud130\ub137\ub9dd]" + userName + "("+ userId +")\ub2d8\uc758 \uc778\uc99d\uc11c \ub300\ub9ac\ubc1c\uae09\uc774 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.";
+                                                  strMsgText1 = "[\ud55c\uc804 \uc778\ud130\ub137\ub9dd]" + userName + "("+ userId +")\ub2d8\uc758 \uc778\uc99d\uc11c \ub300\ub9ac\ubc1c\uae09\uc774 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.";
                                                   strMakingText = Make_SMS_MSG(strMyPhoneNum, strMsgText, userId);
                                                   strMakingText1 = Make_SMS_MSG(getRefUserPhone(strRefuserid), strMsgText1, strRefuserid);
 
@@ -435,7 +435,7 @@ public class _ini_0certNew_0send__jsp extends com.caucho.jsp.JavaPage
                   else{//\uc778\uc99d\uc11c \ud3d0\uae30\ud6c4 certRevoke
                           userTmid = "";
                           userSmsSeq = "";
-                          strMsgText = "[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac \uc778\ud130\ub137\ub9dd] " + userName + "("+ userId +")\ub2d8\uc758 \uc778\uc99d\uc11c \ud3d0\uae30\uac00 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.";
+                          strMsgText = "[\ud55c\uc804 \uc778\ud130\ub137\ub9dd]" + userName + "("+ userId +")\ub2d8\uc758 \uc778\uc99d\uc11c \ud3d0\uae30\uac00 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.";
                           strMakingText = Make_SMS_MSG(strMyPhoneNum, strMsgText, userId);
 
                   }//\ud3d0\uae30 end
@@ -510,7 +510,7 @@ public class _ini_0certNew_0send__jsp extends com.caucho.jsp.JavaPage
           int iRECVPHONE = 15 ;//--
           String RECVPHONE = strRecvPhone ; //--
           int iCALLBACK = 15 ;//--
-          String CALLBACK = "0613451166"; //15 + 1 //--
+          String CALLBACK = "0613458000"; //15 + 1 //--
           int iMESSAGE = 80 ; //--
           String MESSAGE = strSmsMsg; //strMsgText ; //80 + 1 //--
           int iEMPNO = 8 ; //--
@@ -573,94 +573,94 @@ public class _ini_0certNew_0send__jsp extends com.caucho.jsp.JavaPage
 
   public String getRefUserPhone(String refUserId) {
 
-          String refUserPhoneNum = null;
+  	String refUserPhoneNum = null;
+  	
+  	try{
+  		Context ictRef = new InitialContext();
+  		DataSource dsRef = (DataSource) ictRef.lookup("java:comp/env/jdbc/USERS");
+  		ResultSet rsRef = null;
+  		Connection conRef = null;
+  		Statement stmtRef = null;
 
-          try{
-                  Context ictRef = new InitialContext();
-                  DataSource dsRef = (DataSource) ictRef.lookup("java:comp/env/jdbc/USERS");
-                  ResultSet rsRef = null;
-                  Connection conRef = null;
-                  Statement stmtRef = null;
+  		String refQry = "" ;
+  		refQry = refQry + "SELECT "; 
+  		refQry = refQry + "             X.EMPNO ";
+  		refQry = refQry + "     ,       X.USER_NAME ";
+  		refQry = refQry + "     ,   X.CELLNO ";
+  		refQry = refQry + "     ,       X.VAL1 ";
+  		refQry = refQry + "     ,       X.VAL2 ";
+  		refQry = refQry + "     ,( ";
+  		refQry = refQry + "             CASE WHEN X.VAL1 = 'ok' THEN X.CELLNO ";
+  		refQry = refQry + "             ELSE ";
+  		refQry = refQry + "                     CASE WHEN X.VAL2 = 'ok' THEN  ";
+  		refQry = refQry + "                             CASE WHEN LENGTH(X.CELLNO) = 10 THEN ";
+  		refQry = refQry + "                                     SUBSTR(X.CELLNO,1,3) || '-' || SUBSTR(X.CELLNO,4,3) ";
+  		refQry = refQry + "                                     || '-' || SUBSTR(X.CELLNO,7,4) ";
+  		refQry = refQry + "                             ELSE ";
+  		refQry = refQry + "                                     SUBSTR(X.CELLNO,1,3) || '-' || SUBSTR(X.CELLNO,4,4) ";
+  		refQry = refQry + "                                     || '-' || SUBSTR(X.CELLNO,8,4) ";
+  		refQry = refQry + "                             END ";
+  		refQry = refQry + "                     ELSE 'x' ";
+  		refQry = refQry + "                     END ";
+  		refQry = refQry + "             END ";
+  		refQry = refQry + "     ) AS PHONENUM ";
+  		refQry = refQry + "     , X.MAILADDR ";
+  		refQry = refQry + " FROM ( ";
+  		refQry = refQry + "     SELECT ";
+  		refQry = refQry + "             EMPNO ";
+  		refQry = refQry + "             , NAME AS USER_NAME ";
+  		refQry = refQry + "             , CELLNO ";
+  		refQry = refQry + "             , DECODE ( ";
+  		refQry = refQry + "                     REGEXP_REPLACE(  ";
+  		refQry = refQry + "                             REGEXP_SUBSTR(  ";
+  		refQry = refQry + "                                     CELLNO,  ";
+  		refQry = refQry + "                                     '01[0-9]{1}-[0-9]{3,4}-[0-9]{4}',  ";
+  		refQry = refQry + "                                     1 ";
+  		refQry = refQry + "                             ), '[^0-9]', '-' ";
+  		refQry = refQry + "                     )  ";
+  		refQry = refQry + "             , '','x','ok') VAL1  ";
+  		refQry = refQry + "             , DECODE ( ";
+  		refQry = refQry + "                     REGEXP_REPLACE(  ";
+  		refQry = refQry + "                             REGEXP_SUBSTR(  ";
+  		refQry = refQry + "                                     CELLNO,  ";
+  		refQry = refQry + "                                     '01[0-9]{1}[0-9]{7,8}',  ";
+  		refQry = refQry + "                                     1 ";
+  		refQry = refQry + "                             ), '[^0-9]', '-' ";
+  		refQry = refQry + "                     )  ";
+  		refQry = refQry + "             , '','x','ok') VAL2 ";
+  		refQry = refQry + "    , MAILNO ";
+  		refQry = refQry + "                      ,( ";
+  		refQry = refQry + "    CASE WHEN MAILNO IS NULL THEN 'x' ";
+  		refQry = refQry + "    ELSE ";
+  		refQry = refQry + "             CASE INSTR(MAILNO,'@',1)  ";
+  		refQry = refQry + "                     WHEN 0 THEN MAILNO || '@kepco.co.kr' ";
+  		refQry = refQry + "       ELSE MAILNO ";
+  		refQry = refQry + "       END ";
+  		refQry = refQry + "     END ";
+  		refQry = refQry + "    ) AS MAILADDR ";
+  		refQry = refQry + "     FROM  V_INSA ";
+  		refQry = refQry + "     WHERE EMPNO = '"+ refUserId +"' ";
+  		refQry = refQry + ") X ";
 
-                  String refQry = "" ;
-                  refQry = refQry + "SELECT "; 
-                  refQry = refQry + "             X.EMPNO ";
-                  refQry = refQry + "     ,       X.USER_NAME ";
-                  refQry = refQry + "     ,   X.CELLNO ";
-                  refQry = refQry + "     ,       X.VAL1 ";
-                  refQry = refQry + "     ,       X.VAL2 ";
-                  refQry = refQry + "     ,( ";
-                  refQry = refQry + "             CASE WHEN X.VAL1 = 'ok' THEN X.CELLNO ";
-                  refQry = refQry + "             ELSE ";
-                  refQry = refQry + "                     CASE WHEN X.VAL2 = 'ok' THEN  ";
-                  refQry = refQry + "                             CASE WHEN LENGTH(X.CELLNO) = 10 THEN ";
-                  refQry = refQry + "                                     SUBSTR(X.CELLNO,1,3) || '-' || SUBSTR(X.CELLNO,4,3) ";
-                  refQry = refQry + "                                     || '-' || SUBSTR(X.CELLNO,7,4) ";
-                  refQry = refQry + "                             ELSE ";
-                  refQry = refQry + "                                     SUBSTR(X.CELLNO,1,3) || '-' || SUBSTR(X.CELLNO,4,4) ";
-                  refQry = refQry + "                                     || '-' || SUBSTR(X.CELLNO,8,4) ";
-                  refQry = refQry + "                             END ";
-                  refQry = refQry + "                     ELSE 'x' ";
-                  refQry = refQry + "                     END ";
-                  refQry = refQry + "             END ";
-                  refQry = refQry + "     ) AS PHONENUM ";
-                  refQry = refQry + "     , X.MAILADDR ";
-                  refQry = refQry + " FROM ( ";
-                  refQry = refQry + "     SELECT ";
-                  refQry = refQry + "             EMPNO ";
-                  refQry = refQry + "             , NAME AS USER_NAME ";
-                  refQry = refQry + "             , CELLNO ";
-                  refQry = refQry + "             , DECODE ( ";
-                  refQry = refQry + "                     REGEXP_REPLACE(  ";
-                  refQry = refQry + "                             REGEXP_SUBSTR(  ";
-                  refQry = refQry + "                                     CELLNO,  ";
-                  refQry = refQry + "                                     '01[0-9]{1}-[0-9]{3,4}-[0-9]{4}',  ";
-                  refQry = refQry + "                                     1 ";
-                  refQry = refQry + "                             ), '[^0-9]', '-' ";
-                  refQry = refQry + "                     )  ";
-                  refQry = refQry + "             , '','x','ok') VAL1  ";
-                  refQry = refQry + "             , DECODE ( ";
-                  refQry = refQry + "                     REGEXP_REPLACE(  ";
-                  refQry = refQry + "                             REGEXP_SUBSTR(  ";
-                  refQry = refQry + "                                     CELLNO,  ";
-                  refQry = refQry + "                                     '01[0-9]{1}[0-9]{7,8}',  ";
-                  refQry = refQry + "                                     1 ";
-                  refQry = refQry + "                             ), '[^0-9]', '-' ";
-                  refQry = refQry + "                     )  ";
-                  refQry = refQry + "             , '','x','ok') VAL2 ";
-                  refQry = refQry + "    , MAILNO ";
-                  refQry = refQry + "                      ,( ";
-                  refQry = refQry + "    CASE WHEN MAILNO IS NULL THEN 'x' ";
-                  refQry = refQry + "    ELSE ";
-                  refQry = refQry + "             CASE INSTR(MAILNO,'@',1)  ";
-                  refQry = refQry + "                     WHEN 0 THEN MAILNO || '@kepco.co.kr' ";
-                  refQry = refQry + "       ELSE MAILNO ";
-                  refQry = refQry + "       END ";
-                  refQry = refQry + "     END ";
-                  refQry = refQry + "    ) AS MAILADDR ";
-                  refQry = refQry + "     FROM  V_INSA ";
-                  refQry = refQry + "     WHERE EMPNO = '"+ refUserId +"' ";
-                  refQry = refQry + ") X ";
+  		conRef = dsRef.getConnection();
+  		stmtRef = conRef.createStatement();
+  		rsRef = stmtRef.executeQuery(refQry);
 
-                  conRef = dsRef.getConnection();
-                  stmtRef = conRef.createStatement();
-                  rsRef = stmtRef.executeQuery(refQry);
+  		if (rsRef.next())       {
+  			refUserPhoneNum = rsRef.getString("PHONENUM").replace("-","");
+  		}
 
-                  if (rsRef.next())       {
-                          refUserPhoneNum = rsRef.getString("PHONENUM").replace("-","");
-                  }
+  		rsRef.close();
+  		stmtRef.close();
+  		conRef.close();
 
-                  rsRef.close();
-                  stmtRef.close();
-                  conRef.close();
-
-          }
-          catch(Exception ex){
-                          ex.printStackTrace();
-          } finally {
-          }
+  	}
+  	catch(Exception ex){
+  			ex.printStackTrace();
+  	} finally {
+  	}
    
-          return refUserPhoneNum;
+  	return refUserPhoneNum;
   }
 
   
@@ -711,6 +711,7 @@ boolean is_smsChk = true;
 String pwdSynURL = "http://mail.kepco.co.kr/Synk/Password.ashx";
 String pwdSyncKey = "5ac1bb6d4172409089a7df3aa6ec91c2";
 String pwdSyncDidx = "1";
+
 
 
 boolean m_bDebug = true;
@@ -836,7 +837,7 @@ if (m_IniErrCode == null)
 	//if (m_IniErrCode != null) IniDebug.request(request);
 }
 
-    out.write(_jsp_string1, 0, _jsp_string1.length);
+    out.write('\n');
      m_How = "certNew"; 
     out.write(_jsp_string1, 0, _jsp_string1.length);
     
@@ -917,6 +918,7 @@ String m_OU = "\uc815\ubcf4\uae30\uc220\ucc98";	//\uc815\ubcf4\uae30\uc220\ucc98
 String m_O = "\ud55c\uad6d\uc804\ub825\uacf5\uc0ac";
 String m_L = "\uc11c\uc6b8\ud2b9\ubcc4\uc2dc";
 String m_C = "KR";
+String m_POLICY = "71"; // 20180718 njjang \ucd94\uac00
 
 //\uc778\uc99d\uc11c \uc2e0\uccad(\ucde8\uc18c) \uc131\uacf5\uc2dc \ubc1b\uc544\uc624\ub294 \uac12\ub4e4 : \ubcc0\uacbd\ud558\uc9c0 \ub9d0\uac83
 String m_caSerial = null;
@@ -1048,6 +1050,22 @@ try {
 	}else{
 		isCert = "Y";
 		CertGb = "\uc7ac\ubc1c\uae09";
+	}
+
+	String q = "";
+	q += "	SELECT ";
+	q += "		( ";
+	q += "			CASE WHEN B.GUBUN = 'E' THEN (SELECT POLICY_EXCEPTN1 FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	//q += "			WHEN B.GUBUN = 'H' THEN (SELECT POLICY_EXCEPTN2 FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	q += "			ELSE (SELECT POLICY_DEFAULT FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	q += "			END ";
+	q += "		) AS POLICY ";
+	q += "	FROM V_INSA A LEFT JOIN MNG_USER B ON (A.EMPNO = B.USERID) ";
+	q += "	WHERE A.EMPNO = '" + m_ID + "' ";
+
+	rs = stmt.executeQuery(q);
+	while( rs.next() ) {
+		m_POLICY = rs.getString("POLICY");
 	}
 	
 } catch(Exception e) {
@@ -1300,7 +1318,8 @@ if (m_How.equals("certNew")) { //\uc778\uc99d\uc11c \ubc1c\uae09\uc2dc\uc5d0\ub9
 				PrintWriter writer = response.getWriter();
 				writer.println("<script type='text/javascript'>");
 				writer.println("alert('\uc785\ub825\ud558\uc2e0 \uc778\uc99d\ubc88\ud638\ub294 \uc62c\ubc14\ub978 SMS\uc778\uc99d\ubc88\ud638\uac00 \uc544\ub2d9\ub2c8\ub2e4.\\n\ub2e4\uc2dc \ud55c\ubc88 \uc778\uc99d\uc11c \ubc1c\uae09\uc744 \ud558\uc2ed\uc2dc\uc624.');");
-				writer.println("location.href='ini_certNew.jsp';");
+				//writer.println("location.href='ini_certNew.jsp';");
+				writer.println("history.back(-1);");
 				writer.println("</script>");
 				writer.flush();
 				return;
@@ -1397,7 +1416,7 @@ try {
 	String cn = m_ID;
 
 	String mail = m_MAIL;
-	String policy = "71";
+	String policy = m_POLICY;
 	String serialno = m_certserial;
 
 	HashMap hash = null;
@@ -1514,7 +1533,7 @@ try {
 
 	/* RA SDK \ucd08\uae30\ud654 */
 	//IniOPPRA iniRA = new IniOPPRA("172.20.25.121", 4007);
-	IniOPPRA iniRA = new IniOPPRA("10.180.2.66", 4000);
+	IniOPPRA iniRA = new IniOPPRA("10.180.2.67", 4000);
 	iniRA.setCharEncoding("euc-kr");
 	/* IniOPPRA iniRA = new IniOPPRA("172.20.25.140", 4007); */
 	iniRA.initialize();
@@ -1795,6 +1814,15 @@ try {
 	//pstmtu = connu.prepareStatement(delQry);
 	//pstmtu.executeUpdate();
 
+	//[STR] VPN \uc5f0\uacc4\ub97c \uc704\ud55c \uc778\uc99d\uc11c \ubc1c\uae09 \uc544\uc774\ub514\uc815\ubcf4 \uc800\uc7a5 2017-04-11
+	// \uae30\uc874\uc815\ubcf4 \uc0ad\uc81c
+	pstmtu = connu.prepareStatement("DELETE FROM sync_pwd_vpn WHERE userid = '" + m_ID + "'");
+	pstmtu.executeUpdate();
+
+	// \ucd5c\uc2e0\uc815\ubcf4 \ub4f1\ub85d
+	pstmtu = connu.prepareStatement("INSERT INTO sync_pwd_vpn (userid, cdate) VALUES('" + m_ID + "', SYSDATE)");
+	pstmtu.executeUpdate();
+	//[END] VPN \uc5f0\uacc4\ub97c \uc704\ud55c \uc778\uc99d\uc11c \ubc1c\uae09 \uc544\uc774\ub514\uc815\ubcf4 \uc800\uc7a5 2017-04-11
 	
 } catch(Exception e) {
 	e.printStackTrace();
@@ -1805,6 +1833,8 @@ try {
 
     out.write(_jsp_string1, 0, _jsp_string1.length);
     
+
+//[STR] VPN \uc0ac\uc6a9\uc790 \ube44\ubc00\ubc88\ud638 \uc5f0\uacc4\ubc29\uc2dd \ubcc0\uacbd REAL \u2192 BATCH 2017-04-20 / \uc8fc\uc11d\uc81c\uac70 2018-10-12
 	// VPN \uc0ac\uc6a9\uc790 \ud328\uc2a4\uc6cc\ub4dc \uc5c5\ub370\uc774\ud2b8 \ub0b4\uc6a9
      URL url;//URL \uc8fc\uc18c \uac1d\uccb4
         URLConnection connection;//URL\uc811\uc18d\uc744 \uac00\uc9c0\ub294 \uac1d\uccb4
@@ -1814,7 +1844,7 @@ try {
 
         try{
             //URL\uac1d\uccb4\ub97c \uc0dd\uc131\ud558\uace0 \ud574\ub2f9 URL\ub85c \uc811\uc18d\ud55c\ub2e4..
-            url = new URL("http://10.180.6.97:8080/SSL/EMPLOYEE2/epi_relay.php?id="+m_ID+"&pw="+getBase64Data(getHashValue(m_pw)));
+            url = new URL("http://10.180.66.97:8080/SSL/EMPLOYEE2/epi_relay.php?id="+m_ID+"&pw="+getBase64Data(getHashValue(m_pw)));
             connection = url.openConnection();
 
             //\ub0b4\uc6a9\uc744 \uc77d\uc5b4\uc624\uae30\uc704\ud55c InputStream\uac1d\uccb4\ub97c \uc0dd\uc131\ud55c\ub2e4..
@@ -1837,6 +1867,7 @@ try {
             ioe.printStackTrace();
             System.exit(1);
         }
+//[END] VPN \uc0ac\uc6a9\uc790 \ube44\ubc00\ubc88\ud638 \uc5f0\uacc4\ubc29\uc2dd \ubcc0\uacbd REAL \u2192 BATCH 2017-04-20 / \uc8fc\uc11d\uc81c\uac70 2018-10-12
 
 
     out.write(_jsp_string6, 0, _jsp_string6.length);
@@ -1860,8 +1891,36 @@ try {
     out.write('(');
     out.print((m_ID));
     out.write(_jsp_string15, 0, _jsp_string15.length);
-     try { if (m_bEncrypt) out = m_IP.endEncrypt(out); } catch(Exception e) {} 
+    
+					if ("69".equals(m_POLICY)) {
+						out.print("1\uac1c\uc6d4");
+					} else if ("70".equals(m_POLICY)) {
+						out.print("2\uac1c\uc6d4");
+					} else if ("71".equals(m_POLICY)) {
+						out.print("3\uac1c\uc6d4");
+					} else if ("72".equals(m_POLICY)) {
+						out.print("4\uac1c\uc6d4");
+					} else if ("73".equals(m_POLICY)) {
+						out.print("5\uac1c\uc6d4");
+					} else if ("74".equals(m_POLICY)) {
+						out.print("6\uac1c\uc6d4");
+					} else if ("75".equals(m_POLICY)) {
+						out.print("7\uac1c\uc6d4");
+					} else if ("76".equals(m_POLICY)) {
+						out.print("8\uac1c\uc6d4");
+					} else if ("77".equals(m_POLICY)) {
+						out.print("9\uac1c\uc6d4");
+					} else if ("78".equals(m_POLICY)) {
+						out.print("10\uac1c\uc6d4");
+					} else if ("79".equals(m_POLICY)) {
+						out.print("11\uac1c\uc6d4");
+					} else if ("80".equals(m_POLICY)) {
+						out.print("12\uac1c\uc6d4");
+					}
+					
     out.write(_jsp_string16, 0, _jsp_string16.length);
+     try { if (m_bEncrypt) out = m_IP.endEncrypt(out); } catch(Exception e) {} 
+    out.write(_jsp_string17, 0, _jsp_string17.length);
   }
 
   private com.caucho.make.DependencyContainer _caucho_depends
@@ -1921,19 +1980,19 @@ try {
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_certNew_send.jsp"), 4627516271242156202L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_certNew_send.jsp"), 7322872031585054053L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -8960418715910081368L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -1077120484095086999L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_init.jsp"), -7759514701566643355L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_init.jsp"), 4796767119961629043L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_userSet.jsp"), 4497630937315889300L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_userSet.jsp"), 8012393756565734243L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_ca_send.jsp"), 3322387933915330306L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_ca_send.jsp"), 2108205030861484585L, true);
     _caucho_depends.add(depend);
     depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_err_check.jsp"), 7889382124300349123L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/fncSMS.jsp"), 982747829060268313L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/fncSMS.jsp"), -8648009111509629692L, true);
     _caucho_depends.add(depend);
   }
 
@@ -1965,9 +2024,8 @@ try {
     }
   }
 
-  private final static char []_jsp_string14;
   private final static char []_jsp_string15;
-  private final static char []_jsp_string5;
+  private final static char []_jsp_string14;
   private final static char []_jsp_string9;
   private final static char []_jsp_string12;
   private final static char []_jsp_string11;
@@ -1976,16 +2034,17 @@ try {
   private final static char []_jsp_string10;
   private final static char []_jsp_string1;
   private final static char []_jsp_string3;
+  private final static char []_jsp_string16;
   private final static char []_jsp_string13;
   private final static char []_jsp_string2;
-  private final static char []_jsp_string16;
-  private final static char []_jsp_string6;
+  private final static char []_jsp_string17;
   private final static char []_jsp_string0;
+  private final static char []_jsp_string5;
   private final static char []_jsp_string7;
+  private final static char []_jsp_string6;
   static {
+    _jsp_string15 = ")</b> \ub2d8\uc758 \uc778\uc99d\uc11c\uac00 \uc131\uacf5\uc801\uc73c\ub85c \ubc1c\uae09\ub418\uc5c8\uc2b5\ub2c8\ub2e4.</li>\n				<li class=\"sbtextbg2\">\n					<img src=\"img/bullet_list.gif\" align=\"center\"> \uc778\uc99d\uc11c\uc758 \uc720\ud6a8\uae30\uac04\uc740 \n					".toCharArray();
     _jsp_string14 = "-->\n	<script language=\"javascript\">dspMainMenu();</script>\n	<!-- MAIN MENU END -->\n</div>\n\n<div style=\"height:10px;\"></div>\n<div id=\"subtop\">\n	<ul class=\"subtoptxt\">\n		<li class=\"toptxtcon\">\uc778\uc99d\uc13c\ud130 \uc774\uc6a9\ud558\uae30</li>\n		<li class=\"toptxtcon01\" style=\"text-decoration:underline;\">\uc778\uc99d\uc11c \ubc1c\uae09</li>\n		<li class=\"toptxtcon01\">\uc778\uc99d\uc11c \ud3d0\uae30</li>\n		<li class=\"toptxtcon01\">\uc778\uc99d\uc11c \uad00\ub9ac</li>\n	</ul>\n</div>\n\n<div id=\"subissue\">\n	<ul>\n		<li><img src=\"img/subtitle0101.gif\" alt=\"\uc778\uc99d\uc11c\ubc1c\uae09_\uc778\uc99d\uc11c\ub97c \ubc1c\uae09\ud574\ub4dc\ub9bd\ub2c8\ub2e4.\"></li>\n		<li class=\"stitle\"><img src=\"img/subtitle0203.gif\" alt=\"\uc778\uc99d\uc11c\ubc1c\uae09_\uc644\ub8cc\"></li>\n		<li class=\"box\">\n			<ul>\n				<li class=\"sbtextbg2\">\n					<img src=\"img/bullet_list.gif\" align=\"center\"> <b class=\"txblue\">".toCharArray();
-    _jsp_string15 = ")</b> \ub2d8\uc758 \uc778\uc99d\uc11c\uac00 \uc131\uacf5\uc801\uc73c\ub85c \ubc1c\uae09\ub418\uc5c8\uc2b5\ub2c8\ub2e4.</li>\n				<li class=\"sbtextbg2\">\n					<img src=\"img/bullet_list.gif\" align=\"center\"> \uc778\uc99d\uc11c\uc758 \uc720\ud6a8\uae30\uac04\uc740 3\uac1c\uc6d4\uc774\uba70, \uc720\ud6a8\uae30\uac04\uc774 \uc9c0\ub09c \uc778\uc99d\uc11c\ub294 \uc0ac\uc6a9\ud558\uc2e4 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.</li>\n				<li class=\"sbtextbg2\">\n					<img src=\"img/bullet_list.gif\" align=\"center\"> PowerNet \ub85c\uadf8\uc778\uc744 \uc704\ud574\uc11c PowerNet ToolBand\uc758 \ud1b5\ud569\uc778\uc99d\uc744 \ud074\ub9ad\ud558\uc2ed\uc2dc\uc624. \uc774\uc6a9\ud574\uc8fc\uc154\uc11c \uac10\uc0ac\ud569\ub2c8\ub2e4</li>\n				<li class=\"dotted1\"></li>\n\n				<li class=\"sbtextbg\"> \n					- \uc778\uc99d\uc11c \ubd84\uc2e4(\uc778\uc99d\uc11c \ube44\ubc00\ubc88\ud638\ub97c \uc78a\uc5b4\ubc84\ub9b0 \uacbd\uc6b0, \uc774\uc6a9\ud558\ub294 \ucef4\ud4e8\ud130\uac00 \ubcc0\uacbd \ub41c \uacbd\uc6b0, \uc778\uc99d\uc11c\uac00 \uc0ad\uc81c\ub41c \uacbd\uc6b0 \ub4f1)\uc2dc \uc778\uc99d\uc11c\ub97c \ud3d0\uae30\ud55c \ud6c4, \ubc1c\uae09\ubc1b\uc73c\uc2dc\uba74 \uc0ac\uc6a9 \uac00\ub2a5\ud569\ub2c8\ub2e4. </li>\n				\n				<li style=\"text-align:center;\"><a href=\"/initech/certcenter64/inica70/index.jsp\"><img src=\"img/btn_cen_fir.gif\" alt=\"\uc778\uc99d\uc11c\ucd08\uae30\ud654\uba74\"></a></li>\n				\n			</ul>\n		</li>\n		\n	</ul>\n	<div style=\"height:90px;\"></div>\n</div>\n\n<!-- COPYRIGHT START -->\n<script language=\"javascript\">dspCopyRight();</script>\n<!-- COPYRIGHT END -->\n\n\n".toCharArray();
-    _jsp_string5 = "\n\n \n\n\n\n\n\n\n\n\n".toCharArray();
     _jsp_string9 = "\">\n<input type=\"hidden\" name=\"key\" id=\"key\" value=\"".toCharArray();
     _jsp_string12 = "\" />\n<input type=\"hidden\" name=\"pwd\" id=\"pwd\" value=\"".toCharArray();
     _jsp_string11 = "\" />\n<input type=\"hidden\" name=\"usb\" id=\"usb\" value=\"".toCharArray();
@@ -1994,11 +2053,13 @@ try {
     _jsp_string10 = "\" />\n<input type=\"hidden\" name=\"didx\" id=\"didx\" value=\"".toCharArray();
     _jsp_string1 = "\n\n".toCharArray();
     _jsp_string3 = "	\r\n\r\n\r\n\n\n\n\n\n\n\n\n".toCharArray();
+    _jsp_string16 = "\n					\uc774\uba70, \uc720\ud6a8\uae30\uac04\uc774 \uc9c0\ub09c \uc778\uc99d\uc11c\ub294 \uc0ac\uc6a9\ud558\uc2e4 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.</li>\n				<li class=\"sbtextbg2\">\n					<img src=\"img/bullet_list.gif\" align=\"center\"> PowerNet \ub85c\uadf8\uc778\uc744 \uc704\ud574\uc11c PowerNet ToolBand\uc758 \ud1b5\ud569\uc778\uc99d\uc744 \ud074\ub9ad\ud558\uc2ed\uc2dc\uc624. \uc774\uc6a9\ud574\uc8fc\uc154\uc11c \uac10\uc0ac\ud569\ub2c8\ub2e4</li>\n				<li class=\"dotted1\"></li>\n\n				<li class=\"sbtextbg\"> \n					- \uc778\uc99d\uc11c \ubd84\uc2e4(\uc778\uc99d\uc11c \ube44\ubc00\ubc88\ud638\ub97c \uc78a\uc5b4\ubc84\ub9b0 \uacbd\uc6b0, \uc774\uc6a9\ud558\ub294 \ucef4\ud4e8\ud130\uac00 \ubcc0\uacbd \ub41c \uacbd\uc6b0, \uc778\uc99d\uc11c\uac00 \uc0ad\uc81c\ub41c \uacbd\uc6b0 \ub4f1)\uc2dc \uc778\uc99d\uc11c\ub97c \ud3d0\uae30\ud55c \ud6c4, \ubc1c\uae09\ubc1b\uc73c\uc2dc\uba74 \uc0ac\uc6a9 \uac00\ub2a5\ud569\ub2c8\ub2e4. </li>\n				\n				<li style=\"text-align:center;\"><a href=\"/initech/certcenter64/inica70/index.jsp\"><img src=\"img/btn_cen_fir.gif\" alt=\"\uc778\uc99d\uc11c\ucd08\uae30\ud654\uba74\"></a></li>\n				\n			</ul>\n		</li>\n		\n	</ul>\n	<div style=\"height:90px;\"></div>\n</div>\n\n<!-- COPYRIGHT START -->\n<script language=\"javascript\">dspCopyRight();</script>\n<!-- COPYRIGHT END -->\n\n\n".toCharArray();
     _jsp_string13 = "\" />\n</form>\n<div id=\"header\"> \n	<!-- MAIN MENU START ".toCharArray();
     _jsp_string2 = "\n\n\n\n\r\n \r\n\r\n\r\n\r\n".toCharArray();
-    _jsp_string16 = "\n\n</body>\n</html>\n\n".toCharArray();
-    _jsp_string6 = "\n\n\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\n<title>\uc778\uc99d\uc13c\ud130 \uc774\uc6a9\uc548\ub0b4</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/import.css\" />\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\" />\n\n<script type=\"text/javascript\" src=\"js/jquery-1.7.2.min.js\"></script>\n<script type=\"text/javascript\" src=\"js/jquery.flexslider-min.js\"></script>\n<script type=\"text/javascript\" src=\"js/jquery.als-1.1.min.js\"></script>\n<script type=\"text/javascript\" src=\"js/common.js\"></script>\n\n<script language=\"javascript\" src=\"/initech/plugin/INIplugin.js\"></script>\n<script language=\"javascript\">\n	var UserCert;\n	".toCharArray();
+    _jsp_string17 = "\n\n</body>\n</html>\n\n".toCharArray();
     _jsp_string0 = "\n\n\n\n\n\n\n\n\n\n\n".toCharArray();
+    _jsp_string5 = "\n\n \n\n\n\n\n\n\n\n".toCharArray();
     _jsp_string7 = "\n</script>\n<script language=\"javascript\">\nfunction setTimerMain() {\n	setTimeout(\"location.href='/initech/certcenter64/inica70/index.jsp'\",5000);\n}\n</script>\n\n<!--[if IE 6]>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ie6.css\">\n<![endif]-->\n<!--[if IE 7]>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ie7.css\">\n<![endif]-->\n</head> \n\n<body onload=\"InsertUserCert(UserCert);document.hdnForm.target='hdnFrame';document.hdnForm.submit(); setTimerMain();\">\n".toCharArray();
+    _jsp_string6 = "\n\n\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=11\"/>\n<title>\uc778\uc99d\uc13c\ud130 \uc774\uc6a9\uc548\ub0b4</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/import.css\" />\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\" />\n\n<script type=\"text/javascript\" src=\"js/jquery-1.7.2.min.js\"></script>\n<script type=\"text/javascript\" src=\"js/jquery.flexslider-min.js\"></script>\n<script type=\"text/javascript\" src=\"js/jquery.als-1.1.min.js\"></script>\n<script type=\"text/javascript\" src=\"js/common.js\"></script>\n\n<script language=\"javascript\" src=\"/initech/plugin/INIplugin.js\"></script>\n<script language=\"javascript\">\n	var UserCert;\n	".toCharArray();
   }
 }

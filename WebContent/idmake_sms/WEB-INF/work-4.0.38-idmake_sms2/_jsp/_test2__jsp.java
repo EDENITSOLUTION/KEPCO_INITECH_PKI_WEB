@@ -40,6 +40,81 @@ public class _test2__jsp extends com.caucho.jsp.JavaPage
   		//toVal = Integer.toString(intGap);
   		return toVal;
   }
+  
+  public String en(String ko){
+  	        /**/
+  	        String new_str = null;
+  	        try{        
+  	                new_str  = new String(ko.getBytes("KSC5601"), "8859_1");
+  	        } catch(UnsupportedEncodingException ex) {ex.printStackTrace(); }
+  	        return new_str;
+  	        /**/
+  	        //return ko;
+  }
+  
+  
+  public static String Padding(String str, int len, char padding) {
+  
+  	//\ub0b4\uc6a9\uc774 \uc5c6\ub294 \uacbd\uc6b0.
+  	if (str == null)
+  	return "";
+  
+  	//\uc0ac\uc774\uc988\uac00 0\ubcf4\ub2e4 \uc791\uc740\uacbd\uc6b0.
+  	if (len <= 0)
+  	return str;
+  
+  	byte[] strbyte = null;
+  
+  	strbyte = str.getBytes();//getBytes("EUC-KR")
+  	int strbyteLen = strbyte.length;
+  
+  	int strbyteLenTmp = 0;
+  	StringBuffer strTmp = new StringBuffer();
+  
+  	if (strbyteLen < len) {//\ubb38\uc790\uc5f4 \ubcf4\ub2e4  \uc790\ub97c \uae38\uc774\uac00 \ub354 \ud070 \uacbd\uc6b0.
+  
+  		strbyteLenTmp = len - strbyteLen;
+  
+  		for (int i = 0; i < strbyteLenTmp; i++) {//\ud328\ub529 \ubb38\uc790\ub85c \ucc44\uc6b4\ub2e4.
+  			strTmp.append(padding);
+  		}
+  
+  		//\ubb38\uc790 \ud569\uce5c\ud6c4 \ubb38\uc790\uc5f4 \uae38\uc774 \ub2e4\uc2dc \uad6c\ud55c\ub2e4.
+  		str = str + strTmp.toString();
+  		strbyte = str.getBytes();
+  		strbyteLen = strbyte.length;
+  	}
+  
+  	if (strbyteLen == len) {
+  		return str;
+  	}
+  
+  	char[] charArray = str.toCharArray();
+  
+  	int checkLimit = len;
+  	for (int i = 0; i < charArray.length; i++) {
+  		if (charArray[i] < 256) {
+  			checkLimit -= 1;
+  		} else {
+  			checkLimit -= 2;
+  		}
+  
+  		if (checkLimit <= 0) {
+  		break;
+  		}
+  	}
+  
+  	//\ub300\uc0c1 \ubb38\uc790\uc5f4 \ub9c8\uc9c0\ub9c9 \uc790\ub9ac\uac00 2\ubc14\uc774\ud2b8\uc758 \uc911\uac04\uc77c \uacbd\uc6b0 \uc81c\uac70\ud568
+  	byte[] newByte = new byte[len + checkLimit];
+  
+  	for (int i = 0; i < newByte.length; i++) {
+  		newByte[i] = strbyte[i];
+  	}
+  
+  	return new String(newByte);
+  
+  }
+  
 
   
   public void
@@ -81,22 +156,17 @@ public class _test2__jsp extends com.caucho.jsp.JavaPage
 
     out.write(_jsp_string0, 0, _jsp_string0.length);
     
-String keyval = "KEPCOCA";
+String keyval = en("KEPCO-SSO \ubc1c\uae09\uc6a9\ud638\ub294 [000000]\uc785\ub2c8\ub2e4.");
 
     out.write(_jsp_string1, 0, _jsp_string1.length);
     out.print((keyval));
+    out.write('(');
+    out.print((keyval.length()));
     out.write(_jsp_string2, 0, _jsp_string2.length);
-    out.print((toPad(keyval, 10)));
+    out.print((Padding(keyval, 81, (char)0x00)));
     out.write(_jsp_string3, 0, _jsp_string3.length);
-    out.print((toPad(keyval, 10).length()));
+    out.print((Padding(keyval, 81,(char)0x00).length()));
     out.write(_jsp_string4, 0, _jsp_string4.length);
-    
-String temp = "0";
-for (int i=1; i <= 3; i++){
-	temp += temp;			
-}
-
-    out.print((temp));
   }
 
   private com.caucho.make.DependencyContainer _caucho_depends
@@ -156,7 +226,7 @@ for (int i=1; i <= 3; i++){
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("test2.jsp"), 2950915869590414942L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("test2.jsp"), -1943830003230419552L, true);
     _caucho_depends.add(depend);
   }
 
@@ -190,14 +260,14 @@ for (int i=1; i <= 3; i++){
 
   private final static char []_jsp_string1;
   private final static char []_jsp_string4;
-  private final static char []_jsp_string2;
   private final static char []_jsp_string3;
+  private final static char []_jsp_string2;
   private final static char []_jsp_string0;
   static {
     _jsp_string1 = "\r\n\uc804\ub2ec\ubb38\uc790 : ".toCharArray();
-    _jsp_string4 = "<br><br><br><br>\r\n\r\n".toCharArray();
-    _jsp_string2 = "<br>\r\n\uc804\uc1a1\ubb38\uc790 : ".toCharArray();
+    _jsp_string4 = "<br><br><br><br>".toCharArray();
     _jsp_string3 = "<br>\r\n\ubb38\uc790\uae38\uc774 : ".toCharArray();
+    _jsp_string2 = ")<br>\r\n\uc804\uc1a1\ubb38\uc790 : ".toCharArray();
     _jsp_string0 = "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n".toCharArray();
   }
 }

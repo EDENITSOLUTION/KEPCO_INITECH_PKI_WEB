@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>test</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+	<listener>
+		<listener-class>com.initech.certrelay.init.InitializeServlet</listener-class>
+	</listener>
+	<context-param>
+		<param-name>cert_relay_v12</param-name>
+		<param-value>/usr/local/resin-pro-4.0.38/webapps/web-root/initech/WEB-INF/cert_relay_server_v12.properties</param-value>
+	</context-param>
+<context-param>
+	<param-name>char_set</param-name>
+	<param-value>EUC-KR</param-value>
+</context-param>
+<context-param>
+	  <param-name>response_char_set</param-name>
+  	  <param-value>EUC-KR</param-value>
+  </context-param>
+  	<servlet>
+    <servlet-name>GetCertificateV12</servlet-name>
+    <servlet-class>com.initech.certrelay.servlet.GetCertificateV12</servlet-class>
+</servlet>
+<servlet>
+    <servlet-name>ByPassV12</servlet-name>
+    <servlet-class>com.initech.certrelay.servlet.ByPassV12</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>GetCertificateV12</servlet-name>
+    <url-pattern>/initech/CertRelay/servlet/GetCertificateV12</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+    <servlet-name>ByPassV12</servlet-name>
+    <url-pattern>/initech/CertRelay/servlet/ByPassV12</url-pattern>
+</servlet-mapping>
+</web-app>

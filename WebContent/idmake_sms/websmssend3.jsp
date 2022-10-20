@@ -462,7 +462,7 @@ KEY = convertedTime ;
 String RECVPHONE = sendPhone ;//("01099117557" 15 + 1) 
 String REFPHONE = org_phone;
 
-String CALLBACK = "0234561166"; //15 + 1
+String CALLBACK = "0234568000"; //15 + 1
 String MESSAGE = strMsgText ; //80 + 1
 String EMPNO = empno ; // 8 + 1
 String REFCNT = "00001"; // 5 + 1

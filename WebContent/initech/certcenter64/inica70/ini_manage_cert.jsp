@@ -67,6 +67,11 @@ int start = ( curPage - 1 ) * numPerPage + 1;
 // 마지막 레코드 계산 .....
 int end = start + numPerPage - 1;
 
+int block = 10;
+int startPage = ((curPage - 1) / block * block) + 1;
+int endPage = ((curPage - 1) / block * block) + block;
+
+
 //************************************************
 //     페이지 변수 선언 End
 //************************************************
@@ -159,6 +164,8 @@ if (STATUS.equals("I") || STATUS.equals("R")){
 	baseCondQuery = baseCondQuery + " AND  A.STATUS = '"+ STATUS +"' ";
 }
 
+String queryString = "";
+
 
 Context icu = new InitialContext();
 DataSource dsu = (DataSource) icu.lookup("java:comp/env/jdbc/INICA");
@@ -167,7 +174,6 @@ ResultSet rsu = null;
 Connection connu = null;
 Statement stmtu = null;
 PreparedStatement pstmtu = null;
-
 
 
 String strTotQuerey = "" ;
@@ -312,6 +318,9 @@ try {
 		} else {
 			totalPage = (totalRecord / numPerPage + 1 );
 		}
+		if (endPage > totalPage) {
+			endPage = totalPage;
+		}
 	}
 
 
@@ -330,6 +339,7 @@ try {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <title>인증센터 이용안내</title>
 <link rel="stylesheet" type="text/css" href="css/import.css" />
 <link rel="stylesheet" type="text/css" href="css/main.css" />
@@ -410,6 +420,25 @@ function excelDown(){
 	background-color : #ffffff ;
 	padding : 5px;
 }
+.paging_box {
+	display:table; 
+	background:#F6F6F6; 
+	margin:0 auto; 
+	border:1px solid #999;
+	border-radius:5px;
+
+}
+.paging_box > li {
+	float:left;
+	font-size:16px;
+	color:#000;
+	font-weight:bold;
+	padding:10px 15px 9px 15px;
+	border-right:1px solid #999;
+}
+.paging_box > li:last-child {
+	border-right:none;
+}
 </style>
 
 <!--[if IE 6]>
@@ -430,7 +459,10 @@ function excelDown(){
 <div id="subtop">
 	<ul class="subtoptxt">
 		<li class="toptxtcon">인증센터 관리자</li>
-		<li class="toptxtcon01" style="text-decoration:underline;width:150px;text-align:left;">인증서 발급 내역 조회</li>
+		<li class="toptxtcon01" style="text-decoration:underline;width:150px;text-align:left; font-weight:bold; color:#000;"><a href="ini_manage_cert.jsp">인증서 발급 내역 조회</a></li>
+		<li class="toptxtcon01"><a href="ini_manage_config.jsp">환경설정</a></li>
+		<li class="toptxtcon01"><a href="ini_manage_insa.jsp">인사정보목록</a></li>
+		<li class="toptxtcon01"><a href="ini_manage_user.jsp">예외직원관리</a></li>
 		<li class="toptxtcon01"><a href="ini_manage_cert_logout.jsp">로그아웃</a></li>
 		<li class="toptxtcon01">&nbsp;</li>
 	</ul>
@@ -466,6 +498,12 @@ function excelDown(){
 					<option value="2018"<%if (f_yyyy.equals("2018")) {%> selected<%}%>>2018년</option>
 					<option value="2019"<%if (f_yyyy.equals("2019")) {%> selected<%}%>>2019년</option>
 					<option value="2020"<%if (f_yyyy.equals("2020")) {%> selected<%}%>>2020년</option>
+                                        <option value="2021"<%if (f_yyyy.equals("2021")) {%> selected<%}%>>2021년
+</option>
+                                        <option value="2022"<%if (f_yyyy.equals("2022")) {%> selected<%}%>>2022년
+</option>
+                                        <option value="2023"<%if (f_yyyy.equals("2023")) {%> selected<%}%>>2023년
+</option>                       
 				</select>
 				<select name="f_mm" id="f_mm"<%if (m_searchGb.equals("B")){%> <%}else{%> disabled<%}%>>
 				<%
@@ -506,6 +544,12 @@ function excelDown(){
 					<option value="2018"<%if (t_yyyy.equals("2018")) {%> selected<%}%>>2018년</option>
 					<option value="2019"<%if (t_yyyy.equals("2019")) {%> selected<%}%>>2019년</option>
 					<option value="2020"<%if (t_yyyy.equals("2020")) {%> selected<%}%>>2020년</option>
+                                        <option value="2021"<%if (f_yyyy.equals("2021")) {%> selected<%}%>>2021년
+</option>
+                                        <option value="2022"<%if (f_yyyy.equals("2022")) {%> selected<%}%>>2022년
+</option>
+                                        <option value="2023"<%if (f_yyyy.equals("2023")) {%> selected<%}%>>2023년
+</option>                       
 				</select>
 				<select name="t_mm" id="t_mm"<%if (m_searchGb.equals("B")){%> <%}else{%> disabled<%}%>>
 				<%
@@ -607,7 +651,7 @@ String convertedToday = sdfr.format(today);
 
 rsu = stmtu.executeQuery(strQuery);
 
-int irs = 1 ;
+int irs = (totalRecord - (numPerPage * (curPage-1)));
 while( rsu.next() ) {		
 
 %>
@@ -636,11 +680,12 @@ while( rsu.next() ) {
 			<td class="wTableTdCell" colspan="2"><%=rsu.getString("DN")%></td>
 		</tr>
 <%
-	irs++;
+	irs--;
 }
 %>
 						
 	</table><br />
+	<!--
 	<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 		<tr>
 			<td style="text-align:center;padding:5px; border-top: dotted 1px #666666;border-bottom: dotted 1px #666666;">
@@ -657,9 +702,30 @@ for ( int i = 1;i <= totalPage;i++ ) {
 			</td>
 		</tr>
 	</table>
-
-				
-				
+	-->
+<ul class="paging_box">
+<% if (curPage > block) { %>
+<li><a href="javascript:fncPaging(1);">처음</a></li>
+<li><a href="javascript:fncPaging(<%=(startPage-1)%>);">이전</a></li>
+<% } %>
+<% 
+for (int i = startPage; i <= endPage; i++ ) {
+	if (i == curPage) {
+%>
+	<li><strong style="color:red; font-weight:bold"><%=i%></strong></li>
+<%
+	} else {
+%>
+	<li><a href="javascript:fncPaging(<%=i%>);"><%=i%></a></li>
+<%
+	}
+}
+%>
+<% if (endPage < totalPage) { %>
+<li><a href="javascript:fncPaging(<%=(endPage+1)%>);">다음</a></li>
+<li><a href="javascript:fncPaging(<%=totalPage%>);">마지막</a></li>
+<% } %>				
+</ul>		
 				
 				
 </div>

@@ -77,6 +77,7 @@ String m_OU = "정보기술처";	//정보기술처
 String m_O = "한국전력공사";
 String m_L = "서울특별시";
 String m_C = "KR";
+String m_POLICY = "71"; // 20180718 njjang 추가
 
 //인증서 신청(취소) 성공시 받아오는 값들 : 변경하지 말것
 String m_caSerial = null;

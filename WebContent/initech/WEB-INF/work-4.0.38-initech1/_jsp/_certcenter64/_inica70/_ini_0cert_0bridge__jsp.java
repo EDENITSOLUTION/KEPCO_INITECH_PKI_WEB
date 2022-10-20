@@ -252,6 +252,7 @@ String pwdSyncKey = "5ac1bb6d4172409089a7df3aa6ec91c2";
 String pwdSyncDidx = "1";
 
 
+
 boolean m_bDebug = true;
 String m_How = null;
 
@@ -375,7 +376,7 @@ if (m_IniErrCode == null)
 	//if (m_IniErrCode != null) IniDebug.request(request);
 }
 
-    out.write(_jsp_string1, 0, _jsp_string1.length);
+    out.write('\n');
      m_How = "certRevoke"; 
     out.write(_jsp_string1, 0, _jsp_string1.length);
     
@@ -456,6 +457,7 @@ String m_OU = "\uc815\ubcf4\uae30\uc220\ucc98";	//\uc815\ubcf4\uae30\uc220\ucc98
 String m_O = "\ud55c\uad6d\uc804\ub825\uacf5\uc0ac";
 String m_L = "\uc11c\uc6b8\ud2b9\ubcc4\uc2dc";
 String m_C = "KR";
+String m_POLICY = "71"; // 20180718 njjang \ucd94\uac00
 
 //\uc778\uc99d\uc11c \uc2e0\uccad(\ucde8\uc18c) \uc131\uacf5\uc2dc \ubc1b\uc544\uc624\ub294 \uac12\ub4e4 : \ubcc0\uacbd\ud558\uc9c0 \ub9d0\uac83
 String m_caSerial = null;
@@ -587,6 +589,22 @@ try {
 	}else{
 		isCert = "Y";
 		CertGb = "\uc7ac\ubc1c\uae09";
+	}
+
+	String q = "";
+	q += "	SELECT ";
+	q += "		( ";
+	q += "			CASE WHEN B.GUBUN = 'E' THEN (SELECT POLICY_EXCEPTN1 FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	//q += "			WHEN B.GUBUN = 'H' THEN (SELECT POLICY_EXCEPTN2 FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	q += "			ELSE (SELECT POLICY_DEFAULT FROM MNG_CONFIG WHERE ROWNUM = 1) ";
+	q += "			END ";
+	q += "		) AS POLICY ";
+	q += "	FROM V_INSA A LEFT JOIN MNG_USER B ON (A.EMPNO = B.USERID) ";
+	q += "	WHERE A.EMPNO = '" + m_ID + "' ";
+
+	rs = stmt.executeQuery(q);
+	while( rs.next() ) {
+		m_POLICY = rs.getString("POLICY");
 	}
 	
 } catch(Exception e) {
@@ -839,7 +857,8 @@ if (m_How.equals("certNew")) { //\uc778\uc99d\uc11c \ubc1c\uae09\uc2dc\uc5d0\ub9
 				PrintWriter writer = response.getWriter();
 				writer.println("<script type='text/javascript'>");
 				writer.println("alert('\uc785\ub825\ud558\uc2e0 \uc778\uc99d\ubc88\ud638\ub294 \uc62c\ubc14\ub978 SMS\uc778\uc99d\ubc88\ud638\uac00 \uc544\ub2d9\ub2c8\ub2e4.\\n\ub2e4\uc2dc \ud55c\ubc88 \uc778\uc99d\uc11c \ubc1c\uae09\uc744 \ud558\uc2ed\uc2dc\uc624.');");
-				writer.println("location.href='ini_certNew.jsp';");
+				//writer.println("location.href='ini_certNew.jsp';");
+				writer.println("history.back(-1);");
 				writer.println("</script>");
 				writer.flush();
 				return;
@@ -936,7 +955,7 @@ try {
 	String cn = m_ID;
 
 	String mail = m_MAIL;
-	String policy = "71";
+	String policy = m_POLICY;
 	String serialno = m_certserial;
 
 	HashMap hash = null;
@@ -1053,7 +1072,7 @@ try {
 
 	/* RA SDK \ucd08\uae30\ud654 */
 	//IniOPPRA iniRA = new IniOPPRA("172.20.25.121", 4007);
-	IniOPPRA iniRA = new IniOPPRA("10.180.2.66", 4000);
+	IniOPPRA iniRA = new IniOPPRA("10.180.2.67", 4000);
 	iniRA.setCharEncoding("euc-kr");
 	/* IniOPPRA iniRA = new IniOPPRA("172.20.25.140", 4007); */
 	iniRA.initialize();
@@ -1358,13 +1377,13 @@ try {
     com.caucho.vfs.Depend depend;
     depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_cert_bridge.jsp"), -2773990804803317792L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -8960418715910081368L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -1077120484095086999L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_init.jsp"), -7759514701566643355L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_init.jsp"), 4796767119961629043L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_userSet.jsp"), 4497630937315889300L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_userSet.jsp"), 8012393756565734243L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_ca_send.jsp"), 3322387933915330306L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_ca_send.jsp"), 2108205030861484585L, true);
     _caucho_depends.add(depend);
     depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/inica70_err_check.jsp"), 7889382124300349123L, true);
     _caucho_depends.add(depend);

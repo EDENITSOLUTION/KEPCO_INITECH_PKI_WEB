@@ -15,7 +15,8 @@ if (isCert.equals("Y")) { //이미 이전에 발급받은 정보가 있다면 폐기페이지로 보내
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+  <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+  <meta http-equiv="X-UA-Compatible" content="IE=11"/>
   <title>인증서 발급</title>
 	<script type="text/javascript" src="/initech/plugin/INIplugin.js"></script>
 	<script type="text/javascript" src="/initech/plugin/INIutil.js"></script>
@@ -283,7 +284,8 @@ function AutoRequest()
 <script language="javascript">
 	function fncAlert() {
 		alert("이전에 발급받으신 인증서 비밀번호와 동일합니다.\n\n이전에 발급받으신 인증서 비밀번호와 다른 비밀번호를 입력하여 주십시오!");
-		location.href="/initech/certcenter64/inica70/index.jsp" ;
+		history.back(-1);
+		//location.href="/initech/certcenter64/inica70/index.jsp" ;
 	}
 </script>
 </head> 

@@ -94,7 +94,16 @@ public String do_protocol_error()
 }
 
 
+public String nullConvefrt(String str)
+{
+	if (str == null) {
+		return "";
+	} else if ("".equals(str.trim())) {
+		return "";
+	}
 
+	return str;
+}
 
 
 %>	

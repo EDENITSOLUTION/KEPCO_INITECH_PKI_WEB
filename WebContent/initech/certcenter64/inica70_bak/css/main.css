@@ -1,0 +1,58 @@
+
+
+/* ---- ¸ÞÀÎ ·¹ÀÌ¾Æ¿ô ---- */
+#header {
+	height:87px;
+	font-family: "µ¸¿ò", Dotum, "±¼¸²", Gulim, Verdana, AppleGothic, sans-serif;
+}
+
+#maincenter {
+	position:relative;
+	height:508px;
+	margin:auto;
+	background: url(../img/main_bg.jpg) repeat-x 0 0;
+}
+.mainvisual {
+	position:relative;
+	width:960px;
+	height:100%;
+	margin:auto;
+	background: url(../img/main_img.jpg) no-repeat 0 0;
+}
+.mainvisual ul.in01{ padding-top:200px; padding-left:725px;}
+.mainvisual ul.in02{ padding-top:30px; padding-left:725px;}
+.mainvisual ul.in03{ padding-top:40px; padding-left:725px;}
+.mainvisual ul li.in0101{padding-bottom:5px;}
+.mainvisual ul li.in0102{padding-top:5px; padding-left:6px; background:url(../img/bullet_list.gif) no-repeat 0px 11px;font-family:"±¼¸²", Gulim;}
+.mainvisual a:hover {color:#979797;text-decoration:underline;}
+
+#footer {
+	width:960px;
+	height:70px;
+	margin:auto;
+}
+#footer ul li.img{float:left; padding-top:20px;}
+#footer ul li.ads{float:left; padding-top:21px; padding-left:30px; color:#979797;}
+#footer ul li.rig{float:right; padding-top:20px;}
+
+/* 1´Ü°è ¸Þ´º  */
+.sMenu {width:100%;position:absolute;top:33px;height:42px;overflow:hidden;z-index:999;}
+.sMenu.on {background:#fff url(../img/menubg.gif) repeat-x 0 0;border-bottom:1px solid #e7e7e7;}
+.sMenu > ul{width:960px;margin:0 auto 0;top:0px; padding-bottom:5px;letter-spacing:-2px;position:relative;}
+.sMenu > ul:after{content:"";display:block; clear:both;}
+.sMenu > ul > li{float:left;}
+.sMenu > ul > li:first-child{padding-left:0;}
+.sMenu > ul > li.s1 {width:230px;}
+.sMenu > ul > li.s1 > ul {left:0;}
+.sMenu > ul > li.s2 {float:right;width:220px;}                            
+.sMenu > ul > li.s2 > ul {left:583px;}
+.sMenu > ul > li.s3 {float:right;width:160px;}
+.sMenu > ul > li.s3 > ul {left:803px;}
+
+.sMenu > ul > li > a{font-size:18px; color:#555; font-weight:bold;}
+.sMenu > ul > li > a:hover, .sMenu > ul > li > a.on{color:#fd9836;}
+.sMenu > ul > li > ul {margin-top:30px;display:;position:absolute;top:30px;left:0;z-index:999;background:#fff;}
+.sMenu > ul > li > ul > li {margin-bottom:7px;}
+.sMenu > ul > li > ul > li > a {font-size:14px;letter-spacing:-1px;background:url(../img/bullet_list.gif) no-repeat 0px 7px;}
+.sMenu > ul > li > ul > li > a.on,.sMenu > ul > li > ul > li > a:hover {color:#ef1c00;text-decoration:underline;background:url(../img/bullet_list_ov.gif) no-repeat 0px 7px;}
+.padding5 {padding-left:5px;}

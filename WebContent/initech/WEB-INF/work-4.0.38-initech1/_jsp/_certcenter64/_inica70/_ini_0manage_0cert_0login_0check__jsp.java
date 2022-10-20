@@ -75,6 +75,7 @@ String pwdSyncKey = "5ac1bb6d4172409089a7df3aa6ec91c2";
 String pwdSyncDidx = "1";
 
 
+
 boolean m_bDebug = true;
 String m_How = null;
 
@@ -212,10 +213,23 @@ String admUID = "kepcoca";
 String admPWD = "kepcoca!@##";
 String userIP = request.getRemoteAddr();
 
+String adm2UID = "kepcoca2";
+String adm2PWD = "kepcoca!@##";
+
 String isManagerIpCheck = "Y"; //\uad00\ub9ac\uc790 IP\uccb4\ud06c\uc720\ubb34(Y:\uccb4\ud06c\ud568,N:\uccb4\ud06c\uc548\ud568)
 String isAcsOK = "Y"; //\uad00\ub9ac\uc790IP\uc811\uadfc\uac00\ub2a5\uc720\ubb34(Y:\uc811\uadfc\uac00\ub2a5\ud568,N:\uc811\uadfc\ubd88\uac00)
 
-String acsIPs[] = {"10.200.107.210","10.200.107.159","10.180.5.75","10.180.5.76","10.180.5.74"};
+String acsIPs[] = {"10.220.15.27","10.220.15.23","10.200.107.127","10.200.107.150","10.200.107.135","10.180.5.74","10.180.5.75","10.180.5.76","10.200.107.185","10.200.107.148","10.200.107.189","168.78.245.31","10.200.107.141","10.200.153.103","10.220.15.16","10.220.15.21","10.200.107.153"};
+// 10.200.107.127  \ucd5c\ud0dc\uc6b1
+// 10.200.107.150  \ubc31\uc21c\uc6c5
+// 10.200.107.135  \uae40\ud604\uc774
+// 10.180.5.74-76  \uc720\uc9c0\ubcf4\uc218(KDN)
+// 10.200.107.185  \uc804\ub300\uc0b0
+// 10.200.107.148  \uae40\uc9c4\uad6c
+// 10.200.107.189  \uac15\uc131\uac04
+// 168.78.245.31   \uc6b4\uc601\uc11c\ubc84
+// 10.200.107.153  \ubc15\uc18c\uc724
+
 String acsErrMsg = "";
 
 if (isManagerIpCheck.equals("N")){ //\uad00\ub9ac\uc790IP\uccb4\ud06c\ud558\uc9c0\uc54a\ub294\ub2e4\uba74
@@ -259,7 +273,12 @@ if (m_userID.equals(admUID) && m_userPWD.equals(admPWD) && isAcsOK.equals("Y") )
     out.write(_jsp_string2, 0, _jsp_string2.length);
     
 
-}else {
+} else if (m_userID.equals(adm2UID) && m_userPWD.equals(adm2PWD) && isAcsOK.equals("Y") ) {
+	session.setAttribute("admin2Login",m_userID);
+	session.setMaxInactiveInterval(1000);
+	response.sendRedirect("ini_manage_insa.jsp"); 
+
+} else {
 	response.setCharacterEncoding("EUC-KR");
 	PrintWriter writer = response.getWriter();
 	writer.println("<script type='text/javascript'>");
@@ -331,9 +350,9 @@ if (m_userID.equals(admUID) && m_userPWD.equals(admPWD) && isAcsOK.equals("Y") )
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_manage_cert_login_check.jsp"), 643173970872423819L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_manage_cert_login_check.jsp"), -5587081055799223841L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -8960418715910081368L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/iniplugin_init.jsp"), -1077120484095086999L, true);
     _caucho_depends.add(depend);
   }
 
@@ -366,13 +385,13 @@ if (m_userID.equals(admUID) && m_userPWD.equals(admPWD) && isAcsOK.equals("Y") )
   }
 
   private final static char []_jsp_string2;
-  private final static char []_jsp_string1;
   private final static char []_jsp_string3;
+  private final static char []_jsp_string1;
   private final static char []_jsp_string0;
   static {
     _jsp_string2 = "\r\n<!--DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\r\n<title>\uad00\ub9ac\uc790 \ub85c\uadf8\uc778</title>\r\n<script type=\"text/javascript\" src=\"/initech/plugin/INIplugin.js\"></script>\r\n<script type=\"text/javascript\" src=\"/initech/plugin/INIutil.js\"></script>\r\n<script language=\"javascript\">\r\nfunction CheckSendForm() {\r\n\r\n	var readForm = document.readForm;\r\n	var sendForm = document.sendForm;\r\n	\r\n	if (EncForm2(readForm, sendForm))\r\n	{\r\n		sendForm.submit();\r\n		return false;\r\n	}\r\n	return false;\r\n}\r\n\r\n</script>\r\n</head>\r\n<body>\r\n<form name=\"sendForm\" method=\"post\" action=\"ini_manage_cert.jsp\">\r\n<input type=\"hidden\" name=\"INIpluginData\" value=\"\" />\r\n</form>\r\n<form name=\"readForm\">\r\n</form>\r\n</body>\r\n</html-->\r\n".toCharArray();
-    _jsp_string1 = "\n\r\n\r\n".toCharArray();
     _jsp_string3 = "\r\n".toCharArray();
+    _jsp_string1 = "\r\n\r\n".toCharArray();
     _jsp_string0 = "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\n\n\n\n".toCharArray();
   }
 }

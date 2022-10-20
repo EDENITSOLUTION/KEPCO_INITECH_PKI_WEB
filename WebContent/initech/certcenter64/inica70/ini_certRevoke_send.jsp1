@@ -8,7 +8,7 @@
 <%@ include file="import/inica70_userSet.jsp" %>
 <%@ include file="import/inica70_ca_send.jsp" %>
 <%@ include file="import/inica70_err_check.jsp" %>
-<%@ include file="import/fncSMS.jsp" %>
+<%@ include file="import/funSMS.jsp" %>
 <%
 //인증서 발급 후 SMS발송 
 //인증서 발급 후 SMS발송 

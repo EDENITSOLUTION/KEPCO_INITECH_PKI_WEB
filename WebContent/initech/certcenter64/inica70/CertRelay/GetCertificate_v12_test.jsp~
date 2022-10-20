@@ -1,0 +1,43 @@
+<%@page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@page import="com.initech.certrelay.transfer.CertificateRelayV12"%>
+<%
+	CertificateRelayV12 CertSync = new CertificateRelayV12(application, request, response);
+
+	String USE_ENCRYPT= request.getParameter(CertificateRelayV12.USE_ENCRYPT);
+	String ACTION=request.getParameter(CertificateRelayV12.ACTION);
+	String AUTH_NUM=request.getParameter(CertificateRelayV12.AUTH_NUM);
+	String ENC_CERT=request.getParameter(CertificateRelayV12.ENC_CERT);
+	String PWD=request.getParameter(CertificateRelayV12.PWD);
+	String STATUS=request.getParameter(CertificateRelayV12.STATUS);
+	String AUTH_SIZE=request.getParameter(CertificateRelayV12.AUTH_SIZE);
+	String OPEN_STORAGE=request.getParameter(CertificateRelayV12.OPEN_STORAGE);
+
+%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<title>test</title>
+</head> 
+<body>
+
+USE_ENCRYPT : <%= USE_ENCRYPT %><br/>
+ACTION : <%= ACTION %><br/>
+AUTH_NUM : <%= AUTH_NUM %><br/>
+UENC_CERT : <%= ENC_CERT %><br/>
+PWD : <%= PWD %><br/>
+STATUS : <%= STATUS%><br/>
+AUTH_SIZE : <%= AUTH_SIZE %><br/>
+OPEN_STORAGE : <%=OPEN_STORAGE %><br/>
+test222222222222222222
+
+
+
+</body>
+</html>
+
+
+
+	document.write("			<a href='ini_certRelay.jsp'>인증서 복사하기</a>");

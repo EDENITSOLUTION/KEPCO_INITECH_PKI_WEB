@@ -75,6 +75,15 @@ try {
 	//pstmtu = connu.prepareStatement(delQry);
 	//pstmtu.executeUpdate();
 
+	//[STR] VPN 연계를 위한 인증서 발급 아이디정보 저장 2017-04-11
+	// 기존정보 삭제
+	pstmtu = connu.prepareStatement("DELETE FROM sync_pwd_vpn WHERE userid = '" + m_ID + "'");
+	pstmtu.executeUpdate();
+
+	// 최신정보 등록
+	pstmtu = connu.prepareStatement("INSERT INTO sync_pwd_vpn (userid, cdate) VALUES('" + m_ID + "', SYSDATE)");
+	pstmtu.executeUpdate();
+	//[END] VPN 연계를 위한 인증서 발급 아이디정보 저장 2017-04-11
 	
 } catch(Exception e) {
 	e.printStackTrace();
@@ -85,6 +94,8 @@ try {
 %>
 
 <%
+
+//[STR] VPN 사용자 비밀번호 연계방식 변경 REAL → BATCH 2017-04-20 / 주석제거 2018-10-12
 	// VPN 사용자 패스워드 업데이트 내용
      URL url;//URL 주소 객체
         URLConnection connection;//URL접속을 가지는 객체
@@ -94,7 +105,7 @@ try {
 
         try{
             //URL객체를 생성하고 해당 URL로 접속한다..
-            url = new URL("http://10.180.6.97:8080/SSL/EMPLOYEE2/epi_relay.php?id="+m_ID+"&pw="+getBase64Data(getHashValue(m_pw)));
+            url = new URL("http://10.180.66.97:8080/SSL/EMPLOYEE2/epi_relay.php?id="+m_ID+"&pw="+getBase64Data(getHashValue(m_pw)));
             connection = url.openConnection();
 
             //내용을 읽어오기위한 InputStream객체를 생성한다..
@@ -117,6 +128,7 @@ try {
             ioe.printStackTrace();
             System.exit(1);
         }
+//[END] VPN 사용자 비밀번호 연계방식 변경 REAL → BATCH 2017-04-20 / 주석제거 2018-10-12
 
 %>
 
@@ -125,6 +137,7 @@ try {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <title>인증센터 이용안내</title>
 <link rel="stylesheet" type="text/css" href="css/import.css" />
 <link rel="stylesheet" type="text/css" href="css/main.css" />
@@ -187,7 +200,35 @@ function setTimerMain() {
 				<li class="sbtextbg2">
 					<img src="img/bullet_list.gif" align="center"> <b class="txblue"><%=certUserNm%>(<%=m_ID%>)</b> 님의 인증서가 성공적으로 발급되었습니다.</li>
 				<li class="sbtextbg2">
-					<img src="img/bullet_list.gif" align="center"> 인증서의 유효기간은 3개월이며, 유효기간이 지난 인증서는 사용하실 수 없습니다.</li>
+					<img src="img/bullet_list.gif" align="center"> 인증서의 유효기간은 
+					<%
+					if ("69".equals(m_POLICY)) {
+						out.print("1개월");
+					} else if ("70".equals(m_POLICY)) {
+						out.print("2개월");
+					} else if ("71".equals(m_POLICY)) {
+						out.print("3개월");
+					} else if ("72".equals(m_POLICY)) {
+						out.print("4개월");
+					} else if ("73".equals(m_POLICY)) {
+						out.print("5개월");
+					} else if ("74".equals(m_POLICY)) {
+						out.print("6개월");
+					} else if ("75".equals(m_POLICY)) {
+						out.print("7개월");
+					} else if ("76".equals(m_POLICY)) {
+						out.print("8개월");
+					} else if ("77".equals(m_POLICY)) {
+						out.print("9개월");
+					} else if ("78".equals(m_POLICY)) {
+						out.print("10개월");
+					} else if ("79".equals(m_POLICY)) {
+						out.print("11개월");
+					} else if ("80".equals(m_POLICY)) {
+						out.print("12개월");
+					}
+					%>
+					이며, 유효기간이 지난 인증서는 사용하실 수 없습니다.</li>
 				<li class="sbtextbg2">
 					<img src="img/bullet_list.gif" align="center"> PowerNet 로그인을 위해서 PowerNet ToolBand의 통합인증을 클릭하십시오. 이용해주셔서 감사합니다</li>
 				<li class="dotted1"></li>

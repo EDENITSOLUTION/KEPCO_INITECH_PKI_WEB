@@ -189,7 +189,7 @@ function dspCopyRight(){
 	document.write("<div id='footersub'>");
 	document.write("	<ul>");
 	document.write("		<li class='img'><img src='img/footer_logo.gif' alt='한국전력공사'></li>");
-	document.write("		<li class='ads'>(우)58217 전라남도 나주시 전력로 55 (빛가람동 120) Copyright@2016 KEPCO. All Rights Reserved. <br />대표 : 061-345-3114 당직상황실 : 061-345-3203 <span style='color:#ffffff'>66</span></li>");
+	document.write("		<li class='ads'>(우)58217 전라남도 나주시 전력로 55 (빛가람동 120) Copyright@2016 KEPCO. All Rights Reserved. <br />대표 : 061-345-3114 당직상황실 : 061-345-3203 <span style='color:#ffffff'>67</span></li>");
 	document.write("		<li class='rig'>&nbsp;</li>");
 	document.write("	</ul>");
 	document.write("</div>");
@@ -206,7 +206,7 @@ function dspMainCopyRight(){
 	document.write("	<ul>");
 	document.write("		<li class='img'><img src='img/footer_logo.gif' alt='한국전력공사'></li>");
 	document.write("		<li class='ads'>(우)58217 전라남도 나주시 전력로 55 (빛가람동 120) Copyright@2016 KEPCO. All Rights Reserved. ");
-	document.write("						<br />대표 : 061-345-3114 당직상황실 : 061-345-3203 <span style='color:#ffffff'>66</span></li>");
+	document.write("						<br />대표 : 061-345-3114 당직상황실 : 061-345-3203 <span style='color:#ffffff'>67</span></li>");
 	document.write("		<li class='rig'>&nbsp;</li>");
 	document.write("	</ul>");
 	document.write("</div>");

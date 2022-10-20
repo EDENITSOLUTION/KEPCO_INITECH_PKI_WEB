@@ -56,7 +56,7 @@ public class _test111__jsp extends com.caucho.jsp.JavaPage
     
  long time = System.currentTimeMillis();
  SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSS");
- System.out.println(dayTime.format(new java.util.Date(time)));
+ out.print(dayTime.format(new java.util.Date(time)));
 
     out.write('\n');
   }
@@ -118,7 +118,7 @@ public class _test111__jsp extends com.caucho.jsp.JavaPage
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/test111.jsp"), -3805107019023356732L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/test111.jsp"), -1090674182557945574L, true);
     _caucho_depends.add(depend);
   }
 

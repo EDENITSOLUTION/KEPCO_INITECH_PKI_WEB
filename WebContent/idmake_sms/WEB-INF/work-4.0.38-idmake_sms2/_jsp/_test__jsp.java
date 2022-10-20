@@ -17,6 +17,7 @@ import java.io.InputStream.*;
 import java.io.InputStreamReader.*;
 import java.io.OutputStream.*;
 import java.io.OutputStreamWriter.*;
+import java.nio.ByteBuffer.*;
 import java.net.Socket.*;
 
 public class _test__jsp extends com.caucho.jsp.JavaPage
@@ -27,33 +28,59 @@ public class _test__jsp extends com.caucho.jsp.JavaPage
   private com.caucho.jsp.PageManager _jsp_pageManager;
 
   
-  public String en(String ko){
-  	        /**/
-  	        String new_str = null;
-  	        try{        
-  	                new_str  = new String(ko.getBytes("KSC5601"), "8859_1");
-  	        } catch(UnsupportedEncodingException ex) {ex.printStackTrace(); }
-  	        return new_str;
-  	        /**/
-  	        //return ko;
+  
+  
+  
+  
+  
+  public void SMSBody(String classcode, String password, String key, String recvphone, String callback, String message, String empno, String refcnt){
+   
+  try{
+  	
+  	 ByteBuffer bb = ByteBuffer.allocate(155);
+  	
+  		
+  	bb.clear();
+  
+  	bb.position(0);
+  	bb.put(classcode.getBytes());
+  	
+  	bb.position(6);
+  	bb.put(password.getBytes());
+  	
+  	bb.position(11);
+  	bb.put(key.getBytes());
+  	
+  	bb.position(27);
+  	bb.put(recvphone.getBytes());
+  	
+  	bb.position(43);
+  	bb.put(callback.getBytes());
+  	
+  	bb.position(59);
+  	bb.put(message.getBytes("EUC-KR"));
+  	
+  	bb.position(140);
+  	bb.put(empno.getBytes());
+  	
+  	bb.position(149);
+  	bb.put(refcnt.getBytes());
+  	
+  	//bos.write(bb.array());
+  
+  	//return bb.array().toString() ;
+  	
+  }catch(IOException ioe){
+  	ioe.printStackTrace();
+  	//return null ;
+  }	
+  finally {
+  	}
   }
   
-  public String ko(String en){
-      /**/
-      String new_str = null;
-      try{              
-          try{
-                  new_str  = new String(en.getBytes("8859_1"), "KSC5601");                
-          } catch(UnsupportedEncodingException ex) {ex.printStackTrace(); }
-      }catch(NullPointerException e)
-  	{	System.out.println("Null  " + en);
-  		new_str = en;
-  	}
-      return new_str;
-      /**/
-      //return en;
-  }
-  public String SendSMS(String SENDIP, int SENDPORT, String SEND_MSG)  {
+  
+  
+  public String SendSMS(String SENDIP, int SENDPORT, String SEND_DATA)  {
   		
   		Socket socket = null;		
   		OutputStream os = null;
@@ -69,7 +96,7 @@ public class _test__jsp extends com.caucho.jsp.JavaPage
   		try{
   
   
-  			System.out.println("\ubcf4\ub0b4\ub294 \ub370\uc774\ud130: "+ SEND_MSG );
+  			System.out.println("\ubcf4\ub0b4\ub294 \ub370\uc774\ud130: "+ SEND_DATA );
   	
   			socket = new Socket(SENDIP, SENDPORT); 
   			socket.setSoTimeout (600000); //Timeout : 60secs
@@ -83,7 +110,7 @@ public class _test__jsp extends com.caucho.jsp.JavaPage
   			isr = new InputStreamReader(is);
   			br = new BufferedReader(isr); //\uc11c\ubc84\ub85c \ubd80\ud130 \ub370\uc774\ud130\ub97c \ubc1b\uae30\uc704\ud55c \uc785\ub825\uc2a4\ud2b8\ub9bc\uc120\uc5b8.
      
-  			bw.write(SEND_MSG); //\uc11c\ubc84\ub85c\ubd80\ud130 \ub370\uc774\ud130\ub97c \uc804\uc1a1.
+  			bw.write(SEND_DATA); //\uc11c\ubc84\ub85c\ubd80\ud130 \ub370\uc774\ud130\ub97c \uc804\uc1a1.
   			bw.newLine();
   			bw.flush();
      
@@ -162,16 +189,25 @@ public class _test__jsp extends com.caucho.jsp.JavaPage
 
 String SENDIP = "203.248.44.150";
 int SENDPORT = 7904;
-String CLASSCODE = "IDMKL" ;
-String PASSWORD = " DIST";
-String KEY = "000000000000001";
-String KEY1 = "000000000000001";
-String KEY2 = "000000000000001";
-String RECVPHONE = "01099117557";
-String CALLBACK = "0234561166";
-String MESSAGE = "KEPCO-SSO \uc778\uc99d\uc11c\ubc1c\uae09\uc6a9 : \uc778\uc99d\ubc88\ud638 [000000]\uc744(\ub97c) \uc785\ub825\ud558\uc2ed\uc2dc\uc624";
-String EMPNO = "jekyung";
-String REFCNT = "00001";
+
+String CLASSCODE = "IDMKL" ; // 5 + 1
+int iCLASSCODE = 6 ;
+String PASSWORD = " DIST"; // 4 + 1
+int iPASSWORD = 5 ;
+String KEY1 = "000000000000001";//15 + 1
+int iKEY1 = 16 ;
+String KEY2 = "000000000000001";//15 + 1
+int iKEY2 = 16 ;
+String RECVPHONE = "01099117557"; //15 + 1 
+int iRECVPHONE = 16 ;
+String CALLBACK = "0234561166"; //15 + 1
+int iCALLBACK = 16 ;
+String MESSAGE = "KEPCO-SSO \uc778\uc99d\uc11c\ubc1c\uae09\uc6a9 : \uc778\uc99d\ubc88\ud638 [000000]\uc744(\ub97c) \uc785\ub825\ud558\uc2ed\uc2dc\uc624"; //80 + 1
+int iMESSAGE = 81 ;
+String EMPNO = "jekyung8"; // 8 + 1
+int iEMPNO = 9 ;
+String REFCNT = "00001"; // 5 + 1
+int iREFCNT = 6 ;
 
 
 Locale locale = java.util.Locale.KOREA;
@@ -186,8 +222,13 @@ KEY2 = convertedTime + "2";
 //MESSAGE = new String(MESSAGE.getBytes("KSC5601"), "UTF-8");
 
 
-String SEND_MSG = CLASSCODE + " " + PASSWORD + " " + KEY + " " + RECVPHONE + " " + CALLBACK + " " + MESSAGE + " " + EMPNO + " " + REFCNT ;
+//String SEND_MSG = Padding(CLASSCODE,iCLASSCODE, (char)0x00 ) + Padding(PASSWORD,iPASSWORD, (char)0x00 ) + Padding(KEY1,iKEY1, (char)0x00 ) + Padding(RECVPHONE,iRECVPHONE, (char)0x00 ) + Padding(CALLBACK,iCALLBACK, (char)0x00 ) + Padding(MESSAGE,iMESSAGE, (char)0x00 )  + Padding(EMPNO,iEMPNO, (char)0x00 ) + Padding(REFCNT,iREFCNT, (char)0x00 ) ;
 
+//String SEND_MSG = getRpad(CLASSCODE,iCLASSCODE, " " ) + getRpad(PASSWORD,iPASSWORD, " " ) + getRpad(KEY1,iKEY1, " " ) + getRpad(RECVPHONE,iRECVPHONE, " " ) + getRpad(CALLBACK,iCALLBACK, " " ) + getRpad(MESSAGE,iMESSAGE, " " )  + getRpad(EMPNO,iEMPNO, " " ) + getRpad(REFCNT,iREFCNT, " " ) ;
+
+//String SEND_MSG = getRpad2(CLASSCODE,iCLASSCODE, (char)0x00 ) + getRpad2(PASSWORD,iPASSWORD, (char)0x00 ) + getRpad2(KEY1,iKEY1, (char)0x00 ) + getRpad2(RECVPHONE,iRECVPHONE, (char)0x00 ) + getRpad2(CALLBACK,iCALLBACK, (char)0x00 ) + getRpad2(MESSAGE,iMESSAGE, (char)0x00 )  + getRpad2(EMPNO,iEMPNO, (char)0x00 ) + getRpad2(REFCNT,iREFCNT, (char)0x00 ) ;
+
+//String SEND_MSG = SMSBody(CLASSCODE, PASSWORD, KEY1, RECVPHONE, CALLBACK, MESSAGE, EMPNO, REFCNT);
 
 ////////////////////////////////////////////////////
 //  \uc218\uc2e0 \ucf54\ub4dc ///////////////////////////////////
@@ -205,15 +246,15 @@ String RETURNCODE = null ;
 
 //SMS\ubc1c\uc1a1\uc744 \uc704\ud55c \ud074\ub77c\uc774\uc5b8\ud2b8 \uac1d\uccb4 \uc0dd\uc131
 //SmsClient sms = new SmsClient();
-RETURNCODE = SendSMS(SENDIP,SENDPORT,SEND_MSG);
+RETURNCODE = SendSMS(SENDIP,SENDPORT,SMSBody(CLASSCODE, PASSWORD, KEY1, RECVPHONE, CALLBACK, MESSAGE, EMPNO, REFCNT));
 
 
     out.write(_jsp_string1, 0, _jsp_string1.length);
     out.print((RETURNCODE));
     out.write(_jsp_string2, 0, _jsp_string2.length);
-    out.print((SEND_MSG ));
+    //=SEND_MSG 
     out.write(_jsp_string3, 0, _jsp_string3.length);
-    out.print((KEY1 ));
+    //=SEND_MSG.length() 
     out.write(_jsp_string3, 0, _jsp_string3.length);
     out.print((KEY2 ));
     out.write(_jsp_string4, 0, _jsp_string4.length);
@@ -276,7 +317,7 @@ RETURNCODE = SendSMS(SENDIP,SENDPORT,SEND_MSG);
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("test.jsp"), -3265012936660211503L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("test.jsp"), -2647567611534747789L, true);
     _caucho_depends.add(depend);
   }
 
@@ -310,14 +351,14 @@ RETURNCODE = SendSMS(SENDIP,SENDPORT,SEND_MSG);
 
   private final static char []_jsp_string1;
   private final static char []_jsp_string4;
-  private final static char []_jsp_string0;
   private final static char []_jsp_string2;
+  private final static char []_jsp_string0;
   private final static char []_jsp_string3;
   static {
     _jsp_string1 = "\r\n-".toCharArray();
-    _jsp_string4 = "\r\n</body>\r\n</html>".toCharArray();
-    _jsp_string0 = "<?xml version=\"1.0\" encoding=\"EUC-KR\" ?>\r\n\r\n    \r\n	\r\n    \r\n    \r\n    \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=EUC-KR\" />\r\n<title>Insert title here</title>\r\n</head>\r\n<body>\r\n".toCharArray();
+    _jsp_string4 = "<br />\r\n</body>\r\n</html>".toCharArray();
     _jsp_string2 = "-<br />\r\n".toCharArray();
+    _jsp_string0 = "<?xml version=\"1.0\" encoding=\"EUC-KR\" ?>\r\n\r\n    \r\n	\r\n    \r\n    \r\n    \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=EUC-KR\" />\r\n<title>Insert title here</title>\r\n</head>\r\n<body>\r\n".toCharArray();
     _jsp_string3 = "<br />\r\n".toCharArray();
   }
 }

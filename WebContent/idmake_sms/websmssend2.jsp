@@ -168,7 +168,7 @@ String certkey = "000000";
 int RandNum = (int)(Math.random()*1000000 + 1);
 DecimalFormat dt = new DecimalFormat("000000");
 certkey = dt.format(RandNum);
-String strMsgText ="[한국전력공사] 인터넷망 인증서 발급용\n인증번호는 ["+certkey+"]입니다.";
+String strMsgText ="[한국전력공사] 인터넷망 인증서\n발급용 인증번호는 ["+certkey+"]입니다..";
 //////////////////////////////////////////////////////////////////////////////////////////
 //SMS인증번호 만들기 END   ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -212,7 +212,7 @@ KEY = convertedTime ;
 String RECVPHONE = sendPhone ;//("01099117557" 15 + 1) 
 String REFPHONE = org_phone;
 
-String CALLBACK = "0234561166"; //15 + 1
+String CALLBACK = "0234568000"; //15 + 1
 String MESSAGE = strMsgText ; //80 + 1
 String EMPNO = empno ; // 8 + 1
 String REFCNT = "00001"; // 5 + 1

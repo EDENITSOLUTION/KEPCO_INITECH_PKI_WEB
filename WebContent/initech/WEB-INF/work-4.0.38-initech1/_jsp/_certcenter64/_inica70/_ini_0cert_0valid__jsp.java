@@ -110,7 +110,16 @@ public class _ini_0cert_0valid__jsp extends com.caucho.jsp.JavaPage
   }
 
 
+  public String nullConvefrt(String str)
+  {
+  	if (str == null) {
+  		return "";
+  	} else if ("".equals(str.trim())) {
+  		return "";
+  	}
 
+  	return str;
+  }
 
 
 
@@ -263,8 +272,8 @@ public class _ini_0cert_0valid__jsp extends com.caucho.jsp.JavaPage
         }
 
        resultString = do_op_cert_info_list(uid, sn);
-      
 
+        
        out.println(resultString);
    
    
@@ -335,11 +344,11 @@ public class _ini_0cert_0valid__jsp extends com.caucho.jsp.JavaPage
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_cert_valid.jsp"), -2129416010204019594L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_cert_valid.jsp"), -1465912286998805785L, true);
     _caucho_depends.add(depend);
     depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/ini_cert_valid_func.jsp"), 6777559321296475379L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/func.jsp"), 3130084488188422853L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/func.jsp"), -134361262012752146L, true);
     _caucho_depends.add(depend);
   }
 

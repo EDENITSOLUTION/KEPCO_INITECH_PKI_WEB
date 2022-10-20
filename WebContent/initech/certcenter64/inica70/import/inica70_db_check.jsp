@@ -35,15 +35,12 @@ if (m_IniErrCode == null)
 	try {
 		
 		conn = ds.getConnection();
-		//Creat Query and get results
 		stmt = conn.createStatement();
-
 		rs = stmt.executeQuery("select serial from LDAP_INFO where userid='" + m_ID + "' and status='V'");
-		
 		while( rs.next() ) {
 			m_certserial = rs.getString("serial");
 		}
-		
+
 		if (m_bDebug) System.out.println(m_ID + "( " + m_How + " ) : m_certserial: " + m_certserial);
 		
 	} catch(Exception e) {

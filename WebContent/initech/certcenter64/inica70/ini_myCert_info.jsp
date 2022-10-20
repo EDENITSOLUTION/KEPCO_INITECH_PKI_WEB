@@ -6,6 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <title>인증센터 이용안내</title>
 <link rel="stylesheet" type="text/css" href="css/import.css" />
 <link rel="stylesheet" type="text/css" href="css/main.css" />
@@ -26,7 +27,7 @@ function CheckSendFormVerify(readForm, sendForm) {
 		sendForm.submit();
 		return;
 	} else {
-		alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
+		//alert("보안상 문제가 생겨 전송이 취소 되었습니다.");
 	}
 	return;
 }
@@ -50,9 +51,9 @@ function CheckSendFormVerify(readForm, sendForm) {
 <div id="subtop">
 	<ul class="subtoptxt">
 		<li class="toptxtcon">인증센터 이용하기</li>
-		<li class="toptxtcon01">인증서 발급</li>
-		<li class="toptxtcon01">인증서 폐기</li>
-		<li class="toptxtcon01" style="text-decoration:underline;">인증서 관리</li>
+		<li class="toptxtcon01"><a href="ini_certNew.jsp">인증서 발급</a></li>
+		<li class="toptxtcon01"><a href="ini_certRevoke.jsp">인증서 폐기</a></li>
+		<li class="toptxtcon01" style="font-weight:bold; color:#000; text-decoration:underline;"><a href="ini_myCert_info.jsp">인증서 관리</a></li>
 	</ul>
 </div>
 <div id="subissue">

@@ -14,6 +14,7 @@
 <title>인증센터 이용안내</title>
 	<link rel="stylesheet" type="text/css" href="css/import.css" />
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<meta http-equiv="X-UA-Compatible" content="IE=11"/>
 
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/jquery.flexslider-min.js"></script>

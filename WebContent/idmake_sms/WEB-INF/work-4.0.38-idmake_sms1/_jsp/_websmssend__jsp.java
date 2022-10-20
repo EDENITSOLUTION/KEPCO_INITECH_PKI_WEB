@@ -16,7 +16,11 @@ import java.text.*;
 import java.sql.*;
 import javax.sql.*;
 import javax.naming.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 import kepco.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class _websmssend__jsp extends com.caucho.jsp.JavaPage
 {
@@ -121,6 +125,67 @@ public class _websmssend__jsp extends com.caucho.jsp.JavaPage
   //7. 1200 : \uc0ac\uc5c5\uc18c \uc11c\ube44\uc2a4 \uc624\ub958 (\uc0ac\uc5c5\uc18c \ucf54\ub4dc\uac00 \uc798\ubabb\ub41c \uacbd\uc6b0)
   //8. 2000 : \ubcf4\ub0b4\ub294\ucabd \uc18c\ucf13\ud1b5\uc2e0 \uc624\ub958
   ////////////////////////////////////////////////////
+  
+  //\uc774\uba54\uc77c \ubc1c\uc1a1\ud558\uae30
+  public String mailCertSend(String mailContent, String toMailAddress){
+  	String toAddress = toMailAddress ; //"ex099636@kepco.co.kr";
+  	String smtpHost = "10.180.6.91"; // SMTP \uc11c\ubc84 \uc124\uc815
+  	String mailSubject = "[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac] \uc778\ud130\ub137\ub9dd PC \uc0ac\uc124\uc778\uc99d\uc11c \ub300\ub9ac \ubc1c\uae09\uc744 \uc694\uccad\ud558\uc600\uc2b5\ub2c8\ub2e4." ;
+  						//new String("[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac] \uc778\ud130\ub137\ub9dd \uc778\uc99d\uc11c \ubc1c\uae09\uc6a9 \uc778\uc99d \ubc88\ud638".getBytes("8859_1"),"KSC5601");
+  	String mailText = mailContent ; 
+  						//new String("\uc774\uc2b9\ud6c8\ub2d8\uc758 \uc778\ud130\ub137\ub9dd \uc778\uc99d\uc11c \ubc1c\uae09 \uc778\uc99d\ubc88\ud638\ub294 : [000000]\uc785\ub2c8\ub2e4.".getBytes("8859_1"),"KSC5601");
+  	String fromAddress = "idmake@kepco.co.kr" ; //request.getParameter("from");        //\ubcf4\ub0b4\ub294\uc774
+  
+  
+  	Properties props = null;
+  
+  	String resultMsg = "ok" ;
+  
+  	try {
+            props = new Properties();
+  
+  
+  		props.put("mail.smtp.host", smtpHost);
+  		Session s = Session.getInstance(props,null);
+  		MimeMessage message = new MimeMessage(s); 
+  
+  		 
+  		InternetAddress from = new InternetAddress(fromAddress);
+  		message.setFrom(from); // \ubcf4\ub0b4\ub294\uc774 \uc124\uc815
+  		 
+  
+  		InternetAddress to = new InternetAddress(toAddress); // \ubc1b\ub294\uc774 \uc124\uc815 
+  		message.addRecipient(Message.RecipientType.TO, to);   
+  		message.setSubject(mailSubject); // \uc81c\ubaa9 
+  		message.setContent(mailText, "text/plain; charset=EUC-KR"); // content Type \uc124\uc815 
+  		message.setText(mailText); // \ubcf8\ubb38 
+  		Transport.send(message); // \uba54\uc77c \ubc1c\uc1a1
+  
+  		resultMsg = "ok" ;
+  		
+  	}catch (Exception e) {
+              resultMsg = e.toString();
+      }
+  	return resultMsg ;
+  }
+  
+   public byte[] getHashValue(String inputString) {
+  	MessageDigest md = null;
+  	try {
+  		md = MessageDigest.getInstance("MD5");
+  		md.update(inputString.getBytes());
+  	} catch (NoSuchAlgorithmException e) {
+  		e.printStackTrace();
+  	}
+  	
+  	return md.digest(); 
+  }
+  
+  public String getBase64Data(byte[] inputByte) throws IOException {
+  	String returnString = "";
+  	returnString = new String(com.initech.util.Base64Util.encode(inputByte, false));
+  	return returnString;
+  }
 
   
   public void
@@ -170,6 +235,7 @@ if (strIsInsa.equals("") || strIsInsa == null) {
 String empno = request.getParameter("empno"); //\uc0ac\ubc88
 String tmid = request.getParameter("tmid");//\ud0c0\uc784\uc544\uc774\ub514
 String refuserid = request.getParameter("refuserid");//\ucc38\uc870\uc790 \ub610\ub294 \ub300\uc2e0 \ubc1b\uc744 \uc9c1\uc6d0 \uc0ac\ubc88 
+String orguserpw = request.getParameter("orguserpw");
 String seq = "" ;
 String strSql = "" ;
 
@@ -179,6 +245,7 @@ String phone3 = request.getParameter("phone3"); //\uc9c1\uc811 \uc785\ub825\ud55
 
 
 String org_phone = "" ; //request.getParameter("org_phone"); //DB\uc5d0 \uc800\uc7a5\ub41c \ubc88\ud638
+String org_phone2 = "";
 String sendPhone = "" ; //phone1 + phone2 + phone3 ; //\uc5f0\ub77d\ucc98 \uc870\ud569
 
 String sendCnt = "00001"; //\ubcf4\ub0b4\uc57c\ud560 SMS\uc804\uc1a1 \uc218
@@ -202,6 +269,7 @@ String strMsg = "" ;
 
 
 String orgInsaOrgPhone = "" ; //\uc778\uc0ac\uc815\ubcf4\uc5d0 \uc2e4\uc81c\ub85c \ub4f1\ub85d\ub41c \uc804\ud654\ubc88\ud638
+String orgInsaOrgEmail = "" ; //\uc778\uc0ac\uc815\ubcf4\uc5d0 \uc2e4\uc81c\ub85c \ub4f1\ub85d\ub41c \uba54\uc77c\uc544\uc774\ub514(180717 njjang \ucd94\uac00)
 String orgSendFmatPhone = "x" ; //SMS\uc804\uc1a1\uc744 \uc704\ud574 \ud3ec\ub9f7\ubcc0\uacbd\ub41c \uc804\ud654\ubc88\ud638
 String orgUserName = "" ; //\uc804\ub2ec\ud558\uace0\uc790\ud558\ub294 \uc0ac\ubc88 \uc0ac\uc6a9\uc790\uc758 \uc774\ub984
 
@@ -249,6 +317,16 @@ try{
 		cellQry = cellQry + "SELECT "; 
 		cellQry = cellQry + "		X.EMPNO ";
 		cellQry = cellQry + "	,	X.USER_NAME ";
+		cellQry = cellQry + "	,	X.MAILNO ";
+		cellQry = cellQry + "   ,( ";
+		cellQry = cellQry + "		CASE WHEN X.MAILNO IS NULL THEN 'x' ";
+		cellQry = cellQry + "		ELSE ";
+		cellQry = cellQry + "			CASE INSTR(X.MAILNO,'@',1)  ";
+		cellQry = cellQry + "				WHEN 0 THEN X.MAILNO || '@kepco.co.kr' ";
+		cellQry = cellQry + "		    ELSE X.MAILNO ";
+		cellQry = cellQry + "			END ";
+		cellQry = cellQry + "		END ";
+		cellQry = cellQry + "    ) AS MAILADDR ";
 		cellQry = cellQry + "	,   X.CELLNO ";
 		cellQry = cellQry + "	,	X.VAL1 ";
 		cellQry = cellQry + "	,	X.VAL2 ";
@@ -270,6 +348,7 @@ try{
 		cellQry = cellQry + " FROM ( ";
 		cellQry = cellQry + "	SELECT ";
 		cellQry = cellQry + "		EMPNO ";
+		cellQry = cellQry + "		, MAILNO ";
 		cellQry = cellQry + "		, NAME AS USER_NAME ";
 		cellQry = cellQry + "		, CELLNO ";
 		cellQry = cellQry + "		, DECODE ( ";
@@ -300,6 +379,7 @@ try{
 		while (rs.next()){
 			orgSendFmatPhone = rs.getString("PHONENUM");
 			orgInsaOrgPhone = rs.getString("CELLNO");
+			orgInsaOrgEmail = rs.getString("MAILADDR");
 			orgUserName = rs.getString("USER_NAME");
 		}
 
@@ -441,25 +521,70 @@ seq = tmid + "_" + empno + "_" + request.getRemoteAddr() ; // 20140709172427_ex0
 ////	       a. \uc778\uc99d\ucf54\ub4dc \ubc1c\uc1a1 : smsphonenum = refuserid phone
 ////	       b. \ud655\uc778\ucf54\ub4dc \ubc1c\uc1a1 : smsphonenum = empno phone
 /////////////////////////////////////////////////////////////////////////////////////////
-
+//refSendFmatPhone = "010-4214-5454"; // \ub300\ub9ac\ubc1c\uae09\uc790
+//orgSendFmatPhone = "010-4214-5454"; // \ubcf8\uc778
+//orgInsaOrgEmail = "like_eh@nate.com";
 if (isNoPhoneUser.equals("N")) { // \ud578\ub4dc\ud3f0 \ubc88\ud638\uac00 \uc815\uc0c1\uc801\uc73c\ub85c \ub4f1\ub85d\ub41c \uc0ac\uc6a9\uc790\uac00 \uc544\ub2d0 \uacbd\uc6b0
 		//\ubc1c\uae09\ubc1b\uace0\uc790 \ud558\ub294 \uc0ac\uc6a9\uc790\uc758 \ud578\ub4dc\ud3f0 \ubc88\ud638\uac00 \uc815\uc0c1\uc801\uc73c\ub85c \ub4f1\ub85d\ub418\uc9c0 \uc54a\uc558\uc744 \uacbd\uc6b0\ub294 
 		//\ub300\ub9ac\ubc1c\uae09\uc73c\ub85c \uac04\uc8fc\ud558\ub294\uac83\uc73c\ub85c \ubcc0\uacbd	
 		sendCnt = "00002";
 		sendPhone = refSendFmatPhone.replace("-","");
 		org_phone = refSendFmatPhone.replace("-","");
+		org_phone2 = refSendFmatPhone;
 		strRefUserID = refuserid ;
 }else{ // \ud578\ub4dc\ud3f0 \ubc88\ud638\uac00 \uc815\uc0c1\uc801\uc73c\ub85c \ub4f1\ub85d\ub418\uc5c8\uc744 \uacbd\uc6b0\uc758 \uc0ac\uc6a9\uc790
 	if (empno.equals(refuserid)){//\uc2e4\uc81c \uc0ac\uc6a9\uc790 \uc0ac\ubc88\uacfc \ubc1b\ub294 \uc0ac\uc6a9\uc790 \uc0ac\ubc88\uc774 \uac19\uc744 \ub54c(\uc0ac\uc6a9\uc790 \ubcc0\uacbd\uc548\ud55c Default \uc0c1\ud0dc)
 		sendCnt = "00001"; 
 		sendPhone = orgSendFmatPhone.replace("-","");
 		org_phone = orgSendFmatPhone.replace("-","");
+		org_phone2 = orgSendFmatPhone;
 		strRefUserID = empno ;
 	}else{ //\uc0ac\ubc88\ubcc0\uacbd\ud574\uc11c \ubcf4\ub0bc\ub54c
 		sendCnt = "00002";
 		sendPhone = orgSendFmatPhone.replace("-","");
 		org_phone = refSendFmatPhone.replace("-","");
+		org_phone2 = refSendFmatPhone;
 		strRefUserID = refuserid ;
+	}
+}
+
+if ("00002".equals(sendCnt)) {
+
+	Context rIc = new InitialContext();
+	DataSource rDs = (DataSource) rIc.lookup("java:comp/env/jdbc/INICA");
+	ResultSet rRs = null;
+
+	Connection rConn = null;
+	Statement rStmt = null;
+
+	try{
+		rConn = rDs.getConnection();
+		rStmt = rConn.createStatement();
+		rRs = rStmt.executeQuery("select count(userid) as cnt from user_pwd where userid='" + empno + "' and userpwd = '" + getBase64Data(getHashValue(orguserpw)) + "' ");
+		
+		int rPwdUCnt = 0;
+		while(rRs.next()) {
+			rPwdUCnt =  rRs.getInt("cnt");
+		}
+
+		if (rPwdUCnt == 0) {
+			response.setCharacterEncoding("EUC-KR");
+			PrintWriter writer = response.getWriter();
+			writer.println("<script type='text/javascript'>");
+			writer.println("alert('\ubc1c\uae09\ubc1b\uc744 \uc0ac\uc6d0\uc758 \ube44\ubc00\ubc88\ud638\uac00 \uc77c\uce58\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.');");
+			writer.println("location.href='websmsform.jsp?empno="+ empno +"&tmid="+ tmid +"&refuserid2="+refuserid+"'");
+			writer.println("</script>");
+			writer.flush();
+			return;
+		}
+
+	}
+	catch(Exception ex){
+		ex.printStackTrace();
+	} finally {
+		rRs.close();
+		rStmt.close();
+		rConn.close();
 	}
 }
 
@@ -472,20 +597,20 @@ String certkey = "000000";
 int RandNum = (int)(Math.random()*1000000 + 1);
 DecimalFormat dt = new DecimalFormat("000000");
 certkey = dt.format(RandNum);
-String strMsgText ="[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac \uc778\ud130\ub137\ub9dd] "+ orgUserName + "("+ empno +")\ub2d8\uc758 \uc778\uc99d\uc11c \ubc1c\uae09\uc6a9 \uc778\uc99d\ubc88\ud638 : "+certkey;
+String strMsgText ="[\ud55c\uc804 \uc778\ud130\ub137\ub9dd]"+ orgUserName + "("+ empno +")\ub2d8\uc758 \uc778\uc99d\uc11c \ubc1c\uae09\uc6a9 \uc778\uc99d\ubc88\ud638 : "+certkey;
 
 if (empno.equals(refuserid)){
 	 strMsgText = strMsgText;
  }else{
-	 strMsgText = "[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac \uc778\ud130\ub137\ub9dd] "+ orgUserName + "(" + empno + ")\ub2d8\uc758 \uc778\uc99d\uc11c \ub300\ub9ac\ubc1c\uae09\uc744 \uc694\uccad\ud558\uc600\uc2b5\ub2c8\ub2e4." ;
+	 strMsgText = "[\ud55c\uc804 \uc778\ud130\ub137\ub9dd]"+ refUserName + "(" + refuserid + ")\ub2d8\uc774 \uc778\uc99d\uc11c \ub300\ub9ac\ubc1c\uae09\uc744 \uc694\uccad\ud558\uc600\uc2b5\ub2c8\ub2e4." ;
  }
 //////////////////////////////////////////////////////////////////////////////////////////
 //SMS\uc778\uc99d\ubc88\ud638 \ub9cc\ub4e4\uae30 END   ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
-String RefSendMsg = "KEPCO-SSO \uc778\uc99d\uc11c\ubc1c\uae09\uc6a9 \uc778\uc99d\ubc88\ud638\uc694\uccad\uc54c\ub9bc : "+ phone1 + "-" + phone2 + "-" + phone3  ;
+String RefSendMsg = "KEPCO-SSO \uc778\uc99d\uc11c\ubc1c\uae09\uc6a9 \uc778\uc99d\ubc88\ud638\uc694\uccad\uc54c\ub9bc : "+ org_phone2;
 //RefSendMsg = "KEPCO-SSO \uc778\uc99d\ubc88\ud638\uc694\uccad\uc54c\ub9bc\n\uc694\uccad\ubc88\ud638:"+ sendPhone +"("+ refUserName +")";
-RefSendMsg = "[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac \uc778\ud130\ub137\ub9dd] "+ orgUserName + "("+ empno +")\ub2d8\uc758 \uc778\uc99d\uc11c \ub300\ub9ac\ubc1c\uae09 \uc778\uc99d\ubc88\ud638 : "+ certkey ;
+RefSendMsg = "[\ud55c\uc804 \uc778\ud130\ub137\ub9dd]"+ orgUserName + "("+ empno +")\ub2d8\uc758 \uc778\uc99d\uc11c \ubc1c\uae09\uc6a9 \uc778\uc99d\ubc88\ud638 : "+ certkey ;
 
 
 
@@ -529,14 +654,14 @@ String RECVPHONE = sendPhone ;
 
 String REFPHONE = org_phone;
 
-String CALLBACK = "0613451166"; //15 + 1
+String CALLBACK = "0613458000"; //15 + 1
 String MESSAGE = strMsgText ; //80 + 1
 
 //if (sendCnt.equals("00002")){
-  // MESSAGE = "[\ud55c\uad6d\uc804\ub825\uacf5\uc0ac \uc778\ud130\ub137\ub9dd] "+ orgUserName + "("+empno+")\ub2d8\uc758 \uc778\uc99d\uc11c \ub300\ub9ac \ubc1c\uae09\uc744 \uc694\uccad\ud558\uc600\uc2b5\ub2c8\ub2e4.";
+  // MESSAGE = "[\ud55c\uc804 \uc778\ud130\ub137\ub9dd]"+ refUserName + "("+refuserid+")\ub2d8\uc774 \uc778\uc99d\uc11c \ub300\ub9ac \ubc1c\uae09\uc744 \uc694\uccad\ud558\uc600\uc2b5\ub2c8\ub2e4.";
 //}
 String EMPNO = empno ; // 8 + 1
-String REFCNT = "00001"; // 5 + 1
+String REFCNT = "00000"; // 5 + 1
 
 
 
@@ -614,6 +739,19 @@ RETURNMSG = rtnMessage(RETURNCODE);
 
 if (sendCnt.equals("00002")) {
 	strRef = sms.SendSMS(SENDIP, SENDPORT, RefSMSMsg).trim();
+
+	// 180717 njjang \ucd94\uac00
+	// \ub300\ub9ac\ubc1c\uae09\uc790\uac00 \uc778\uc99d\uc11c\ub97c \ubc1c\uadf8\ud560 \uacbd\uc6b0\uc5d0 \uc778\uc99d\uc11c \ubcf8\uc778\uc5d0\uac8c \uc815\ubcf4\uc54c\ub9bc \uba54\uc77c\uc744 \ubc1c\uc1a1
+	// orgInsaOrgEmail
+	/*
+	if (!"x".equals(orgInsaOrgEmail)) {
+
+		String emailMsg = "KEPCO-SSO \uc778\uc99d\ubc88\ud638\uc694\uccad\uc54c\ub9bc : \uc778\uc99d\ubc88\ud638 - "+ certkey +" / \uc694\uccad \uc5f0\ub77d\ucc98 - "+ refInsaOrgPhone +"("+ refUserName +")" + (char)10 + (char)10 ;
+		emailMsg = emailMsg + orgUserName + "(" + empno + ")\ub2d8\uc758 \uc778\uc99d\uc11c\ub97c " + refUserName + "(" + refuserid + ")\ub2d8\uc774 \ub300\ub9ac\ubc1c\uae09\uc744 \uc694\uccad\ud558\uc600\uc2b5\ub2c8\ub2e4." ;
+
+		String mresult = mailCertSend(emailMsg, orgInsaOrgEmail) ;
+	}
+	*/
 }
 
 //SMS\uc815\ubcf4 db insert
@@ -647,40 +785,36 @@ try {
 if (RETURNCODE.equals("99991001")) { //\uc815\uc0c1
 
     out.write(_jsp_string2, 0, _jsp_string2.length);
-    out.print((RETURNMSG));
-    out.write(_jsp_string3, 0, _jsp_string3.length);
     
 }else if (RETURNCODE.equals("9999")) { //\uc804\uc1a1\ub370\uc774\ud130\ud615\uc2dd
 
-    out.write(_jsp_string2, 0, _jsp_string2.length);
-    out.print((RETURNMSG));
     out.write(_jsp_string3, 0, _jsp_string3.length);
+    out.print((RETURNMSG));
+    out.write(_jsp_string4, 0, _jsp_string4.length);
     
 }else if (RETURNCODE.equals("1001")) { //\uc804\uc1a1\ub370\uc774\ud130\ud615\uc2dd \uc624\ub958\uc9c0\ub9cc \uc7a0\uc2dc \uc2a4\ud0b5
 
-    out.write(_jsp_string2, 0, _jsp_string2.length);
+    out.write(_jsp_string3, 0, _jsp_string3.length);
     out.print((RETURNMSG));
-    out.write(_jsp_string4, 0, _jsp_string4.length);
-    out.print((certkey));
     out.write(_jsp_string5, 0, _jsp_string5.length);
+    out.print((certkey));
+    out.write(_jsp_string6, 0, _jsp_string6.length);
     
 }else{
 
-    out.write(_jsp_string6, 0, _jsp_string6.length);
-    out.print((RETURNMSG));
-    out.write(_jsp_string3, 0, _jsp_string3.length);
+    out.write(_jsp_string7, 0, _jsp_string7.length);
     
 }	
 
-    out.write(_jsp_string7, 0, _jsp_string7.length);
-    out.print((RETURNCODE));
     out.write(_jsp_string8, 0, _jsp_string8.length);
-    out.print((org_phone));
+    out.print((RETURNCODE));
     out.write(_jsp_string9, 0, _jsp_string9.length);
-    out.print((sendPhone));
+    out.print((org_phone));
     out.write(_jsp_string10, 0, _jsp_string10.length);
-    out.print((sendCnt));
+    out.print((sendPhone));
     out.write(_jsp_string11, 0, _jsp_string11.length);
+    out.print((sendCnt));
+    out.write(_jsp_string12, 0, _jsp_string12.length);
   }
 
   private com.caucho.make.DependencyContainer _caucho_depends
@@ -740,7 +874,7 @@ if (RETURNCODE.equals("99991001")) { //\uc815\uc0c1
     String resourcePath = loader.getResourcePathSpecificFirst();
     mergePath.addClassPath(resourcePath);
     com.caucho.vfs.Depend depend;
-    depend = new com.caucho.vfs.Depend(appDir.lookup("websmssend.jsp"), -3886023595248571918L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("websmssend.jsp"), -966179971164975965L, true);
     _caucho_depends.add(depend);
   }
 
@@ -773,29 +907,31 @@ if (RETURNCODE.equals("99991001")) { //\uc815\uc0c1
   }
 
   private final static char []_jsp_string1;
-  private final static char []_jsp_string3;
+  private final static char []_jsp_string5;
   private final static char []_jsp_string6;
   private final static char []_jsp_string4;
-  private final static char []_jsp_string5;
-  private final static char []_jsp_string7;
-  private final static char []_jsp_string9;
-  private final static char []_jsp_string10;
-  private final static char []_jsp_string0;
-  private final static char []_jsp_string2;
   private final static char []_jsp_string8;
+  private final static char []_jsp_string10;
   private final static char []_jsp_string11;
+  private final static char []_jsp_string0;
+  private final static char []_jsp_string7;
+  private final static char []_jsp_string2;
+  private final static char []_jsp_string3;
+  private final static char []_jsp_string9;
+  private final static char []_jsp_string12;
   static {
     _jsp_string1 = "\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\r\n<title>SMS \uc778\uc99d\ud558\uae30</title>\r\n<script  type=\"text/javascript\" language=\"javascript\">\r\nfunction  fncConfirm() {\r\n".toCharArray();
-    _jsp_string3 = "]SMS\uc778\uc99d\ubc88\ud638\ub97c \uc804\uc1a1\ud558\uc600\uc2b5\ub2c8\ub2e4.\\n\\n\uc804\uc1a1\ubc1b\uc73c\uc2e0 \uc778\uc99d\ubc88\ud638\ub97c \uc785\ub825\ud558\uc2ed\uc2dc\uc624.\");\r\n	opener.readForm.sms.style.background=\"#ffffff\";\r\n	opener.readForm.sms.disabled=false;\r\n	opener.setTimerOn();\r\n	window.close();\r\n".toCharArray();
-    _jsp_string6 = "\r\n	\r\n	alert(\"[".toCharArray();
-    _jsp_string4 = "]SMS\uc785\ub825\ub780\uc5d0 ".toCharArray();
-    _jsp_string5 = "\uc744(\ub97c) \uc785\ub825\ud558\uc2ed\uc2dc\uc624.\");\r\n	opener.readForm.sms.style.background=\"#ffffff\";\r\n	opener.readForm.sms.disabled=false;\r\n	opener.setTimerOn();\r\n	window.close();	\r\n".toCharArray();
-    _jsp_string7 = "\r\n}\r\n</script>\r\n\r\n</head>\r\n<body leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\" onload=\"fncConfirm();\">\r\n<!-- RETURNCODE : ".toCharArray();
-    _jsp_string9 = "<br />\r\nsendPhone : ".toCharArray();
-    _jsp_string10 = "<br />\r\nsendCnt : ".toCharArray();
-    _jsp_string0 = "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n".toCharArray();
-    _jsp_string2 = "\r\n	alert(\"[".toCharArray();
-    _jsp_string8 = "<br />\r\norg_phone : ".toCharArray();
-    _jsp_string11 = "<br /> -->\r\n</body>\r\n</html>\r\n".toCharArray();
+    _jsp_string5 = "]SMS\uc785\ub825\ub780\uc5d0 ".toCharArray();
+    _jsp_string6 = "\uc744(\ub97c) \uc785\ub825\ud558\uc2ed\uc2dc\uc624.\");\r\n	opener.readForm.sms.style.background=\"#ffffff\";\r\n	opener.readForm.sms.disabled=false;\r\n	opener.setTimerOn();\r\n	window.close();	\r\n".toCharArray();
+    _jsp_string4 = "]\uc778\uc99d\ubc88\ud638\ub97c SMS \ubc1c\uc1a1\ud558\uc600\uc2b5\ub2c8\ub2e4.\\n\\n\uc804\uc1a1\ubc1b\uc73c\uc2e0 \uc778\uc99d\ubc88\ud638\ub97c \uc785\ub825\ud558\uc2ed\uc2dc\uc624.\");\r\n	opener.readForm.sms.style.background=\"#ffffff\";\r\n	opener.readForm.sms.disabled=false;\r\n	opener.setTimerOn();\r\n	window.close();\r\n".toCharArray();
+    _jsp_string8 = "\r\n}\r\n</script>\r\n\r\n</head>\r\n<body leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\" onload=\"fncConfirm();\">\r\n<!-- RETURNCODE : ".toCharArray();
+    _jsp_string10 = "<br />\r\nsendPhone : ".toCharArray();
+    _jsp_string11 = "<br />\r\nsendCnt : ".toCharArray();
+    _jsp_string0 = "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n".toCharArray();
+    _jsp_string7 = "\r\n	\r\n	alert(\"\uc778\uc99d\ubc88\ud638\ub97c SMS \ubc1c\uc1a1\ud558\uc600\uc2b5\ub2c8\ub2e4.\\n\\n\uc804\uc1a1\ubc1b\uc73c\uc2e0 \uc778\uc99d\ubc88\ud638\ub97c \uc785\ub825\ud558\uc2ed\uc2dc\uc624.\");\r\n	opener.readForm.sms.style.background=\"#ffffff\";\r\n	opener.readForm.sms.disabled=false;\r\n	opener.setTimerOn();\r\n	window.close();\r\n".toCharArray();
+    _jsp_string2 = "\r\n	alert(\"\uc778\uc99d\ubc88\ud638\ub97c SMS \ubc1c\uc1a1\ud558\uc600\uc2b5\ub2c8\ub2e4.\\n\\n\uc804\uc1a1\ubc1b\uc73c\uc2e0 \uc778\uc99d\ubc88\ud638\ub97c \uc785\ub825\ud558\uc2ed\uc2dc\uc624.\");\r\n	opener.readForm.sms.style.background=\"#ffffff\";\r\n	opener.readForm.sms.disabled=false;\r\n	opener.setTimerOn();\r\n	window.close();\r\n".toCharArray();
+    _jsp_string3 = "\r\n	alert(\"[".toCharArray();
+    _jsp_string9 = "<br />\r\norg_phone : ".toCharArray();
+    _jsp_string12 = "<br /> -->\r\n</body>\r\n</html>\r\n".toCharArray();
   }
 }

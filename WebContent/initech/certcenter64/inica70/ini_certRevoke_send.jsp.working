@@ -8,7 +8,7 @@
 <%@ include file="import/inica70_userSet.jsp" %>
 <%@ include file="import/inica70_ca_send.jsp" %>
 <%@ include file="import/inica70_err_check.jsp" %>
-<%@ include file="import/fncSMS.jsp" %>
+<%@ include file="import/sendSMS.jsp" %>
 <%!
 public static String makeCertString(String varName, String certificate)
 {

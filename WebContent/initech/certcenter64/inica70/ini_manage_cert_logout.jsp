@@ -10,6 +10,7 @@
 <%
 //session.invalidate();
 session.removeAttribute("adminLogin");
+session.removeAttribute("admin2Login");
 response.sendRedirect("ini_manage_cert_login.jsp");
 
 %>

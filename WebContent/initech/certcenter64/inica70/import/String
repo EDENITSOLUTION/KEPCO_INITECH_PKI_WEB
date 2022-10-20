@@ -1,0 +1,54 @@
+nt iREFCNT = 5 ; //
+        String REFCNT = "00001"; // 5 + 1 //--
+        int fCnt = 0 ; //--
+
+        String SEND_MSG = null ; // --
+
+        SEND_MSG = fillSpace(CLASSCODE, iCLASSCODE) + (char)0 ;
+        SEND_MSG = SEND_MSG + fillSpace(PASSWORD, iPASSWORD) + (char)0 ;
+        SEND_MSG = SEND_MSG + fillSpace(KEY, iKEY) + (char)0 ;
+        SEND_MSG = SEND_MSG + fillSpace(RECVPHONE, iRECVPHONE) + (char)0 ;
+        SEND_MSG = SEND_MSG + fillSpace(CALLBACK, iCALLBACK) + (char)0  ;
+
+        if (fillSpace(MESSAGE,iMESSAGE).getBytes().length > iMESSAGE ){
+                if(MESSAGE.getBytes().length < iMESSAGE ){
+                        fCnt = iMESSAGE-MESSAGE.getBytes().length;
+                        MESSAGE = getMessage(MESSAGE,fCnt);
+                }
+                SEND_MSG = SEND_MSG + MESSAGE  + (char)0 ;
+        }else{
+                SEND_MSG = SEND_MSG + fillSpace(MESSAGE,iMESSAGE) + (char)0 ;
+        }
+
+        SEND_MSG = SEND_MSG + fillSpace(EMPNO,iEMPNO)  + (char)0;
+        SEND_MSG = SEND_MSG + fillSpace(REFCNT,iREFCNT )  + (char)0;
+
+        return SEND_MSG;
+}
+
+public String rtnMessage(String MsgCode){
+        String MsgStr = "" ;
+        if (MsgCode.equals("2000")) {
+                        MsgStr = "인증센터 발송 모듈 오류";
+        }else if (MsgCode.equals("9999")) {
+                        MsgStr = "성공";
+        }else if (MsgCode.equals("1000")) {
+                        MsgStr = "SMS 프로세스 오류(SMS 데몬 프로세스 정지)";
+        }else if (MsgCode.equals("1001")) {
+                        MsgStr = "전송 데이터형식 오류";
+        }else if (MsgCode.equals("1002")) {
+                        MsgStr = "서버간 전송시간 초과 오류";
+        }else if (MsgCode.equals("1100")) {
+                        MsgStr = "데이터베이스 접속 오류 또는 동시 접속 과다";
+        }else if (MsgCode.equals("1101")) {
+                        MsgStr = "데이터베이스 Query 오류";
+        }else if (MsgCode.equals("1200")) {
+                        MsgStr = "사업소 서비스 오류 (잘못된 사업소 코드 전송)";
+//        }else if (MsgCode.equals("2000")) {
+//                        MsgStr = "인증센터 발송 모듈 오류";
+        }else {
+                        MsgStr = "성공";
+
+        }
+        return MsgStr ;
+

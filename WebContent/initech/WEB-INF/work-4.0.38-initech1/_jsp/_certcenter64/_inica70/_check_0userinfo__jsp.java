@@ -116,7 +116,16 @@ public class _check_0userinfo__jsp extends com.caucho.jsp.JavaPage
   }
 
 
+  public String nullConvefrt(String str)
+  {
+  	if (str == null) {
+  		return "";
+  	} else if ("".equals(str.trim())) {
+  		return "";
+  	}
 
+  	return str;
+  }
 
 
 
@@ -372,7 +381,7 @@ try{
     _caucho_depends.add(depend);
     depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/check_userinfo_func.jsp"), 204477625455088321L, true);
     _caucho_depends.add(depend);
-    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/func.jsp"), 3130084488188422853L, true);
+    depend = new com.caucho.vfs.Depend(appDir.lookup("certcenter64/inica70/import/func.jsp"), -134361262012752146L, true);
     _caucho_depends.add(depend);
   }
 
